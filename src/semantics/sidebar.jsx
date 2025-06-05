@@ -1,0 +1,58 @@
+import React, { useRef, useState, useEffect } from 'react';
+
+const Sidebar = () => {
+  const [active, setActive] = useState(0);
+  const [indicatorTop, setIndicatorTop] = useState(0);
+  const linkRefs = useRef([]);
+
+  const handleClick = (index) => {
+    setActive(index);
+  };
+
+  useEffect(() => {
+    if (linkRefs.current[active]) {
+      setIndicatorTop(linkRefs.current[active].offsetTop);
+    }
+  }, [active]);
+
+  const navItems = [
+    { activeIcon:"/images/home_active.svg", icon: "/images/home.svg", label: "Home" },
+    { activeIcon:"/images/cart_active.svg", icon: "/images/cart.svg", label: "Cart" },
+    { icon: "/images/order.svg", label: "Orders" },
+    { icon: "/images/profile.svg", label: "Profile" },
+    { icon: "/images/headphones.svg", label: "Support" },
+  ];
+
+  return (
+    <aside className="sidebar relative flex flex-col justify-between items-start gap-[150px] w-full h-auto max-h-[758px] max-w-[270px] rounded-3xl bg-(--bg-color) py-[40px] px-[33px]">
+      <ul className="w-full relative space-y-2">
+        {/* Moving indicator */}
+        <span
+          className="absolute left-0 w-full bg-[#ffffff10] rounded-[50px] transition-all duration-300 z-0"
+          style={{
+            top: `${indicatorTop}px`,
+            height: "60px", // match li height
+          }}
+        />
+        {navItems.map((item, index) => (
+          <li
+            key={index}
+            ref={(el) => (linkRefs.current[index] = el)}
+            onClick={() => handleClick(index)}
+            className={`link relative z-10 cursor-pointer flex items-center gap-3 px-4 py-4 rounded-[50px] transition-all duration-300 ${
+              active === index ? 'text-white font-semibold' : 'text-gray-300'
+            }`}
+            role="nav-link"
+          >
+            <img src={active === index ? item.activeIcon : item.icon } alt={`${item.label} icon`} className="w-5 h-5" />
+            {item.label}
+          </li>
+        ))}
+      </ul>
+
+      <span className="text-white px-4 cursor-pointer">Log out</span>
+    </aside>
+  );
+};
+
+export default Sidebar;
