@@ -1,9 +1,17 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Card from "./components/card";
 import Item from "./components/item";
+import {gsap} from "gsap";
 
 const Cart = ({ numberOfItems, count }) => {
   const cardsRef = useRef([]);
+  useEffect(() => {
+    gsap.fromTo(
+      cardsRef.current,
+      { opacity: 0, y: 100 },
+      { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", stagger: 0.125 }
+    );
+  }, []);
   const similarProducts = [
     {
       image: "/images/iphone.png",
