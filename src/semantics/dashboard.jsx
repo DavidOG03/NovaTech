@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../components/button";
 import Card from "../components/card";
 import { gsap } from "gsap";
 
 const Dashboard = () => {
   const cardsRef = useRef([]);
+  const [activeCategory, setActiveCategory] = useState(null); // index of the active button
 
   useEffect(() => {
     gsap.fromTo(
@@ -14,6 +15,13 @@ const Dashboard = () => {
     );
   }, []);
 
+  const categories = [
+    { img: "/images/phones.png", alt: "phones", text: "Phones" },
+    { img: "/images/laptop.png", alt: "laptops", text: "Laptops" },
+    { img: "/images/tablets.png", alt: "tablets", text: "Tablets" },
+    { img: "/images/consoles.png", alt: "console", text: "Consoles" },
+    { img: "/images/watch.png", alt: "watch", text: "Accessories" },
+  ];
   const deals = [
     {
       image: "/images/iphone.png",
@@ -61,8 +69,8 @@ const Dashboard = () => {
       lastPrice: "N26,000",
     },
     {
-      image: "/images/ps5_portable.png",
-      name: "PS5 Portable",
+      image: "/images/headphone_pic.png",
+      name: "Sony Headphones",
       price: "N480,000",
       lastPrice: "N550,000",
     },
@@ -83,9 +91,16 @@ const Dashboard = () => {
   return (
     <main className="h-full w-full overflow-y-scroll ">
       <section className="category w-full flex justify-start items-center gap-4">
-        <Button img="/images/phones.png" altText="phones" text="Phones" />
-        <Button img="/images/laptop.png" altText="laptops" text="Laptops" />
-        <Button img="/images/tablets.png" altText="tablets" text="Tablets" />
+        {categories.map((cat, index) => (
+          <Button
+            key={index}
+            img={cat.img}
+            altText={cat.alt}
+            text={cat.text}
+            isActive={activeCategory === index}
+            onClick={() => setActiveCategory(index)}
+          />
+        ))}
       </section>
       <section className="hot-deals p-[30px] bg-white rounded-2xl mt-[40px] mb-[1.25rem] overflow-hidden">
         <div className="header flex justify-between items-center mb-[2rem]">
@@ -105,9 +120,13 @@ const Dashboard = () => {
             </svg>
           </span>
         </div>
-        <div className="deal-card flex justify-between items-center gap-[10px]">
+        <div className="deal-card flex justify-between items-center flex-wrap gap-[10px]">
           {deals.map((deal, index) => (
-            <div ref={(el) => (cardsRef.current[index] = el)} key={index}>
+            <div
+              className="flex-auto max-w-[220px]"
+              ref={(el) => (cardsRef.current[index] = el)}
+              key={index}
+            >
               <Card
                 image={deal.image}
                 name={deal.name}
@@ -118,7 +137,7 @@ const Dashboard = () => {
           ))}
         </div>
       </section>
-      <section className="top-picks p-[30px] bg-white rounded-2xl mt-[40px]">
+      <section className="top-picks-section p-[30px] bg-white rounded-2xl mt-[40px]">
         <div className="header flex justify-between items-center mb-[2rem]">
           <h1 className="text-[1.5rem]">Top Picks</h1>
           <span className="more flex justify-end items-center gap-4 text-(--light-black)">
@@ -136,11 +155,12 @@ const Dashboard = () => {
             </svg>
           </span>
         </div>
-        <div className="top-picks flex justify-between items-center gap-[10px]">
+        <div className="top-picks flex justify-between items-center flex-wrap gap-[10px]">
           {picks.map((pick, index) => (
             <div
               ref={(el) => (cardsRef.current[index + deals.length] = el)}
               key={index}
+              className="flex-auto max-w-[220px]"
             >
               <Card
                 image={pick.image}
