@@ -1,12 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Router, useNavigate } from 'react-router';
 
 const Sidebar = () => {
   const [active, setActive] = useState(0);
   const [indicatorTop, setIndicatorTop] = useState(0);
   const linkRefs = useRef([]);
+  const navigate = useNavigate()
 
   const handleClick = (index) => {
     setActive(index);
+     const targetLink = navItems[index].link;
+     navigate(targetLink)
   };
 
   useEffect(() => {
@@ -16,11 +20,11 @@ const Sidebar = () => {
   }, [active]);
 
   const navItems = [
-    { activeIcon:"/images/home_active.svg", icon: "/images/home.svg", label: "Home" },
-    { activeIcon:"/images/cart_active.svg", icon: "/images/cart.svg", label: "Cart" },
-    { icon: "/images/order.svg", label: "Orders" },
-    { icon: "/images/profile.svg", label: "Profile" },
-    { icon: "/images/headphones.svg", label: "Support" },
+    { activeIcon:"/images/home_active.svg", icon: "/images/home.svg", label: "Home", link:"/" },
+    { activeIcon:"/images/cart_active.svg", icon: "/images/cart.svg", label: "Cart", link:"/cart" },
+    { activeIcon:"/images/order.svg", icon: "/images/order.svg", label: "Orders", link:"/order" },
+    { activeIcon:"/images/profile.svg", icon: "/images/profile.svg", label: "Profile",link:"/" },
+    { activeIcon:"/images/headphones.svg", icon: "/images/headphones.svg", label: "Support", link:"/" },
   ];
 
   return (
@@ -50,7 +54,7 @@ const Sidebar = () => {
         ))}
       </ul>
 
-      <span className="text-white px-4 cursor-pointer">Log out</span>
+      <span className="text-white px-4 cursor-pointer flex justify-start items-center gap-2"><img src='/images/logout.svg' alt='logout icon'/> Log out</span>
     </aside>
   );
 };

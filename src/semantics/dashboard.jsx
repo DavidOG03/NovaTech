@@ -9,8 +9,8 @@ const Dashboard = () => {
   useEffect(() => {
     gsap.fromTo(
       cardsRef.current,
-      { opacity: 0, y: 1000 },
-      { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", stagger: 0.2 }
+      { opacity: 0, y: 100 },
+      { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", stagger: 0.125 }
     );
   }, []);
 
@@ -87,7 +87,7 @@ const Dashboard = () => {
         <Button img="/images/laptop.png" altText="laptops" text="Laptops" />
         <Button img="/images/tablets.png" altText="tablets" text="Tablets" />
       </section>
-      <section className="hot-deals p-[30px] bg-white rounded-2xl mt-[40px] mb-[1.25rem]">
+      <section className="hot-deals p-[30px] bg-white rounded-2xl mt-[40px] mb-[1.25rem] overflow-hidden">
         <div className="header flex justify-between items-center mb-[2rem]">
           <h1 className="text-[1.5rem]">Hot Deals</h1>
           <span className="more flex justify-end items-center gap-4 text-[#515151]">
@@ -121,7 +121,7 @@ const Dashboard = () => {
       <section className="top-picks p-[30px] bg-white rounded-2xl mt-[40px]">
         <div className="header flex justify-between items-center mb-[2rem]">
           <h1 className="text-[1.5rem]">Top Picks</h1>
-          <span className="more flex justify-end items-center gap-4 text-[#515151]">
+          <span className="more flex justify-end items-center gap-4 text-(--light-black)">
             See More
             <svg
               xmlns="http://www.w3.org/2000/svg"

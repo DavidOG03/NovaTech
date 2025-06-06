@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react'
 
 const Header = () => {
-    const [isActive, setIsActive] = useState(false)
+    // const [isActive, setIsActive] = useState(false)
 
-    useEffect(() => {
-       const handleScroll = () => {
-      if (window.scrollY > 5) {
-        setIsActive(true);
-      } else {
-        setIsActive(false);
-      }
-    };
+    // useEffect(() => {
+    //    const handleScroll = () => {
+    //   if (window.scrollY > 5) {
+    //     setIsActive(true);
+    //   } else {
+    //     setIsActive(false);
+    //   }
+    // };
 
-    window.addEventListener('scroll', handleScroll);
+    // window.addEventListener('scroll', handleScroll);
 
     
-    }, [])
+    // }, [])
   return (
-    <header className={`w-full flex justify-between items-center gap-[1.95rem] p-[1.95rem] transition duration-50 ${ isActive ? " bg-[#f7f7f7] fixed top-0 left-0 shadow-md z-10" : ""}`}>
+    // ${ isActive ? " bg-[#f7f7f7] fixed top-0 left-0 shadow-md z-10" : ""}
+    <header className={`w-full flex justify-between items-center gap-[1.95rem] p-[1.95rem] transition duration-50 `}>
             <nav>
               {/* <a href="/"> */}
               <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
