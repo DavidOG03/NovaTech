@@ -18,7 +18,7 @@ const Header = () => {
     // }, [])
   return (
     // ${ isActive ? " bg-[#f7f7f7] fixed top-0 left-0 shadow-md z-10" : ""}
-    <header className={`w-full flex justify-between items-center gap-[1.95rem] p-[1.95rem] transition duration-50 `}>
+    <header className={`w-full flex justify-between items-center gap-[1.95rem] px-[1.95rem] py-[0.75rem] transition duration-50 `}>
             <nav>
               {/* <a href="/"> */}
               <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
@@ -46,12 +46,12 @@ const Header = () => {
                   Search
                 </button>
               </div>
-              <button className="filter bg-white p-[10px] rounded-full grid content-center">
+              <button className="filter bg-white p-[10px] rounded-full grid content-center cursor-pointer hover:bg-(--grey)">
                 <img src="/images/filter.svg" alt="filter icon" />
               </button>
             </div>
             <div className="hug flex justify-end items-center gap-4">
-              <button className="notification-bell bg-white p-[10px] rounded-full grid content-center">
+              <button className="notification-bell bg-white p-[10px] rounded-full grid content-center cursor-pointer hover:bg-(--grey)">
                 <img src="/images/bell.svg" alt="notification bell" />
               </button>
               <div className="profile grid grid-cols-2 gap-2">

@@ -28,7 +28,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="sidebar relative flex flex-col justify-between items-start gap-[150px] w-full h-auto max-h-[758px] max-w-[270px] rounded-3xl bg-(--bg-color) py-[40px] px-[33px]">
+    <aside className="sidebar relative flex flex-col justify-between items-start gap-4 w-full h-screen max-h-screen max-w-[270px] rounded-3xl bg-(--bg-color) py-[40px] px-[33px]">
       <ul className="w-full relative space-y-2">
         {/* Moving indicator */}
         <span

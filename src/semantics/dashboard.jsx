@@ -89,8 +89,8 @@ const Dashboard = () => {
   ];
 
   return (
-    <main className="h-full w-full overflow-y-scroll ">
-      <section className="category w-full flex justify-start items-center gap-4">
+    <main className="h-full w-full pb-8">
+      <section className="category w-full flex justify-start items-center gap-4 mb-4">
         {categories.map((cat, index) => (
           <Button
             key={index}
@@ -102,7 +102,8 @@ const Dashboard = () => {
           />
         ))}
       </section>
-      <section className="hot-deals p-[30px] bg-white rounded-2xl mt-[40px] mb-[1.25rem] overflow-hidden">
+      <div className="items-container overflow-x-hidden overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 max-h-[100vh] rounded-2xl">
+        <section className="hot-deals p-[30px] bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
         <div className="header flex justify-between items-center mb-[2rem]">
           <h1 className="text-[1.5rem]">Hot Deals</h1>
           <span className="more flex justify-end items-center gap-4 text-[#515151]">
@@ -172,6 +173,8 @@ const Dashboard = () => {
           ))}
         </div>
       </section>
+      </div>
+      
     </main>
   );
 };

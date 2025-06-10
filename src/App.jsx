@@ -11,11 +11,11 @@ function App() {
   return (
     <Router>
       <Header />
-      <div className="dashboard-layout grid grid-cols-[270px_1fr] w-full h-[100vh] px-[30px] gap-[20px] relative pb-[3rem]">
+      <div className="dashboard-layout grid grid-cols-[270px_1fr] w-full h-auto px-[30px] gap-[20px] relative">
         <Sidebar />
 
         {/* Only this part scrolls and changes routes */}
-        <main className="h-full overflow-y-auto">
+        <main className="h-auto">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/cart" element={<Cart/>} />
