@@ -109,9 +109,9 @@ const Dashboard = () => {
         ))}
       </section>
       <div className="items-container overflow-x-hidden overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 max-h-[100vh] rounded-2xl">
-        <section className="hot-deals p-[30px] bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
+        <section className="hot-deals p-4 md:p-[30px] bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
           <div className="header flex justify-between items-center mb-[2rem]">
-            <h1 className="text-[1.5rem]">Hot Deals</h1>
+            <h1 className="text-base md:text-[1.5rem] font-semibold">Hot Deals</h1>
             <span className="more flex justify-end items-center gap-4 text-[#515151]">
               See More
               <svg
@@ -144,9 +144,9 @@ const Dashboard = () => {
             ))}
           </div>
         </section>
-        <section className="top-picks-section p-[30px] bg-white rounded-2xl mt-[40px]">
+        <section className="top-picks-section p-4 md:p-[30px] bg-white rounded-2xl mt-[40px]">
           <div className="header flex justify-between items-center mb-[2rem]">
-            <h1 className="text-[1.5rem]">Top Picks</h1>
+            <h1 className="text-base md:text-[1.5rem] font-semibold">Top Picks</h1>
             <span className="more flex justify-end items-center gap-4 text-(--light-black)">
               See More
               <svg
@@ -165,7 +165,7 @@ const Dashboard = () => {
           <div className="top-picks flex justify-between items-center flex-wrap gap-[10px]">
             {picks.map((pick, index) => (
               <div
-                ref={(el) => (cardsRef.current[index + deals.length] = el)}
+                ref={(el) => (cardsRef.current[index + picks.length] = el)}
                 key={index}
                 className="flex-auto max-w-[220px]"
               >

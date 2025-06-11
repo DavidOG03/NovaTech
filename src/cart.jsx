@@ -47,7 +47,7 @@ const Cart = ({ numberOfItems, count }) => {
 
   return (
     <div className="cart-container flex justify-between items-start gap-5 flex-wrap">
-      <div className="bg-white rounded-2xl px-[1.5rem] py-[1.825rem] flex-auto min-w-[520px] max-w-[700px]">
+      <div className="bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem] flex-auto min-w-[520px] max-w-[700px]">
         <div className="flex justify-between items-center pb-4 border border-[transparent] border-b-[#EFEFEF] ">
           <div className="flex justify-start items-center gap-1">
             Cart <span>({numberOfItems})</span>
@@ -65,7 +65,7 @@ const Cart = ({ numberOfItems, count }) => {
           />
         </div>
       </div>
-      <div className="order-summary flex-auto flex flex-col justify-center items-stretch gap-8 bg-white rounded-2xl px-[1.5rem] py-[1.825rem]">
+      <div className="order-summary flex-auto flex flex-col justify-center items-stretch gap-8 bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem]">
         <div className="border border-[transparent] border-b-[#EFEFEF] pb-4 ">
           Order Summary
         </div>
@@ -84,10 +84,10 @@ const Cart = ({ numberOfItems, count }) => {
         <button className="bg-(--bg-color) w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">Proceed to checkout</button>
       </div>
 
-      <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-[30px] bg-white rounded-2xl  overflow-hidden">
-        <div className="header w-full flex flex-auto justify-between items-center mb-[2rem]">
-          <h1 className="text-[1.5rem]">Similar Products you may like</h1>
-          <span className="more flex justify-end items-center gap-4 text-[#515151]">
+      <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl  overflow-hidden">
+        <div className="header w-full flex flex-auto justify-between items-center gap-8 mb-[2rem]">
+          <h1 className="text-[18px] md:text-[1.5rem] font-semibold">Similar Products you may like</h1>
+          <span className="more flex justify-end items-center gap-2 md:gap-4 text-[#515151]">
             See More
             <svg
               xmlns="http://www.w3.org/2000/svg"
