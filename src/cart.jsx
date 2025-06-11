@@ -26,7 +26,7 @@ const Cart = ({ numberOfItems, count }) => {
       lastPrice: "N26,000",
     },
     {
-      image: "/images/headphone_pic.png",
+      image: "/images/headphone.webp",
       name: "Sony Headphones",
       price: "N480,000",
       lastPrice: "N550,000",
@@ -81,6 +81,7 @@ const Cart = ({ numberOfItems, count }) => {
           <span className="text-[1.25rem]">Total</span>
           <span className="text-[1.25rem]">({count})</span>
         </div>
+        <button className="bg-(--bg-color) w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">Proceed to checkout</button>
       </div>
 
       <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-[30px] bg-white rounded-2xl  overflow-hidden">
@@ -108,7 +109,7 @@ const Cart = ({ numberOfItems, count }) => {
                 (cardsRef.current[index + similarProducts.length] = el)
               }
               key={index}
-              className="flex-auto "
+              className="flex-auto  max-w-[220px]"
             >
               <Card
                 image={product.image}

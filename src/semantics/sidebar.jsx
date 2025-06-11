@@ -1,16 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Router, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const Sidebar = () => {
   const [active, setActive] = useState(0);
   const [indicatorTop, setIndicatorTop] = useState(0);
+  const [cartCount, setCartCount] = useState(0); 
   const linkRefs = useRef([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleClick = (index) => {
     setActive(index);
-     const targetLink = navItems[index].link;
-     navigate(targetLink)
+    const targetLink = navItems[index].link;
+    navigate(targetLink);
   };
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Sidebar = () => {
     { activeIcon:"/images/home_active.svg", icon: "/images/home.svg", label: "Home", link:"/" },
     { activeIcon:"/images/cart_active.svg", icon: "/images/cart.svg", label: "Cart", link:"/cart" },
     { activeIcon:"/images/order.svg", icon: "/images/order.svg", label: "Orders", link:"/order" },
-    { activeIcon:"/images/profile.svg", icon: "/images/profile.svg", label: "Profile",link:"/" },
+    { activeIcon:"/images/profile.svg", icon: "/images/profile.svg", label: "Profile", link:"/" },
     { activeIcon:"/images/headphones.svg", icon: "/images/headphones.svg", label: "Support", link:"/" },
   ];
 
@@ -49,12 +50,21 @@ const Sidebar = () => {
             role="nav-link"
           >
             <img src={active === index ? item.activeIcon : item.icon } alt={`${item.label} icon`} className="w-5 h-5" />
-            {item.label}
+            <span className="relative flex items-center">
+              {item.label}
+              {item.label === 'Cart' && cartCount > 0 && (
+                <span className="ml-2 bg-[#ffffff10] text-white text-xs font-bold rounded-full w-5 h-5 grid place-items-center">
+                  {cartCount}
+                </span>
+              )}
+            </span>
           </li>
         ))}
       </ul>
 
-      <span className="text-white px-4 cursor-pointer flex justify-start items-center gap-2"><img src='/images/logout.svg' alt='logout icon'/> Log out</span>
+      <span className="text-white px-4 cursor-pointer flex justify-start items-center gap-2">
+        <img src='/images/logout.svg' alt='logout icon' /> Log out
+      </span>
     </aside>
   );
 };

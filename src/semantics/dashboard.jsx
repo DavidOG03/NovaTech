@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 
 const Dashboard = () => {
   const cardsRef = useRef([]);
-  const [activeCategory, setActiveCategory] = useState(null); // index of the active button
+  const [activeCategories, setActiveCategories] = useState([]); // index of the active button
 
   useEffect(() => {
     gsap.fromTo(
@@ -69,7 +69,7 @@ const Dashboard = () => {
       lastPrice: "N26,000",
     },
     {
-      image: "/images/headphone_pic.png",
+      image: "/images/headphone.webp",
       name: "Sony Headphones",
       price: "N480,000",
       lastPrice: "N550,000",
@@ -89,7 +89,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <main className="h-full w-full pb-8">
+    <main className="h-full w-full pb-8 min-h-dvh">
       <section className="category w-full flex justify-start items-center gap-4 mb-4">
         {categories.map((cat, index) => (
           <Button
@@ -97,84 +97,89 @@ const Dashboard = () => {
             img={cat.img}
             altText={cat.alt}
             text={cat.text}
-            isActive={activeCategory === index}
-            onClick={() => setActiveCategory(index)}
+            isActive={activeCategories.includes(index)}
+      onClick={() =>
+        setActiveCategories((prev) =>
+          prev.includes(index)
+            ? prev.filter((i) => i !== index)
+            : [...prev, index]
+        )
+      }
           />
         ))}
       </section>
       <div className="items-container overflow-x-hidden overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 max-h-[100vh] rounded-2xl">
         <section className="hot-deals p-[30px] bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
-        <div className="header flex justify-between items-center mb-[2rem]">
-          <h1 className="text-[1.5rem]">Hot Deals</h1>
-          <span className="more flex justify-end items-center gap-4 text-[#515151]">
-            See More
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24px"
-              height="24px"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="#515151"
-                d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
-              ></path>
-            </svg>
-          </span>
-        </div>
-        <div className="deal-card flex justify-between items-center flex-wrap gap-[10px]">
-          {deals.map((deal, index) => (
-            <div
-              className="flex-auto max-w-[220px]"
-              ref={(el) => (cardsRef.current[index] = el)}
-              key={index}
-            >
-              <Card
-                image={deal.image}
-                name={deal.name}
-                price={deal.price}
-                lastPrice={deal.lastPrice}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-      <section className="top-picks-section p-[30px] bg-white rounded-2xl mt-[40px]">
-        <div className="header flex justify-between items-center mb-[2rem]">
-          <h1 className="text-[1.5rem]">Top Picks</h1>
-          <span className="more flex justify-end items-center gap-4 text-(--light-black)">
-            See More
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24px"
-              height="24px"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="#515151"
-                d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
-              ></path>
-            </svg>
-          </span>
-        </div>
-        <div className="top-picks flex justify-between items-center flex-wrap gap-[10px]">
-          {picks.map((pick, index) => (
-            <div
-              ref={(el) => (cardsRef.current[index + deals.length] = el)}
-              key={index}
-              className="flex-auto max-w-[220px]"
-            >
-              <Card
-                image={pick.image}
-                name={pick.name}
-                price={pick.price}
-                lastPrice={pick.lastPrice}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="header flex justify-between items-center mb-[2rem]">
+            <h1 className="text-[1.5rem]">Hot Deals</h1>
+            <span className="more flex justify-end items-center gap-4 text-[#515151]">
+              See More
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#515151"
+                  d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                ></path>
+              </svg>
+            </span>
+          </div>
+          <div className="deal-card flex justify-between items-center flex-wrap gap-3">
+            {deals.map((deal, index) => (
+              <div
+                className="flex-auto max-w-[220px]"
+                ref={(el) => (cardsRef.current[index] = el)}
+                key={index}
+              >
+                <Card
+                  image={deal.image}
+                  name={deal.name}
+                  price={deal.price}
+                  lastPrice={deal.lastPrice}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="top-picks-section p-[30px] bg-white rounded-2xl mt-[40px]">
+          <div className="header flex justify-between items-center mb-[2rem]">
+            <h1 className="text-[1.5rem]">Top Picks</h1>
+            <span className="more flex justify-end items-center gap-4 text-(--light-black)">
+              See More
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#515151"
+                  d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                ></path>
+              </svg>
+            </span>
+          </div>
+          <div className="top-picks flex justify-between items-center flex-wrap gap-[10px]">
+            {picks.map((pick, index) => (
+              <div
+                ref={(el) => (cardsRef.current[index + deals.length] = el)}
+                key={index}
+                className="flex-auto max-w-[220px]"
+              >
+                <Card
+                  image={pick.image}
+                  name={pick.name}
+                  price={pick.price}
+                  lastPrice={pick.lastPrice}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
-      
     </main>
   );
 };
