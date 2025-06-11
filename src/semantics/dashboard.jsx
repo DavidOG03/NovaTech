@@ -3,7 +3,7 @@ import Button from "../components/button";
 import Card from "../components/card";
 import { gsap } from "gsap";
 
-const Dashboard = ({ filterProducts }) => {
+const Dashboard = ({ filterEnabled, searchQuery = "" }) => {
   const cardsRef = useRef([]);
   const [activeCategories, setActiveCategories] = useState([]); // index of the active button
 
@@ -105,23 +105,34 @@ const Dashboard = ({ filterProducts }) => {
     },
   ];
 
-  const selectedCategoryNames = activeCategories.map(
-    (index) => categories[index].text
-  );
+  const selectedCategoryNames = activeCategories.map((i) => categories[i].text);
 
-  const filteredDeals =
-    selectedCategoryNames.length === 0
-      ? deals
-      : deals.filter((item) => selectedCategoryNames.includes(item.category));
+  const filterList = (items) =>
+    items.filter((item) => {
+      // Always filter by selected categories:
+      // if none selected → show all, else show only matching ones
+      const byCategory =
+        selectedCategoryNames.length === 0 ||
+        selectedCategoryNames.includes(item.category);
 
-  const filteredPicks =
-    selectedCategoryNames.length === 0
-      ? picks
-      : picks.filter((item) => selectedCategoryNames.includes(item.category));
+      // Always filter by search term
+      const bySearch = item.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+
+      return byCategory && bySearch;
+    });
+
+  const filteredDeals = filterList(deals);
+  const filteredPicks = filterList(picks);
 
   return (
     <div className="h-full w-full pb-8 min-h-dvh">
-      <section className={`category w-full justify-start items-center gap-4 mb-4 scroll-p-4 snap-x snap-start md:snap-none overflow-auto ${filterProducts ? "hidden" : "flex"}`}>
+      <section
+        className={`category w-full justify-start items-center gap-4 pb-2 mb-4 scroll-p-4 snap-x snap-start lg:snap-none overflow-auto ${
+          filterEnabled ? "hidden" : "flex"
+        }`}
+      >
         {categories.map((cat, index) => (
           <Button
             key={index}
@@ -139,7 +150,7 @@ const Dashboard = ({ filterProducts }) => {
           />
         ))}
       </section>
-      <div className="items-container overflow-x-hidden overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 max-h-[100vh] rounded-2xl">
+      <div className="items-container overflow-x-auto overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 max-h-[100vh] rounded-2xl">
         <section className="hot-deals p-4 md:p-[30px] bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
           <div className="header flex justify-between items-center mb-[2rem]">
             <h1 className="text-base md:text-[1.5rem] font-semibold">
@@ -160,7 +171,7 @@ const Dashboard = ({ filterProducts }) => {
               </svg>
             </span>
           </div>
-          <div className="deal-card grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          <div className="deal-card grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-2">
             {filteredDeals.map((deal, index) => (
               <div
                 className="flex-auto max-w-[220px]"
@@ -197,7 +208,7 @@ const Dashboard = ({ filterProducts }) => {
               </svg>
             </span>
           </div>
-          <div className="top-picks grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-[10px]">
+          <div className="top-picks grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             {filteredPicks.map((pick, index) => (
               <div
                 className="flex-auto max-w-[220px]"
