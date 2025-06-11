@@ -3,15 +3,22 @@ import Button from "../components/button";
 import Card from "../components/card";
 import { gsap } from "gsap";
 
-const Dashboard = () => {
+const Dashboard = ({ filterProducts }) => {
   const cardsRef = useRef([]);
   const [activeCategories, setActiveCategories] = useState([]); // index of the active button
 
   useEffect(() => {
     gsap.fromTo(
       cardsRef.current,
-      { opacity: 0, y: 100 },
-      { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", stagger: 0.125 }
+      { opacity: 0, y: 0, scale: 0.75 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.15,
+        ease: "power2.out",
+        stagger: 0.125,
+      }
     );
   }, []);
 
@@ -28,30 +35,35 @@ const Dashboard = () => {
       name: "Iphone 16 Pro",
       price: "N1,400,050",
       lastPrice: "N1,600,050",
+      category: "Phones",
     },
     {
       image: "/images/oraimo_pods.png",
       name: "Oraimo Pods",
       price: "N18,000",
       lastPrice: "N26,000",
+      category: "Accessories",
     },
     {
       image: "/images/ps5_portable.png",
       name: "PS5 Portable",
       price: "N480,000",
       lastPrice: "N550,000",
+      category: "Consoles",
     },
     {
       image: "/images/ps5_portable.png",
       name: "PS5 Portable",
       price: "N480,000",
       lastPrice: "N550,000",
+      category: "Consoles",
     },
     {
       image: "/images/tablet.png",
       name: "Samsung Tablet",
       price: "N480,000",
       lastPrice: "N550,000",
+      category: "Tablets",
     },
   ];
 
@@ -61,36 +73,55 @@ const Dashboard = () => {
       name: "Iphone 16 Pro",
       price: "N1,400,050",
       lastPrice: "N1,600,050",
+      category: "Phones",
     },
     {
       image: "/images/oraimo_pods.png",
       name: "Oraimo Pods",
       price: "N18,000",
       lastPrice: "N26,000",
+      category: "Accessories",
     },
     {
       image: "/images/headphone.webp",
       name: "Sony Headphones",
       price: "N480,000",
       lastPrice: "N550,000",
+      category: "Accessories",
     },
     {
       image: "/images/ps5_portable.png",
       name: "PS5 Portable",
       price: "N480,000",
       lastPrice: "N550,000",
+      category: "Consoles",
     },
     {
       image: "/images/tablet.png",
       name: "Samsung Tablet",
       price: "N480,000",
       lastPrice: "N550,000",
+      category: "Tablets",
     },
   ];
 
+  const selectedCategoryNames = activeCategories.map(
+    (index) => categories[index].text
+  );
+
+  const filteredDeals =
+    selectedCategoryNames.length === 0
+      ? deals
+      : deals.filter((item) => selectedCategoryNames.includes(item.category));
+
+  const filteredPicks =
+    selectedCategoryNames.length === 0
+      ? picks
+      : picks.filter((item) => selectedCategoryNames.includes(item.category));
+
   return (
-    <main className="h-full w-full pb-8 min-h-dvh">
-      <section className="category w-full flex justify-start items-center gap-4 mb-4">
+    <div className="h-full w-full pb-8 min-h-dvh">
+      <section className={`category w-full justify-start items-center gap-4 mb-4 scroll-p-4 snap-x snap-start md:snap-none overflow-auto ${filterProducts ? "hidden" : "flex"}`}>
         {categories.map((cat, index) => (
           <Button
             key={index}
@@ -98,20 +129,22 @@ const Dashboard = () => {
             altText={cat.alt}
             text={cat.text}
             isActive={activeCategories.includes(index)}
-      onClick={() =>
-        setActiveCategories((prev) =>
-          prev.includes(index)
-            ? prev.filter((i) => i !== index)
-            : [...prev, index]
-        )
-      }
+            onClick={() =>
+              setActiveCategories((prev) =>
+                prev.includes(index)
+                  ? prev.filter((i) => i !== index)
+                  : [...prev, index]
+              )
+            }
           />
         ))}
       </section>
       <div className="items-container overflow-x-hidden overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 max-h-[100vh] rounded-2xl">
         <section className="hot-deals p-4 md:p-[30px] bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
           <div className="header flex justify-between items-center mb-[2rem]">
-            <h1 className="text-base md:text-[1.5rem] font-semibold">Hot Deals</h1>
+            <h1 className="text-base md:text-[1.5rem] font-semibold">
+              Hot Deals
+            </h1>
             <span className="more flex justify-end items-center gap-4 text-[#515151]">
               See More
               <svg
@@ -127,8 +160,8 @@ const Dashboard = () => {
               </svg>
             </span>
           </div>
-          <div className="deal-card flex justify-between items-center flex-wrap gap-3">
-            {deals.map((deal, index) => (
+          <div className="deal-card grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            {filteredDeals.map((deal, index) => (
               <div
                 className="flex-auto max-w-[220px]"
                 ref={(el) => (cardsRef.current[index] = el)}
@@ -146,7 +179,9 @@ const Dashboard = () => {
         </section>
         <section className="top-picks-section p-4 md:p-[30px] bg-white rounded-2xl mt-[40px]">
           <div className="header flex justify-between items-center mb-[2rem]">
-            <h1 className="text-base md:text-[1.5rem] font-semibold">Top Picks</h1>
+            <h1 className="text-base md:text-[1.5rem] font-semibold">
+              Top Picks
+            </h1>
             <span className="more flex justify-end items-center gap-4 text-(--light-black)">
               See More
               <svg
@@ -162,12 +197,12 @@ const Dashboard = () => {
               </svg>
             </span>
           </div>
-          <div className="top-picks flex justify-between items-center flex-wrap gap-[10px]">
-            {picks.map((pick, index) => (
+          <div className="top-picks grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-[10px]">
+            {filteredPicks.map((pick, index) => (
               <div
-                ref={(el) => (cardsRef.current[index + picks.length] = el)}
-                key={index}
                 className="flex-auto max-w-[220px]"
+                ref={(el) => (cardsRef.current[index] = el)}
+                key={index}
               >
                 <Card
                   image={pick.image}
@@ -180,7 +215,7 @@ const Dashboard = () => {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 };
 
