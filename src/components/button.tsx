@@ -1,6 +1,13 @@
+import React from "react";
 
-
-const Button = ({ img, altText, text, isActive,onClick }) => {
+interface ButtonProps {
+  img:string;
+  altText:string;
+  text:string;
+  isActive:boolean;
+  onClick:() => void;
+}
+const Button:React.FC<ButtonProps> = ({ img, altText, text, isActive,onClick }) => {
 
   return (
     <button

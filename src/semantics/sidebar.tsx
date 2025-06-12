@@ -67,20 +67,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 h-full w-64 bg-gray-800 transform transition-transform duration-300 z-50 ${
+      className={`fixed left-0 top-0 h-full md:static rounded-r-2xl md:rounded-3xl w-[270px] pt-8 bg-(--bg-color) transition-transform duration-300 z-50 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      <div className="flex justify-end p-4">
-        <button onClick={onClose} className="text-white">
-          <CloseSquare size={24} />
+      <div className=" md:hidden flex justify-start p-4">
+        <button onClick={onClose} className="text-white cursor-pointer">
+          <CloseSquare size={30} />
         </button>
       </div>
 
       <div className="relative px-4">
         {/* Moving indicator */}
         <div
-          className="absolute left-4 w-56 h-14 bg-blue-600 rounded-[50px] transition-all duration-300"
+          className="absolute left-4 w-56 h-14 bg-[#FFFFFF10] rounded-[50px] transition-all duration-300"
           style={{ top: `${indicatorTop}px` }}
         />
 
@@ -94,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             }}
             onClick={() => handleClick(index)}
             className={`link relative z-10 cursor-pointer flex items-center gap-3 px-4 py-4 rounded-[50px] transition-all duration-300 ${
-              active === index ? "text-white font-semibold" : "text-gray-300"
+              active === index ? "text-white font-semibold" : "text-(--grey)"
             }`}
             role="button"
             tabIndex={0}
@@ -111,7 +111,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             />
             <span>{item.label}</span>
             {item.label === "Cart" && cartCount > 0 && (
-              <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+              <span className="ml-auto bg-(--grey) text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
                 {cartCount}
               </span>
             )}
@@ -120,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       </div>
 
       <div className="absolute bottom-4 left-4 right-4">
-        <button className="w-full text-left text-gray-300 px-4 py-4 hover:text-white transition-colors">
+        <button className="w-full text-left text-white px-4 py-4 hover:text-white transition-colors">
           Log out
         </button>
       </div>

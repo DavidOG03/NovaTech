@@ -29,15 +29,15 @@ const App: React.FC = () => {
           />
         </div>
 
-        {/* Mobile sidebar - conditionally rendered */}
+       
         {sidebarOpen && (
-          <div className="md:hidden fixed inset-0 z-50">
-            {/* Backdrop */}
+          <div className="md:hidden transition-all duration-150 fixed inset-0 z-50">
+          
             <div 
-              className="absolute inset-0 bg-black bg-opacity-50"
+              className="absolute inset-0 bg-[#00000050]"
               onClick={() => setSidebarOpen(false)}
             />
-            {/* Sidebar */}
+           
             <div className="relative">
               <Sidebar
                 isOpen={sidebarOpen}
@@ -47,7 +47,7 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Main content */}
+      
         <main className="h-auto w-full">
           <Routes>
             <Route
