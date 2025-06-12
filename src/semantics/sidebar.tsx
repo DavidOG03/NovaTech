@@ -1,8 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { CloseSquare } from "react-iconly";
+interface SidebarProps {
+  isOpen: Boolean;
+  onClose:Boolean;
+}
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar:React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const [active, setActive] = useState(0);
   const [indicatorTop, setIndicatorTop] = useState(0);
   const [cartCount, setCartCount] = useState(0);

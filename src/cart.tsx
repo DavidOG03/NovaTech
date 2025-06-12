@@ -1,17 +1,27 @@
 import React, { useEffect, useRef } from "react";
-import Card from "./components/card";
-import Item from "./components/item";
-import {gsap} from "gsap";
+import Card from "./components/card.js";
+import Item from "./components/item.js";
+import { gsap } from "gsap";
 
-const Cart = ({ numberOfItems, count }) => {
-  const cardsRef = useRef([]);
+interface CartProps {
+  numberOfItems: number;
+  count: number;
+}
+
+const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  
   useEffect(() => {
+    // Filter out null values before animating
+    const validCards = cardsRef.current.filter(card => card !== null);
+    
     gsap.fromTo(
-      cardsRef.current,
+      validCards,
       { opacity: 0, y: 100 },
       { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", stagger: 0.125 }
     );
   }, []);
+
   const similarProducts = [
     {
       image: "/images/iphone.png",
@@ -58,10 +68,10 @@ const Cart = ({ numberOfItems, count }) => {
         </div>
         <div className="flex justify-center items-center flex-col gap-12 py-[1.9rem]">
           <Item
-          image="/images/iphone.png"
-          name="Iphone 16 pro"
-          price="N1,400,500"
-          count={1}
+            image="/images/iphone.png"
+            name="Iphone 16 pro"
+            price="N1,400,500"
+            count={1}
           />
         </div>
       </div>
@@ -81,12 +91,16 @@ const Cart = ({ numberOfItems, count }) => {
           <span className="text-[1.25rem]">Total</span>
           <span className="text-[1.25rem]">({count})</span>
         </div>
-        <button className="bg-(--bg-color) w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">Proceed to checkout</button>
+        <button className="bg-[var(--bg-color)] w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">
+          Proceed to checkout
+        </button>
       </div>
 
       <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl  overflow-hidden">
         <div className="header w-full flex flex-auto justify-between items-center gap-8 mb-[2rem]">
-          <h1 className="text-[18px] md:text-[1.5rem] font-semibold">Similar Products you may like</h1>
+          <h1 className="text-[18px] md:text-[1.5rem] font-semibold">
+            Similar Products you may like
+          </h1>
           <span className="more flex justify-end items-center gap-2 md:gap-4 text-[#515151]">
             See More
             <svg
@@ -105,11 +119,11 @@ const Cart = ({ numberOfItems, count }) => {
         <div className="similar-product-card flex justify-start items-center flex-wrap gap-[10px]">
           {similarProducts.map((product, index) => (
             <div
-              ref={(el) =>
-                (cardsRef.current[index + similarProducts.length] = el)
-              }
+              ref={(el) => {
+                cardsRef.current[index] = el;
+              }}
               key={index}
-              className="flex-auto  max-w-[220px]"
+              className="flex-auto max-w-[220px]"
             >
               <Card
                 image={product.image}
