@@ -7,7 +7,6 @@ import Order from "./order";
 import Cart from "./cart";
 
 const App: React.FC = () => {
-  // Use primitive types, not Boolean/String
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -22,12 +21,31 @@ const App: React.FC = () => {
       />
 
       <div className="dashboard-layout flex flex-wrap md:grid md:grid-cols-[270px_1fr] w-full h-auto min-h-dvh px-4 md:px-[30px] gap-[20px] relative">
-        <div className={`md:hidden ${sidebarOpen ? "block" : "hidden"}`}>
+        {/* Desktop sidebar - always visible on md+ screens */}
+        <div className="hidden md:block">
           <Sidebar
-            isOpen={sidebarOpen}
-            onClose={() => setSidebarOpen(false)}
+            isOpen={true}
+            onClose={() => {}} 
           />
         </div>
+
+        {/* Mobile sidebar - conditionally rendered */}
+        {sidebarOpen && (
+          <div className="md:hidden fixed inset-0 z-50">
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onClick={() => setSidebarOpen(false)}
+            />
+            {/* Sidebar */}
+            <div className="relative">
+              <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Main content */}
         <main className="h-auto w-full">

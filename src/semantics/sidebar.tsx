@@ -1,19 +1,25 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { CloseSquare } from "react-iconly";
+
 interface SidebarProps {
-  isOpen: Boolean;
-  onClose:Boolean;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const Sidebar:React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const [active, setActive] = useState(0);
   const [indicatorTop, setIndicatorTop] = useState(0);
   const [cartCount, setCartCount] = useState(0);
-  const linkRefs = useRef([]);
+  const linkRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Initialize refs array with proper length
+  useEffect(() => {
+    linkRefs.current = linkRefs.current.slice(0, navItems.length);
+  }, []);
   const navigate = useNavigate();
 
-  const handleClick = (index) => {
+  const handleClick = (index: number) => {
     setActive(index);
     const targetLink = navItems[index].link;
     navigate(targetLink);
@@ -22,7 +28,7 @@ const Sidebar:React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (linkRefs.current[active]) {
-      setIndicatorTop(linkRefs.current[active].offsetTop);
+      setIndicatorTop(linkRefs.current[active]!.offsetTop);
     }
   }, [active]);
 
@@ -60,56 +66,65 @@ const Sidebar:React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   ];
 
   return (
-    <aside
-      className={`sidebar fixed md:static top-0 left-0 z-50 transition-transform duration-300 ease-in-out  flex flex-col justify-between items-start gap-4 w-full h-screen max-h-screen max-w-[270px] rounded-r-3xl md:rounded-3xl bg-(--bg-color) py-[40px] px-[33px] ${
+    <div
+      className={`fixed left-0 top-0 h-full w-64 bg-gray-800 transform transition-transform duration-300 z-50 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } md:translate-x-0`}
+      }`}
     >
-      <div className="md:hidden flex justify-end absolute top-6 left-2">
-        <button className="cursor-pointer" onClick={onClose}>
-          <CloseSquare set="bold" primaryColor="white" size="large" />
+      <div className="flex justify-end p-4">
+        <button onClick={onClose} className="text-white">
+          <CloseSquare size={24} />
         </button>
       </div>
-      <ul className="w-full relative space-y-2">
+
+      <div className="relative px-4">
         {/* Moving indicator */}
-        <span
-          className="absolute left-0 w-full bg-[#ffffff10] rounded-[50px] transition-all duration-300 z-0"
-          style={{
-            top: `${indicatorTop}px`,
-            height: "60px", // match li height
-          }}
+        <div
+          className="absolute left-4 w-56 h-14 bg-blue-600 rounded-[50px] transition-all duration-300"
+          style={{ top: `${indicatorTop}px` }}
         />
+
         {navItems.map((item, index) => (
-          <li
+          <div
             key={index}
-            ref={(el) => (linkRefs.current[index] = el)}
+            ref={(el) => {
+              if (linkRefs.current) {
+                linkRefs.current[index] = el;
+              }
+            }}
             onClick={() => handleClick(index)}
             className={`link relative z-10 cursor-pointer flex items-center gap-3 px-4 py-4 rounded-[50px] transition-all duration-300 ${
               active === index ? "text-white font-semibold" : "text-gray-300"
             }`}
-            role="nav-link"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleClick(index);
+              }
+            }}
           >
             <img
               src={active === index ? item.activeIcon : item.icon}
-              alt={`${item.label} icon`}
-              className="w-5 h-5"
+              alt={item.label}
+              className="w-6 h-6"
             />
-            <span className="relative flex items-center">
-              {item.label}
-              {item.label === "Cart" && cartCount > 0 && (
-                <span className="ml-2 bg-[#ffffff10] text-white text-xs font-bold rounded-full w-5 h-5 grid place-items-center">
-                  {cartCount}
-                </span>
-              )}
-            </span>
-          </li>
+            <span>{item.label}</span>
+            {item.label === "Cart" && cartCount > 0 && (
+              <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                {cartCount}
+              </span>
+            )}
+          </div>
         ))}
-      </ul>
+      </div>
 
-      <span className="text-white px-4 cursor-pointer flex justify-start items-center gap-2">
-        <img src="/images/logout.svg" alt="logout icon" /> Log out
-      </span>
-    </aside>
+      <div className="absolute bottom-4 left-4 right-4">
+        <button className="w-full text-left text-gray-300 px-4 py-4 hover:text-white transition-colors">
+          Log out
+        </button>
+      </div>
+    </div>
   );
 };
 
