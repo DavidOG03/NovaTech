@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({
   handleSearch,
 }) => {
   return (
-    <header className="w-full flex justify-between items-center gap-[1.95rem] p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50">
+    <header className="w-full flex justify-between items-center gap-[1.95rem] p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-10 bg-[#f5f5f5]">
       {/* Left: Logo and Mobile Menu */}
       <div className="flex items-center gap-4">
         <button className="block md:hidden cursor-pointer" onClick={onMenuClick}>
@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Middle: Search */}
-      <div className="middle flex flex-1/2 justify-end items-center gap-4">
+      <div className="middle flex flex-1/2 justify-end items-center gap-2">
         <div className="input-group flex justify-end items-center gap-[1.125rem] w-full">
           <div className="w-full max-w-[526px] relative flex justify-end items-center">
             <input
@@ -38,14 +38,14 @@ const Header: React.FC<HeaderProps> = ({
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 handleSearch(e.target.value)
               }
-              className="w-full max-w-[526px] py-[12px] pl-[3rem] rounded-[200px] bg-white outline-0 focus:outline-1"
+              className="w-full max-w-[526px] py-[12px] pl-8 md:pl-[3rem] rounded-[200px] bg-white outline-0 focus:outline-1"
             />
-            <span className="search absolute top-[50%] left-3 md:left-6 -translate-y-[50%]">
-              <img src="/images/search.svg" alt="search icon" />
+            <span className="search absolute top-[50%] left-2 md:left-6 -translate-y-[50%]">
+              <img src="/images/search.svg" alt="search icon" className="w-4 h-4" />
             </span>
           </div>
 
-          <button className="hidden md:block bg-gradient-to-br from-(--bg-pink) to-(--bg-color) transition-all duration-200 hover:bg-gradient-to-br hover:from-white hover:to-white hover:text-black text-white rounded-[3rem] py-[12px] px-8">
+          <button className="hidden md:block bg-gradient-to-br from-(--bg-pink) to-(--bg-color) transition-all duration-200 hover:bg-gradient-to-br hover:from-gray-100 hover:to-gray-100 hover:text-black text-white rounded-[3rem] py-[12px] px-8 cursor-pointer">
             Search
           </button>
         </div>

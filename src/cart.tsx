@@ -56,7 +56,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
   ];
 
   return (
-    <div className="cart-container flex justify-between items-start gap-5 flex-wrap">
+    <div className="cart-container flex justify-between items-start gap-5 flex-wrap h-full w-full pt-[90px] pb-8 ">
       <div className="bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem] flex-auto min-w-[520px] max-w-[700px]">
         <div className="flex justify-between items-center pb-4 border border-[transparent] border-b-[#EFEFEF] ">
           <div className="flex justify-start items-center gap-1">

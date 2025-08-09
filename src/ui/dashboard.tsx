@@ -17,6 +17,13 @@ interface Deal {
   lastPrice: string;
   category: string;
 }
+interface Pick {
+  image: string;
+  name: string;
+  price: string;
+  lastPrice: string;
+  category: string;
+}
 
 // 2. Component props
 interface DashboardProps {
@@ -37,12 +44,11 @@ const Dashboard: React.FC<DashboardProps> = ({
   useEffect(() => {
     gsap.fromTo(
       cardsRef.current,
-      { opacity: 0, y: 0, scale: 0.75 },
+      { opacity: 0, y: 10, },
       {
         opacity: 1,
         y: 0,
-        scale: 1,
-        duration: 0.15,
+        duration: 0.25,
         ease: "power2.out",
         stagger: 0.125,
       }
@@ -59,18 +65,72 @@ const Dashboard: React.FC<DashboardProps> = ({
   ];
 
   const deals: Deal[] = [
-    { image: "/images/iphone.png", name: "Iphone 16 Pro", price: "N1,400,050", lastPrice: "N1,600,050", category: "Phones" },
-    { image: "/images/oraimo_pods.png", name: "Oraimo Pods", price: "N18,000", lastPrice: "N26,000", category: "Accessories" },
-    { image: "/images/ps5_portable.png", name: "PS5 Portable", price: "N480,000", lastPrice: "N550,000", category: "Consoles" },
-    { image: "/images/tablet.png", name: "Samsung Tablet", price: "N480,000", lastPrice: "N550,000", category: "Tablets" },
+    {
+      image: "/images/iphone.png",
+      name: "Iphone 16 Pro",
+      price: "N1,400,050",
+      lastPrice: "N1,600,050",
+      category: "Phones",
+    },
+    {
+      image: "/images/oraimo_pods.png",
+      name: "Oraimo Pods",
+      price: "N18,000",
+      lastPrice: "N26,000",
+      category: "Accessories",
+    },
+    {
+      image: "/images/ps5_portable.png",
+      name: "PS5 Portable",
+      price: "N480,000",
+      lastPrice: "N550,000",
+      category: "Consoles",
+    },
+    {
+      image: "/images/tablet.png",
+      name: "Samsung Tablet",
+      price: "N480,000",
+      lastPrice: "N550,000",
+      category: "Tablets",
+    },
   ];
 
-  const picks: Deal[] = [
-    { image: "/images/iphone.png", name: "Iphone 16 Pro", price: "N1,400,050", lastPrice: "N1,600,050", category: "Phones" },
-    { image: "/images/oraimo_pods.png", name: "Oraimo Pods", price: "N18,000", lastPrice: "N26,000", category: "Accessories" },
-    { image: "/images/headphone.webp", name: "Sony Headphones", price: "N480,000", lastPrice: "N550,000", category: "Accessories" },
-    { image: "/images/ps5_portable.png", name: "PS5 Portable", price: "N480,000", lastPrice: "N550,000", category: "Consoles" },
-    { image: "/images/tablet.png", name: "Samsung Tablet", price: "N480,000", lastPrice: "N550,000", category: "Tablets" },
+  const picks: Pick[] = [
+    {
+      image: "/images/iphone.png",
+      name: "Iphone 16 Pro",
+      price: "N1,400,050",
+      lastPrice: "N1,600,050",
+      category: "Phones",
+    },
+    {
+      image: "/images/oraimo_pods.png",
+      name: "Oraimo Pods",
+      price: "N18,000",
+      lastPrice: "N26,000",
+      category: "Accessories",
+    },
+    {
+      image: "/images/headphone.webp",
+      name: "Sony Headphones",
+      price: "N480,000",
+      lastPrice: "N550,000",
+      category: "Accessories",
+    },
+    {
+      image: "/images/ps5_portable.png",
+      name: "PS5 Portable",
+      price: "N480,000",
+      lastPrice: "N550,000",
+      category: "Consoles",
+    },
+    {
+      image: "/images/tablet.png",
+      name: "Samsung Tablet",
+      price: "N480,000",
+      lastPrice: "N550,000",
+      category: "Tablets",
+    },
   ];
 
   // 7. Filter logic
@@ -92,9 +152,8 @@ const Dashboard: React.FC<DashboardProps> = ({
   const filteredDeals = filterList(deals);
   const filteredPicks = filterList(picks);
 
-  // 8. Render
   return (
-    <div className="h-full w-full pb-8 min-h-dvh">
+    <div className="h-full w-full pb-8 min-h-dvh pt-[80px] md:pt-[]px]">
       {/* Categories */}
       <section
         className={`category w-full justify-start items-center gap-4 pb-2 mb-4 scroll-p-4 snap-x snap-start lg:snap-none overflow-auto ${
@@ -119,10 +178,10 @@ const Dashboard: React.FC<DashboardProps> = ({
         ))}
       </section>
 
-      {/* Deals & Picks */}
-      <div className="items-container overflow-x-auto overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 max-h-[100vh] rounded-2xl">
+ 
+      <div className="items-container overflow-x-auto overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 min-h-[100vh] rounded-2xl">
         {/* Hot Deals */}
-        <section className="hot-deals p-4 md:p-[30px] bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
+        <section className="hot-deals p-4 md:p-[30px] w-full bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
           <div className="header flex justify-between items-center mb-[2rem]">
             <h1 className="text-base md:text-[1.5rem] font-semibold">
               Hot Deals
@@ -135,7 +194,10 @@ const Dashboard: React.FC<DashboardProps> = ({
                 height="24px"
                 viewBox="0 0 24 24"
               >
-                <path fill="#515151" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z" />
+                <path
+                  fill="#515151"
+                  d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                />
               </svg>
             </span>
           </div>
@@ -160,7 +222,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         </section>
 
         {/* Top Picks */}
-        <section className="top-picks-section p-4 md:p-[30px] bg-white rounded-2xl mt-[40px]">
+        <section className="top-picks-section p-4 md:p-[30px] w-full bg-white rounded-2xl mt-[40px]">
           <div className="header flex justify-between items-center mb-[2rem]">
             <h1 className="text-base md:text-[1.5rem] font-semibold">
               Top Picks
@@ -173,7 +235,10 @@ const Dashboard: React.FC<DashboardProps> = ({
                 height="24px"
                 viewBox="0 0 24 24"
               >
-                <path fill="#515151" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z" />
+                <path
+                  fill="#515151"
+                  d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                />
               </svg>
             </span>
           </div>
@@ -183,7 +248,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 key={idx}
                 className="flex-auto max-w-[220px]"
                 ref={(el: HTMLDivElement | null) => {
-                  cardsRef.current[idx] = el;
+                  cardsRef.current[filteredDeals.length + idx] = el;
                 }}
               >
                 <Card

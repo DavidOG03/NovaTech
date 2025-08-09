@@ -67,11 +67,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 h-full md:static rounded-r-2xl md:rounded-3xl w-[270px] pt-8 bg-(--bg-color) transition-transform duration-300 z-50 ${
+      className={`fixed left-0 md:left-4 top-0 md:top-[90px] h-full md:translate-none rounded-r-2xl md:rounded-3xl transition-transform duration-300 w-[270px] pt-8 bg-(--bg-color) z-50 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      <div className=" md:hidden flex justify-start p-4">
+      <div className=" md:hidden block top-4 left-4 p-4">
         <button onClick={onClose} className="text-white cursor-pointer">
           <CloseSquare size={30} />
         </button>
@@ -99,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+              if (e.key === "Enter" || e.key === " ") {
                 handleClick(index);
               }
             }}
@@ -119,11 +119,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         ))}
       </div>
 
-      <div className="absolute bottom-4 left-4 right-4">
-        <button className="w-full text-left text-white px-4 py-4 hover:text-white transition-colors">
-          Log out
-        </button>
-      </div>
+      <button className="w-full text-left flex items-center text-white px-4 py-4 transition-colors">
+        Log out
+      </button>
     </div>
   );
 };
