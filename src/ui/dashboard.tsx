@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../components/button";
 import Card from "../components/card";
 import { gsap } from "gsap";
+import Popup from "../components/popup";
 
 // 1. Data shapes
 interface Category {
@@ -29,6 +30,13 @@ interface Pick {
 interface DashboardProps {
   filterEnabled: boolean;
   searchQuery?: string;
+  handleItemClick?: () => void;
+  handleClosePopup?: () => void;
+  isItemClicked?: boolean;
+  setIsItemClicked?: (value: boolean) => void;
+  cardsRef?: React.RefObject<Array<HTMLDivElement | null>>;
+  activeCategories?: number[];
+  setActiveCategories?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 // 3. Component
@@ -152,6 +160,15 @@ const Dashboard: React.FC<DashboardProps> = ({
   const filteredDeals = filterList(deals);
   const filteredPicks = filterList(picks);
 
+  const [isItemClicked, setIsItemClicked] = useState(false);
+
+  // Handle item click
+  const handleItemClick = () => {
+    setIsItemClicked(true);
+  };
+  const handleClosePopup = () => {
+    setIsItemClicked(false);
+  };
   return (
     <div className="h-full w-auto pb-8 min-h-dvh pt-[80px] md:pt-[90px]">
       {/* Categories */}
@@ -209,6 +226,9 @@ const Dashboard: React.FC<DashboardProps> = ({
                 ref={(el: HTMLDivElement | null) => {
                   cardsRef.current[idx] = el;
                 }}
+                onClick={handleItemClick}
+                role="button"
+                tabIndex={0}
               >
                 <Card
                   image={deal.image}
@@ -262,6 +282,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </section>
       </div>
+      {/* {isItemClicked && <Popup image="/images/popup_image.png" handleItemClose={handleClosePopup} />} */}
     </div>
   );
 };

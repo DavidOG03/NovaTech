@@ -98,45 +98,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
         </div>
       </div>
 
-      <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl  overflow-hidden">
-        <div className="header w-full flex flex-auto justify-between items-center gap-8 mb-[2rem]">
-          <h1 className="text-[18px] md:text-[1.5rem] font-semibold">
-            Similar Products you may like
-          </h1>
-          <span className="more flex justify-end items-center gap-2 md:gap-4 text-[#515151]">
-            See More
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24px"
-              height="24px"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="#515151"
-                d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
-              ></path>
-            </svg>
-          </span>
-        </div>
-        <div className="similar-product-card flex justify-start items-center flex-wrap gap-[10px]">
-          {similarProducts.map((product, index) => (
-            <div
-              ref={(el) => {
-                cardsRef.current[index] = el;
-              }}
-              key={index}
-              className="flex-auto max-w-[220px]"
-            >
-              <Card
-                image={product.image}
-                name={product.name}
-                price={product.price}
-                lastPrice={product.lastPrice}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      
     </div>
   );
 };

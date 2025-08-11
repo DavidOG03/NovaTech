@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./ui/header";
 import Sidebar from "./ui/sidebar";
 import Dashboard from "./ui/dashboard";
 import Order from "./order";
 import Cart from "./cart";
+import { gsap } from "gsap";
+import Card from "./components/card";
+import Popup from "./components/popup";
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -13,19 +16,69 @@ const App: React.FC = () => {
   // const [filterActive, setFilterActive] = useState<boolean>(false);
 
   // Toggle filter state
+
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    // Filter out null values before animating
+    const validCards = cardsRef.current.filter((card) => card !== null);
+
+    gsap.fromTo(
+      validCards,
+      { opacity: 0, y: 100 },
+      { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", stagger: 0.125 }
+    );
+  }, []);
+
+  const similarProducts = [
+    {
+      image: "/images/iphone.png",
+      name: "Iphone 16 Pro",
+      price: "N1,400,050",
+      lastPrice: "N1,600,050",
+    },
+    {
+      image: "/images/oraimo_pods.png",
+      name: "Oraimo Pods",
+      price: "N18,000",
+      lastPrice: "N26,000",
+    },
+    {
+      image: "/images/headphone.webp",
+      name: "Sony Headphones",
+      price: "N480,000",
+      lastPrice: "N550,000",
+    },
+    {
+      image: "/images/ps5_portable.png",
+      name: "PS5 Portable",
+      price: "N480,000",
+      lastPrice: "N550,000",
+    },
+    {
+      image: "/images/tablet.png",
+      name: "Samsung Tablet",
+      price: "N480,000",
+      lastPrice: "N550,000",
+    },
+  ];
+
+  const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
   
-  
+  const handleClosePopup = () => {
+    setIsItemClicked(false);
+  };
 
   return (
     <Router>
       <Header
         onMenuClick={() => setSidebarOpen(true)}
-        handleFilterToggle={() => setIsFiltered(prev => !prev)}
+        handleFilterToggle={() => setIsFiltered((prev) => !prev)}
         searchQuery={searchQuery}
         handleSearch={(q: string) => setSearchQuery(q)}
       />
 
-      <div className="dashboard-layout flex flex-wrap md:grid w-auto h-full px-4 md:px-6 lg:px-8 gap-[20px] relative md:ml-[190px] lg:ml-[270px]">
+      <div className="dashboard-layout px-4 md:px-6 lg:px-8 gap-[20px] relative md:ml-[190px] lg:ml-[270px]">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {sidebarOpen && (
@@ -37,7 +90,7 @@ const App: React.FC = () => {
           </div>
         )}
 
-        <main className="h-auto w-auto">
+        <main className="h-auto w-auto relative">
           <Routes>
             <Route
               path="/"
@@ -45,6 +98,11 @@ const App: React.FC = () => {
                 <Dashboard
                   filterEnabled={isFiltered}
                   searchQuery={searchQuery}
+                  handleItemClick={() => setIsItemClicked(true)}
+                  handleClosePopup={handleClosePopup}
+                  isItemClicked={isItemClicked}
+                  setIsItemClicked={setIsItemClicked}
+                  cardsRef={cardsRef}
                 />
               }
             />
@@ -54,6 +112,49 @@ const App: React.FC = () => {
             />
             <Route path="/order" element={<Order />} />
           </Routes>
+          <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl mb-4 overflow-hidden">
+            <div className="header w-full flex flex-auto justify-between items-center gap-8 mb-[2rem]">
+              <h1 className="text-[18px] md:text-[1.5rem] font-semibold">
+                Similar Products you may like
+              </h1>
+              <span className="more flex justify-end items-center gap-2 md:gap-4 text-[#515151]">
+                See More
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="#515151"
+                    d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                  ></path>
+                </svg>
+              </span>
+            </div>
+            <div className="similar-product-card flex justify-start items-center flex-wrap gap-[10px]">
+              {similarProducts.map((product, index) => (
+                <div
+                  ref={(el) => {
+                    cardsRef.current[index] = el;
+                  }}
+                  key={index}
+                  className="flex-auto max-w-[220px]"
+                >
+                  <Card
+                    image={product.image}
+                    name={product.name}
+                    price={product.price}
+                    lastPrice={product.lastPrice}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+         {isItemClicked && <Popup
+            image={similarProducts[0]?.image}
+            handleItemClose={handleClosePopup}
+          />}
         </main>
       </div>
 
