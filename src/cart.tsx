@@ -10,11 +10,11 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  
+
   useEffect(() => {
     // Filter out null values before animating
-    const validCards = cardsRef.current.filter(card => card !== null);
-    
+    const validCards = cardsRef.current.filter((card) => card !== null);
+
     gsap.fromTo(
       validCards,
       { opacity: 0, y: 100 },
@@ -56,44 +56,46 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
   ];
 
   return (
-    <div className="cart-container flex justify-between items-start gap-5 flex-wrap h-full w-full pt-[90px] pb-8 ">
-      <div className="bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem] flex-auto min-w-[520px] max-w-[700px]">
-        <div className="flex justify-between items-center pb-4 border border-[transparent] border-b-[#EFEFEF] ">
-          <div className="flex justify-start items-center gap-1">
-            Cart <span>({numberOfItems})</span>
+    <div className="cart-container gap-5 h-full w-full pt-[90px] pb-8 ">
+      <div className="header flex items-start justify-center gap-4 mb-6">
+        <div className="bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem] flex-auto min-w-[520px] max-w-[700px]">
+          <div className="flex justify-between items-center pb-4 border border-[transparent] border-b-[#EFEFEF] ">
+            <div className="flex justify-start items-center gap-1">
+              Cart <span>({numberOfItems})</span>
+            </div>
+            <button className="flex justify-end items-center gap-1">
+              <img src="/images/delete.svg" alt="delete icon" /> Delete
+            </button>
           </div>
-          <button className="flex justify-end items-center gap-1">
-            <img src="/images/delete.svg" alt="delete icon" /> Delete
+          <div className="flex justify-center items-center flex-col gap-12 py-[1.9rem]">
+            <Item
+              image="/images/iphone.png"
+              name="Iphone 16 pro"
+              price="N1,400,500"
+              count={1}
+            />
+          </div>
+        </div>
+        <div className="order-summary flex-auto flex flex-col justify-center items-stretch gap-8 bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem]">
+          <div className="border border-[transparent] border-b-[#EFEFEF] pb-4 ">
+            Order Summary
+          </div>
+          <div className="item-price flex justify-between items-center">
+            <span className="text-[1.125rem]">Item total ({count}) </span>
+            <span className="text-[1.125rem]">({count})</span>
+          </div>
+          <div className="delivery-fee flex justify-between items-center border border-[transparent] border-b-[#EFEFEF] pb-8 ">
+            <span className="text-[1.125rem]">Delivery Free</span>
+            <span className="text-[1.125rem]">({count})</span>
+          </div>
+          <div className="total flex justify-between items-center">
+            <span className="text-[1.25rem]">Total</span>
+            <span className="text-[1.25rem]">({count})</span>
+          </div>
+          <button className="bg-[var(--bg-color)] w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">
+            Proceed to checkout
           </button>
         </div>
-        <div className="flex justify-center items-center flex-col gap-12 py-[1.9rem]">
-          <Item
-            image="/images/iphone.png"
-            name="Iphone 16 pro"
-            price="N1,400,500"
-            count={1}
-          />
-        </div>
-      </div>
-      <div className="order-summary flex-auto flex flex-col justify-center items-stretch gap-8 bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem]">
-        <div className="border border-[transparent] border-b-[#EFEFEF] pb-4 ">
-          Order Summary
-        </div>
-        <div className="item-price flex justify-between items-center">
-          <span className="text-[1.125rem]">Item total ({count}) </span>
-          <span className="text-[1.125rem]">({count})</span>
-        </div>
-        <div className="delivery-fee flex justify-between items-center border border-[transparent] border-b-[#EFEFEF] pb-8 ">
-          <span className="text-[1.125rem]">Delivery Free</span>
-          <span className="text-[1.125rem]">({count})</span>
-        </div>
-        <div className="total flex justify-between items-center">
-          <span className="text-[1.25rem]">Total</span>
-          <span className="text-[1.25rem]">({count})</span>
-        </div>
-        <button className="bg-[var(--bg-color)] w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">
-          Proceed to checkout
-        </button>
       </div>
 
       <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl  overflow-hidden">

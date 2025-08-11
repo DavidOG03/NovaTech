@@ -50,6 +50,10 @@
   background: #f7f7f7;
 }
 
+.filter.active{
+  background-color: linear-gradient(135deg, #2f1528 , #572c4b);
+}
+
 
 body {
   width: 100%;
@@ -59,6 +63,7 @@ body {
 #root {
   width: inherit;
   height: inherit;
-  overflow: hidden;
-  padding-bottom: 3rem;
+  font-family: "Inter Tight", san-serif
+  /* overflow: hidden; */
+  /* padding-bottom: 3rem; */
 }

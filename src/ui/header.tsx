@@ -2,17 +2,20 @@ import React, { ChangeEvent } from "react";
 
 interface HeaderProps {
   onMenuClick: () => void;
-  handleFilter: () => void;
-  searchQuery: string;                     
-  handleSearch: (query: string) => void;   
+  handleFilterToggle: () => void;
+  searchQuery: string;
+  handleSearch: (query: string) => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   onMenuClick,
-  handleFilter,
+  handleFilterToggle,
   searchQuery,
   handleSearch,
 }) => {
+
+  const [filterActive, setFilterActive] = React.useState<boolean>(false);
+
   return (
     <header className="w-full flex justify-between items-center gap-[1.95rem] p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-10 bg-[#f5f5f5]">
       {/* Left: Logo and Mobile Menu */}
@@ -50,8 +53,8 @@ const Header: React.FC<HeaderProps> = ({
           </button>
         </div>
         <button
-          className="filter bg-white p-[10px] rounded-full grid content-center cursor-pointer hover:bg-gray-100"
-          onClick={handleFilter}
+          className={`filter bg-white p-[10px] rounded-full grid content-center cursor-pointer hover:bg-gray-100 ${filterActive ? "active" : ""}`}
+          onClick={handleFilterToggle}
         >
           <img src="/images/filter.svg" alt="filter icon" />
         </button>

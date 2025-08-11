@@ -153,7 +153,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   const filteredPicks = filterList(picks);
 
   return (
-    <div className="h-full w-full pb-8 min-h-dvh pt-[80px] md:pt-[]px]">
+    <div className="h-full w-auto pb-8 min-h-dvh pt-[80px] md:pt-[90px]">
       {/* Categories */}
       <section
         className={`category w-full justify-start items-center gap-4 pb-2 mb-4 scroll-p-4 snap-x snap-start lg:snap-none overflow-auto ${
@@ -178,10 +178,10 @@ const Dashboard: React.FC<DashboardProps> = ({
         ))}
       </section>
 
- 
-      <div className="items-container overflow-x-auto overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) pb-4 min-h-[100vh] rounded-2xl">
+
+      <div className="items-container overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) min-h-[100vh] rounded-2xl">
         {/* Hot Deals */}
-        <section className="hot-deals p-4 md:p-[30px] w-full bg-white rounded-2xl mb-[1.25rem] overflow-hidden">
+        <section className="hot-deals p-2 md:p-[1.5rem] w-auto bg-white rounded-2xl mt-[40px]">
           <div className="header flex justify-between items-center mb-[2rem]">
             <h1 className="text-base md:text-[1.5rem] font-semibold">
               Hot Deals
@@ -201,11 +201,11 @@ const Dashboard: React.FC<DashboardProps> = ({
               </svg>
             </span>
           </div>
-          <div className="deal-card grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-2">
+          <div className="deal-card w-full sm:w-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredDeals.map((deal, idx) => (
               <div
                 key={idx}
-                className="flex-auto max-w-[220px]"
+                className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer hover:shadow-[0_0_0_8px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem]"
                 ref={(el: HTMLDivElement | null) => {
                   cardsRef.current[idx] = el;
                 }}
@@ -222,7 +222,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         </section>
 
         {/* Top Picks */}
-        <section className="top-picks-section p-4 md:p-[30px] w-full bg-white rounded-2xl mt-[40px]">
+        <section className="top-picks-section p-4 md:p-[30px] w-auto bg-white rounded-2xl mt-[40px]">
           <div className="header flex justify-between items-center mb-[2rem]">
             <h1 className="text-base md:text-[1.5rem] font-semibold">
               Top Picks
@@ -242,11 +242,11 @@ const Dashboard: React.FC<DashboardProps> = ({
               </svg>
             </span>
           </div>
-          <div className="top-picks grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+          <div className="top-picks grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredPicks.map((pick, idx) => (
               <div
                 key={idx}
-                className="flex-auto max-w-[220px]"
+                className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer hover:shadow-[0_0_0_8px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem]"
                 ref={(el: HTMLDivElement | null) => {
                   cardsRef.current[filteredDeals.length + idx] = el;
                 }}

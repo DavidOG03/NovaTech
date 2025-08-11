@@ -10,17 +10,22 @@ const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  // const [filterActive, setFilterActive] = useState<boolean>(false);
+
+  // Toggle filter state
+  
+  
 
   return (
     <Router>
       <Header
         onMenuClick={() => setSidebarOpen(true)}
-        handleFilter={() => setIsFiltered((prev) => !prev)}
+        handleFilterToggle={() => setIsFiltered(prev => !prev)}
         searchQuery={searchQuery}
         handleSearch={(q: string) => setSearchQuery(q)}
       />
 
-      <div className="dashboard-layout flex flex-wrap md:grid w-full h-full px-4 md:px-[30px] gap-[20px] relative md:ml-[280px]">
+      <div className="dashboard-layout flex flex-wrap md:grid w-auto h-full px-4 md:px-6 lg:px-8 gap-[20px] relative md:ml-[190px] lg:ml-[270px]">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {sidebarOpen && (
@@ -32,7 +37,7 @@ const App: React.FC = () => {
           </div>
         )}
 
-        <main className="h-auto w-full">
+        <main className="h-auto w-auto">
           <Routes>
             <Route
               path="/"
