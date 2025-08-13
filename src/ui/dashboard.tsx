@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../components/button";
 import Card from "../components/card";
 import { gsap } from "gsap";
-import Product from "../components/productDetails";
+// import Product from "../components/productDetails";
+import { Link } from "react-router";
 
 // 1. Data shapes
 interface Category {
@@ -11,7 +12,7 @@ interface Category {
   text: string;
 }
 
-interface Product{
+interface ProductItem {
   id: number;
   image: string;
   name: string;
@@ -45,8 +46,9 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   // 5. GSAP on mount
   useEffect(() => {
+    const elements = cardsRef.current.filter(Boolean);
     gsap.fromTo(
-      cardsRef.current,
+      elements,
       { opacity: 0, y: 10 },
       {
         opacity: 1,
@@ -67,7 +69,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     { img: "/images/watch.png", alt: "watch", text: "Accessories" },
   ];
 
-  const products: Product[] = [
+  const products: ProductItem[] = [
     {
       id: 1,
 
@@ -108,7 +110,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     .map((i) => categories[i]?.text)
     .filter((t): t is string => Boolean(t));
 
-  const filterList = (items: Product[]): Product[] =>
+  const filterList = (items: ProductItem[]): ProductItem[] =>
     items.filter((item) => {
       const byCategory =
         selectedCategoryNames.length === 0 ||
@@ -184,23 +186,28 @@ const Dashboard: React.FC<DashboardProps> = ({
                 </span>
               </div>
               <div className="deal-card w-full sm:w-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-                {filteredProducts.map((product) => (
+                {filteredProducts.map((product, idx) => (
                   <div
                     key={product.id}
                     className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
-                    ref={(el: HTMLDivElement | null) => {
-                      cardsRef.current[product.id] = el;
+                    ref={(el) => {
+                      cardsRef.current[idx] = el;
                     }}
                     onClick={handleItemClick}
                     role="button"
                     tabIndex={0}
                   >
-                    <Card
-                      image={product.image}
-                      name={product.name}
-                      price={product.price}
-                      lastPrice={product.lastPrice}
-                    />
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="w-full h-full flex flex-col items-center justify-center"
+                    >
+                      <Card
+                        image={product.image}
+                        name={product.name}
+                        price={product.price}
+                        lastPrice={product.lastPrice}
+                      />
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -250,12 +257,12 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </>
       )}
-      {isItemClicked && (
+      {/* {isItemClicked && (
         <Product
           image="/images/iphone.png"
           handleItemClose={handleClosePopup}
         />
-      )}
+      )} */}
     </div>
   );
 };
