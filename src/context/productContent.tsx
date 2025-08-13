@@ -18,7 +18,6 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([
-    
     {
       id: 1,
       image: "/images/iphone.png",

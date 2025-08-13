@@ -133,7 +133,7 @@ const App: React.FC = () => {
           handleSearch={(q: string) => setSearchQuery(q)}
         />
 
-        <div className="dashboard-layout px-4 md:px-6 lg:px-8 gap-[20px] relative md:ml-[190px] lg:ml-[270px]">
+        <div className="dashboard-layout px-4 md:px-6 lg:px-8 gap-[20px] md:ml-[190px] lg:ml-[270px]">
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
           {sidebarOpen && (
@@ -172,7 +172,7 @@ const App: React.FC = () => {
                 <h1 className="text-[18px] md:text-[1.5rem] font-bold">
                   Similar Products you may like
                 </h1>
-                <span className="more flex justify-end items-center gap-2 md:gap-4 text-[#515151]">
+                <span className="more flex justify-end items-center gap-2 text-[#515151]">
                   See More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

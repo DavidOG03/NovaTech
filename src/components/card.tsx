@@ -20,7 +20,7 @@ const Card: React.FC<CardProps> = ({ image, name, price, lastPrice }) => {
         </p>
         <div className="price mx-[2rem] flex flex-col justify-center items-center">
           {price !== undefined && (
-            <p className="text-base md:text-[20px]">{price}</p>
+            <p className="text-base md:text-[20px] font-semibold">{price}</p>
           )}
           <p className="last-price line-through text-(--light-black) text-[0.7rem] md:text-[0.75rem]">
             {lastPrice}

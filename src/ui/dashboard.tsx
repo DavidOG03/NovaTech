@@ -21,7 +21,6 @@ interface ProductItem {
   category: string;
 }
 
-
 // 2. Component props
 interface DashboardProps {
   filterEnabled: boolean;
@@ -122,7 +121,6 @@ const Dashboard: React.FC<DashboardProps> = ({
     });
 
   const filteredProducts = filterList(products);
- 
 
   const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
 
@@ -134,7 +132,6 @@ const Dashboard: React.FC<DashboardProps> = ({
     setIsItemClicked(false);
   };
 
-  
   return (
     <div className="h-full w-auto pb-4 pt-[80px] md:pt-[90px]">
       {/* Categories */}
@@ -167,10 +164,10 @@ const Dashboard: React.FC<DashboardProps> = ({
             {/* Hot Deals */}
             <section className="hot-deals p-2 md:p-[1.5rem] w-auto bg-white rounded-2xl mt-2">
               <div className="header flex justify-between items-center mb-[2rem]">
-                <h1 className="text-base md:text-[1.5rem] font-semibold">
+                <h1 className="text-2xl md:text-[1.5rem] font-semibold">
                   Hot Deals
                 </h1>
-                <span className="more flex justify-end items-center gap-4 text-[#515151] cursor-pointer">
+                <span className="more flex justify-end items-center gap-2 text-[#515151] cursor-pointer">
                   See More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -216,10 +213,10 @@ const Dashboard: React.FC<DashboardProps> = ({
             {/* Top Picks */}
             <section className="top-picks-section p-4 md:p-[30px] w-auto bg-white rounded-2xl mt-4">
               <div className="header flex justify-between items-center mb-[2rem]">
-                <h1 className="text-base md:text-[1.5rem] font-semibold">
+                <h1 className="text-2xl md:text-[1.5rem] font-semibold">
                   Top Picks
                 </h1>
-                <span className="more flex justify-end items-center gap-4 text-(--light-black) cursor-pointer">
+                <span className="more flex justify-end items-center gap-2 text-(--light-black) cursor-pointer">
                   See More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -240,7 +237,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                     key={product.id}
                     className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
                     ref={(el: HTMLDivElement | null) => {
-                      cardsRef.current[filteredProducts.length + product.id] = el;
+                      cardsRef.current[filteredProducts.length + product.id] =
+                        el;
                     }}
                     onClick={handleItemClick}
                   >

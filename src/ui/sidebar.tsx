@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`absolute z-20 md:fixed left-0 md:left-4 top-0 md:top-[90px] h-full md:h-auto md:translate-none rounded-r-2xl md:rounded-3xl transition-transform duration-300 md:w-[180px] lg:w-[270px] pt-6 bg-(--bg-color) md:z-50 ${
+      className={`fixed z-20 md:fixed left-0 md:left-4 top-0 md:top-[90px] h-full md:h-auto md:translate-none rounded-r-2xl md:rounded-3xl transition-transform duration-300 md:w-[180px] lg:w-[270px] pt-6 bg-(--bg-color) md:z-50 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >

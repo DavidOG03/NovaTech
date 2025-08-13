@@ -9,7 +9,7 @@ interface ItemProps {
 
 const Item: React.FC<ItemProps> = ({ image, price, name, count }) => {
   return (
-    <div className="cart flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center gap-4 w-full">
+    <div className="cart flex flex-col md:flex-row justify-start lg:justify-between lg:items-center gap-4 w-full">
       <div className="left flex justify-start items-center gap-[1.25rem]">
         <div className="image grid place-items-center w-[100px] h-[100px] bg-(--grey) rounded-[0.75rem]">
           <img src={image} alt={name} />
