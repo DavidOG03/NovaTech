@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../components/button";
 import Card from "../components/card";
 import { gsap } from "gsap";
-import Popup from "../components/popup";
+import Product from "../components/productDetails";
 
 // 1. Data shapes
 interface Category {
@@ -11,14 +11,8 @@ interface Category {
   text: string;
 }
 
-interface Deal {
-  image: string;
-  name: string;
-  price: string;
-  lastPrice: string;
-  category: string;
-}
-interface Pick {
+interface Product{
+  id: number;
   image: string;
   name: string;
   price: string;
@@ -26,17 +20,18 @@ interface Pick {
   category: string;
 }
 
+
 // 2. Component props
 interface DashboardProps {
   filterEnabled: boolean;
   searchQuery?: string;
   handleItemClick?: () => void;
-  handleClosePopup?: () => void;
-  isItemClicked?: boolean;
-  setIsItemClicked?: (value: boolean) => void;
-  cardsRef?: React.RefObject<Array<HTMLDivElement | null>>;
-  activeCategories?: number[];
-  setActiveCategories?: React.Dispatch<React.SetStateAction<number[]>>;
+  // handleClosePopup?: () => void;
+  // isItemClicked?: boolean;
+  // setIsItemClicked?: (value: boolean) => void;
+  // cardsRef?: React.RefObject<Array<HTMLDivElement | null>>;
+  // activeCategories?: number[];
+  // setActiveCategories?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 // 3. Component
@@ -52,7 +47,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   useEffect(() => {
     gsap.fromTo(
       cardsRef.current,
-      { opacity: 0, y: 10, },
+      { opacity: 0, y: 10 },
       {
         opacity: 1,
         y: 0,
@@ -72,39 +67,10 @@ const Dashboard: React.FC<DashboardProps> = ({
     { img: "/images/watch.png", alt: "watch", text: "Accessories" },
   ];
 
-  const deals: Deal[] = [
+  const products: Product[] = [
     {
-      image: "/images/iphone.png",
-      name: "Iphone 16 Pro",
-      price: "N1,400,050",
-      lastPrice: "N1,600,050",
-      category: "Phones",
-    },
-    {
-      image: "/images/oraimo_pods.png",
-      name: "Oraimo Pods",
-      price: "N18,000",
-      lastPrice: "N26,000",
-      category: "Accessories",
-    },
-    {
-      image: "/images/ps5_portable.png",
-      name: "PS5 Portable",
-      price: "N480,000",
-      lastPrice: "N550,000",
-      category: "Consoles",
-    },
-    {
-      image: "/images/tablet.png",
-      name: "Samsung Tablet",
-      price: "N480,000",
-      lastPrice: "N550,000",
-      category: "Tablets",
-    },
-  ];
+      id: 1,
 
-  const picks: Pick[] = [
-    {
       image: "/images/iphone.png",
       name: "Iphone 16 Pro",
       price: "N1,400,050",
@@ -112,6 +78,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       category: "Phones",
     },
     {
+      id: 2,
       image: "/images/oraimo_pods.png",
       name: "Oraimo Pods",
       price: "N18,000",
@@ -119,13 +86,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       category: "Accessories",
     },
     {
-      image: "/images/headphone.webp",
-      name: "Sony Headphones",
-      price: "N480,000",
-      lastPrice: "N550,000",
-      category: "Accessories",
-    },
-    {
+      id: 3,
       image: "/images/ps5_portable.png",
       name: "PS5 Portable",
       price: "N480,000",
@@ -133,6 +94,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       category: "Consoles",
     },
     {
+      id: 4,
       image: "/images/tablet.png",
       name: "Samsung Tablet",
       price: "N480,000",
@@ -146,7 +108,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     .map((i) => categories[i]?.text)
     .filter((t): t is string => Boolean(t));
 
-  const filterList = (items: Deal[]): Deal[] =>
+  const filterList = (items: Product[]): Product[] =>
     items.filter((item) => {
       const byCategory =
         selectedCategoryNames.length === 0 ||
@@ -157,10 +119,10 @@ const Dashboard: React.FC<DashboardProps> = ({
       return byCategory && bySearch;
     });
 
-  const filteredDeals = filterList(deals);
-  const filteredPicks = filterList(picks);
+  const filteredProducts = filterList(products);
+ 
 
-  const [isItemClicked, setIsItemClicked] = useState(false);
+  const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
 
   // Handle item click
   const handleItemClick = () => {
@@ -169,120 +131,131 @@ const Dashboard: React.FC<DashboardProps> = ({
   const handleClosePopup = () => {
     setIsItemClicked(false);
   };
+
+  
   return (
-    <div className="h-full w-auto pb-8 min-h-dvh pt-[80px] md:pt-[90px]">
+    <div className="h-full w-auto pb-4 pt-[80px] md:pt-[90px]">
       {/* Categories */}
-      <section
-        className={`category w-full justify-start items-center gap-4 pb-2 mb-4 scroll-p-4 snap-x snap-start lg:snap-none overflow-auto ${
-          filterEnabled ? "hidden" : "flex"
-        }`}
-      >
-        {categories.map((cat, idx) => (
-          <Button
-            key={idx}
-            img={cat.img}
-            altText={cat.alt}
-            text={cat.text}
-            isActive={activeCategories.includes(idx)}
-            onClick={() =>
-              setActiveCategories((prev) =>
-                prev.includes(idx)
-                  ? prev.filter((i) => i !== idx)
-                  : [...prev, idx]
-              )
-            }
-          />
-        ))}
-      </section>
-
-
-      <div className="items-container overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) min-h-[100vh] rounded-2xl">
-        {/* Hot Deals */}
-        <section className="hot-deals p-2 md:p-[1.5rem] w-auto bg-white rounded-2xl mt-[40px]">
-          <div className="header flex justify-between items-center mb-[2rem]">
-            <h1 className="text-base md:text-[1.5rem] font-semibold">
-              Hot Deals
-            </h1>
-            <span className="more flex justify-end items-center gap-4 text-[#515151] cursor-pointer">
-              See More
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24px"
-                height="24px"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="#515151"
-                  d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
-                />
-              </svg>
-            </span>
-          </div>
-          <div className="deal-card w-full sm:w-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredDeals.map((deal, idx) => (
-              <div
+      {!isItemClicked && (
+        <>
+          <section
+            className={`category w-full justify-start items-center gap-4 pb-2 mb-4 scroll-p-4 snap-x snap-start lg:snap-none overflow-auto ${
+              filterEnabled ? "hidden" : "flex"
+            }`}
+          >
+            {categories.map((cat, idx) => (
+              <Button
                 key={idx}
-                className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer hover:shadow-[0_0_0_8px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem]"
-                ref={(el: HTMLDivElement | null) => {
-                  cardsRef.current[idx] = el;
-                }}
-                onClick={handleItemClick}
-                role="button"
-                tabIndex={0}
-              >
-                <Card
-                  image={deal.image}
-                  name={deal.name}
-                  price={deal.price}
-                  lastPrice={deal.lastPrice}
-                />
-              </div>
+                img={cat.img}
+                altText={cat.alt}
+                text={cat.text}
+                isActive={activeCategories.includes(idx)}
+                onClick={() =>
+                  setActiveCategories((prev) =>
+                    prev.includes(idx)
+                      ? prev.filter((i) => i !== idx)
+                      : [...prev, idx]
+                  )
+                }
+              />
             ))}
-          </div>
-        </section>
+          </section>
 
-        {/* Top Picks */}
-        <section className="top-picks-section p-4 md:p-[30px] w-auto bg-white rounded-2xl mt-[40px]">
-          <div className="header flex justify-between items-center mb-[2rem]">
-            <h1 className="text-base md:text-[1.5rem] font-semibold">
-              Top Picks
-            </h1>
-            <span className="more flex justify-end items-center gap-4 text-(--light-black) cursor-pointer">
-              See More
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24px"
-                height="24px"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="#515151"
-                  d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
-                />
-              </svg>
-            </span>
-          </div>
-          <div className="top-picks grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredPicks.map((pick, idx) => (
-              <div
-                key={idx}
-                className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer hover:shadow-[0_0_0_8px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem]"
-                ref={(el: HTMLDivElement | null) => {
-                  cardsRef.current[filteredDeals.length + idx] = el;
-                }}
-              >
-                <Card
-                  image={pick.image}
-                  name={pick.name}
-                  price={pick.price}
-                  lastPrice={pick.lastPrice}
-                />
+          <div className="items-container overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) min-h-[100vh] rounded-2xl">
+            {/* Hot Deals */}
+            <section className="hot-deals p-2 md:p-[1.5rem] w-auto bg-white rounded-2xl mt-2">
+              <div className="header flex justify-between items-center mb-[2rem]">
+                <h1 className="text-base md:text-[1.5rem] font-semibold">
+                  Hot Deals
+                </h1>
+                <span className="more flex justify-end items-center gap-4 text-[#515151] cursor-pointer">
+                  See More
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="#515151"
+                      d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                    />
+                  </svg>
+                </span>
               </div>
-            ))}
+              <div className="deal-card w-full sm:w-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                {filteredProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
+                    ref={(el: HTMLDivElement | null) => {
+                      cardsRef.current[product.id] = el;
+                    }}
+                    onClick={handleItemClick}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <Card
+                      image={product.image}
+                      name={product.name}
+                      price={product.price}
+                      lastPrice={product.lastPrice}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Top Picks */}
+            <section className="top-picks-section p-4 md:p-[30px] w-auto bg-white rounded-2xl mt-4">
+              <div className="header flex justify-between items-center mb-[2rem]">
+                <h1 className="text-base md:text-[1.5rem] font-semibold">
+                  Top Picks
+                </h1>
+                <span className="more flex justify-end items-center gap-4 text-(--light-black) cursor-pointer">
+                  See More
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="#515151"
+                      d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div className="top-picks grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                {filteredProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
+                    ref={(el: HTMLDivElement | null) => {
+                      cardsRef.current[filteredProducts.length + product.id] = el;
+                    }}
+                    onClick={handleItemClick}
+                  >
+                    <Card
+                      image={product.image}
+                      name={product.name}
+                      price={product.price}
+                      lastPrice={product.lastPrice}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
-      {/* {isItemClicked && <Popup image="/images/popup_image.png" handleItemClose={handleClosePopup} />} */}
+        </>
+      )}
+      {isItemClicked && (
+        <Product
+          image="/images/iphone.png"
+          handleItemClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

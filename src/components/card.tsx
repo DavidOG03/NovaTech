@@ -1,24 +1,34 @@
-import React from 'react'
+import React from "react";
 interface CardProps {
   image?: string;
-  name?:string;
-  price?:string;
-  lastPrice?:string;
+  name?: string;
+  price?: string;
+  lastPrice?: string;
 }
 
-const Card: React.FC<CardProps> = ({image, name, price, lastPrice}) => {
+const Card: React.FC<CardProps> = ({ image, name, price, lastPrice }) => {
   return (
-    <div className='card h-auto min-h-[297px] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem]'>
-      <img src={image} alt="hot deal image" className='w-[100px] h-[100px] block object-contain' />
+    <div className="card h-auto min-h-[297px] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem]">
+      <img
+        src={image}
+        alt="hot deal image"
+        className="w-[150px] h-[150px] block object-contain"
+      />
       <div className="info flex flex-col justify-center items-center">
-        <p className='text-(--light-black) text-base md:text-[1.125rem]'>{name}</p>
+        <p className="text-(--light-black) text-base md:text-[1.125rem]">
+          {name}
+        </p>
         <div className="price mx-[2rem] flex flex-col justify-center items-center">
-            {price !== undefined && <p className="text-base md:text-[20px]">{price}</p>}
-            <p className="last-price line-through text-(--light-black) text-[0.7rem] md:text-[0.75rem]">{lastPrice}</p>
+          {price !== undefined && (
+            <p className="text-base md:text-[20px]">{price}</p>
+          )}
+          <p className="last-price line-through text-(--light-black) text-[0.7rem] md:text-[0.75rem]">
+            {lastPrice}
+          </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

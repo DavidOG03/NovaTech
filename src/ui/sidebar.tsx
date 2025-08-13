@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     }
   }, [active]);
 
-  const handleClick = (index: number) => {
+  const handleLinkClick = (index: number) => {
     setActive(index);
     const targetLink = navItems[index].link;
     navigate(targetLink);
@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed left-0 md:left-4 top-0 md:top-[90px] h-auto md:translate-none rounded-r-2xl md:rounded-3xl transition-transform duration-300 md:w-[180px] lg:w-[270px] pt-8 bg-(--bg-color) z-50 ${
+      className={`absolute z-20 md:fixed left-0 md:left-4 top-0 md:top-[90px] h-full md:h-auto md:translate-none rounded-r-2xl md:rounded-3xl transition-transform duration-300 md:w-[180px] lg:w-[270px] pt-6 bg-(--bg-color) md:z-50 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -87,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className="relative px-4">
         {/* Moving indicator */}
         <div
-          className="absolute left-4 md:w-39 lg:w-56 h-14 bg-[#FFFFFF10] rounded-[50px] transition-all duration-300"
+          className="absolute left-4 w-auto md:w-39 lg:w-56 h-14 bg-[#FFFFFF10] rounded-[50px] transition-all duration-300"
           style={{ top: `${indicatorTop}px` }}
         />
 
@@ -99,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 linkRefs.current[index] = el;
               }
             }}
-            onClick={() => handleClick(index)}
+            onClick={() => handleLinkClick(index)}
             className={`link relative z-10 cursor-pointer flex items-center gap-3 px-4 py-4 rounded-[50px] transition-all duration-300 ${
               active === index ? "text-white font-semibold" : "text-(--grey)"
             }`}
@@ -107,7 +107,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
-                handleClick(index);
+                handleLinkClick(index);
               }
             }}
           >
@@ -126,10 +126,23 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         ))}
       </div>
 
-      <button className="w-full text-left flex items-center gap-4 text-white px-8 py-4 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" className="w-6 h-6">
-	<path fill="none" stroke="#d0cace" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m12 15l3-3m0 0l-3-3m3 3H4m5-4.751V7.2c0-1.12 0-1.68.218-2.108c.192-.377.497-.682.874-.874C10.52 4 11.08 4 12.2 4h4.6c1.12 0 1.68 0 2.107.218c.377.192.683.497.875.874c.218.427.218.987.218 2.105v9.607c0 1.118 0 1.677-.218 2.104a2 2 0 0 1-.875.874c-.427.218-.986.218-2.104.218h-4.606c-1.118 0-1.678 0-2.105-.218a2 2 0 0 1-.874-.874C9 18.48 9 17.92 9 16.8v-.05"></path>
-</svg>
+      <button className="w-full text-left flex items-center gap-4 text-white px-8 py-4 mb-4 md:mb-6 transition-colors">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          className="w-6 h-6"
+        >
+          <path
+            fill="none"
+            stroke="#d0cace"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="m12 15l3-3m0 0l-3-3m3 3H4m5-4.751V7.2c0-1.12 0-1.68.218-2.108c.192-.377.497-.682.874-.874C10.52 4 11.08 4 12.2 4h4.6c1.12 0 1.68 0 2.107.218c.377.192.683.497.875.874c.218.427.218.987.218 2.105v9.607c0 1.118 0 1.677-.218 2.104a2 2 0 0 1-.875.874c-.427.218-.986.218-2.104.218h-4.606c-1.118 0-1.678 0-2.105-.218a2 2 0 0 1-.874-.874C9 18.48 9 17.92 9 16.8v-.05"
+          ></path>
+        </svg>
         Log out
       </button>
     </div>

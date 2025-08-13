@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({
   const [filterActive, setFilterActive] = React.useState<boolean>(false);
 
   return (
-    <header className="w-full flex justify-between items-center gap-[1.95rem] p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-10 bg-[#f5f5f5]">
+    <header className="w-full flex justify-between items-center gap-[1.95rem] p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-[#f5f5f5]">
       {/* Left: Logo and Mobile Menu */}
       <div className="flex items-center gap-4">
         <button className="block md:hidden cursor-pointer" onClick={onMenuClick}>

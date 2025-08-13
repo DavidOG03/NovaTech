@@ -7,7 +7,8 @@ import Order from "./order";
 import Cart from "./cart";
 import { gsap } from "gsap";
 import Card from "./components/card";
-import Popup from "./components/popup";
+import Product from "./components/productDetails";
+
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -32,30 +33,35 @@ const App: React.FC = () => {
 
   const similarProducts = [
     {
+      id:1,
       image: "/images/iphone.png",
       name: "Iphone 16 Pro",
       price: "N1,400,050",
       lastPrice: "N1,600,050",
     },
     {
+      id:2,
       image: "/images/oraimo_pods.png",
       name: "Oraimo Pods",
       price: "N18,000",
       lastPrice: "N26,000",
     },
     {
+      id:3,
       image: "/images/headphone.webp",
       name: "Sony Headphones",
       price: "N480,000",
       lastPrice: "N550,000",
     },
     {
+      id:4,
       image: "/images/ps5_portable.png",
       name: "PS5 Portable",
       price: "N480,000",
       lastPrice: "N550,000",
     },
     {
+      id:5,
       image: "/images/tablet.png",
       name: "Samsung Tablet",
       price: "N480,000",
@@ -64,6 +70,10 @@ const App: React.FC = () => {
   ];
 
   const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
+
+  const handleItemClick = () => {
+    setIsItemClicked(true);
+  }
   
   const handleClosePopup = () => {
     setIsItemClicked(false);
@@ -98,11 +108,7 @@ const App: React.FC = () => {
                 <Dashboard
                   filterEnabled={isFiltered}
                   searchQuery={searchQuery}
-                  handleItemClick={() => setIsItemClicked(true)}
-                  handleClosePopup={handleClosePopup}
-                  isItemClicked={isItemClicked}
-                  setIsItemClicked={setIsItemClicked}
-                  cardsRef={cardsRef}
+                  // handleItemClick={() => setIsItemClicked(true)}
                 />
               }
             />
@@ -112,7 +118,7 @@ const App: React.FC = () => {
             />
             <Route path="/order" element={<Order />} />
           </Routes>
-          <div className="similar-products flex flex-auto flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl mb-4 overflow-hidden">
+          <div className="similar-products flex flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl mb-4">
             <div className="header w-full flex flex-auto justify-between items-center gap-8 mb-[2rem]">
               <h1 className="text-[18px] md:text-[1.5rem] font-semibold">
                 Similar Products you may like
@@ -132,14 +138,15 @@ const App: React.FC = () => {
                 </svg>
               </span>
             </div>
-            <div className="similar-product-card flex justify-start items-center flex-wrap gap-[10px]">
+            <div className="similar-product-card grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 ">
               {similarProducts.map((product, index) => (
                 <div
                   ref={(el) => {
-                    cardsRef.current[index] = el;
+                    cardsRef.current[similarProducts.length + index] = el;
                   }}
                   key={index}
-                  className="flex-auto max-w-[220px]"
+                  className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
+                  onClick={handleItemClick}
                 >
                   <Card
                     image={product.image}
@@ -151,10 +158,10 @@ const App: React.FC = () => {
               ))}
             </div>
           </div>
-         {isItemClicked && <Popup
+         {/* {isItemClicked && <Popup
             image={similarProducts[0]?.image}
             handleItemClose={handleClosePopup}
-          />}
+          />} */}
         </main>
       </div>
 

@@ -1,19 +1,21 @@
 import React from "react";
 import { CloseSquare } from "react-iconly";
-interface PopupProps {
+
+interface ProductProps {
   image: string;
   handleItemClose: () => void;
-
 }
-const Popup: React.FC<PopupProps> = ({ image, handleItemClose }) => {
+
+const Product: React.FC<ProductProps> = ({ image, handleItemClose }) => {
   return (
-    <div className="popup z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-[500px] bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
+    <div className="product w-full bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
       <div className="close-button cursor-pointer" onClick={handleItemClose}>
         <CloseSquare set="bold" />
       </div>
-      <h2 className="title">Product Details</h2>
-      <div className="image">
-        <img src={image} alt="Popup Image" />
+      <h2 className="title text-3xl font-bold">Product Details</h2>
+      <div className="product_box w-full grid md:grid-cols-2 ">
+<div className="image">
+        <img src={image} alt="Product Image" />
       </div>
 
       <div className="details">
@@ -27,10 +29,14 @@ const Popup: React.FC<PopupProps> = ({ image, handleItemClose }) => {
           <span className="text-[1.5rem]">(count)</span>
           <button className="text-[1.5rem] ">+</button>
         </div>
-        <button className="add-to-cart bg-[var(--bg-color)] w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">Add to cart</button>
+        <button className="add-to-cart bg-[var(--bg-color)] w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">
+          Add to cart
+        </button>
       </div>
+      </div>
+      
     </div>
   );
 };
 
-export default Popup;
+export default Product;
