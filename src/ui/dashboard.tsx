@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 // import Product from "../components/productDetails";
 import { Link } from "react-router";
 
-// 1. Data shapes
 interface Category {
   img: string;
   alt: string;
@@ -160,7 +159,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             ))}
           </section>
 
-          <div className="items-container overscroll-auto scrollbar-thin scrollbar-thumb-(--grey) scrollbar-track-(--grey) min-h-[100vh] rounded-2xl">
+          <div className="items-container overscroll-auto scrollbar-thin scrollbar-thumb-grey scrollbar-track-grey min-h-[100vh] rounded-2xl">
             {/* Hot Deals */}
             <section className="hot-deals p-2 md:p-[1.5rem] w-auto bg-white rounded-2xl mt-2">
               <div className="header flex justify-between items-center mb-[2rem]">
@@ -255,12 +254,6 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </>
       )}
-      {/* {isItemClicked && (
-        <Product
-          image="/images/iphone.png"
-          handleItemClose={handleClosePopup}
-        />
-      )} */}
     </div>
   );
 };

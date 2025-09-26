@@ -72,7 +72,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
               image="/images/iphone.png"
               name="Iphone 16 pro"
               price="N1,400,500"
-              count={1}
+              count={0}
             />
           </div>
         </div>
@@ -81,16 +81,16 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
             Order Summary
           </div>
           <div className="item-price flex justify-between items-center">
-            <span className="text-[1.125rem]">Item total ({count}) </span>
-            <span className="text-[1.125rem]">({count})</span>
+            <span className="text-[1.125rem]">Item total {count} </span>
+            <span className="text-[1.125rem]">{count}</span>
           </div>
           <div className="delivery-fee flex justify-between items-center border border-[transparent] border-b-[#EFEFEF] pb-8 ">
             <span className="text-[1.125rem]">Delivery Free</span>
-            <span className="text-[1.125rem]">({count})</span>
+            <span className="text-[1.125rem]">{count}</span>
           </div>
           <div className="total flex justify-between items-center">
             <span className="text-[1.25rem]">Total</span>
-            <span className="text-[1.25rem]">({count})</span>
+            <span className="text-[1.25rem]">{count}</span>
           </div>
           <button className="bg-[var(--bg-color)] w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">
             Proceed to checkout

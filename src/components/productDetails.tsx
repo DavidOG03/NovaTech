@@ -29,14 +29,18 @@ const ProductDetails: React.FC<ProductProps> = () => {
 
   const [count, setCount] = useState<number>(0);
 
+  const handleAddToCart = () => {
+    // Add the product to the cart
+    console.log("Product added to cart:", product);
+  }
+
   return (
     <div className="product w-full bg-white rounded-2xl mb-4 mt-[90px] p-6 flex flex-col gap-4">
       <div className="close-button cursor-pointer" onClick={() => navigate(-1)}>
         <CloseSquare set="bold" />
       </div>
-      <h2 className="title text-2xl font-bold">Product Details</h2>
       <div className="product_box w-full grid md:grid-cols-2 ">
-        <div className="image">
+        <div className="image object-cover">
           <img
             src={product.image}
             alt={product.name}
@@ -55,20 +59,23 @@ const ProductDetails: React.FC<ProductProps> = () => {
           <div className="flex justify-between items-center gap-2">
             <div className="count flex w-full max-w-[250px] mx-auto justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-(--grey)">
               <button
-                className="text-[1.5rem]"
+                className="text-[1.5rem] cursor-pointer px-2"
                 onClick={() => setCount((prev) => Math.max(prev - 1, 0))}
+
               >
                 -
               </button>
               <span className="text-[1rem]">{count}</span>
               <button
-                className="text-[1.5rem]"
+                className="text-[1.5rem] cursor-pointer px-2"
                 onClick={() => setCount((prev) => prev + 1)}
               >
                 +
               </button>
             </div>
-            <button className="add-to-cart bg-[var(--bg-color)] w-full py-3 px-4 rounded-[50px] text-base text-white">
+            <button className="add-to-cart bg-[var(--bg-color)] w-full py-3 px-4 rounded-[50px] text-base text-white cursor-pointer"
+            onClick={handleAddToCart}
+            >
               Add to cart
             </button>
           </div>

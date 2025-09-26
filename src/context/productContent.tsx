@@ -9,9 +9,17 @@ interface Product {
   color: string;
 }
 
+interface CartItem extends Product {
+  count: number;
+}
+
 interface ProductContextType {
   products: Product[];
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  cart: CartItem[];
+  addToCart: (product: Product) => void;
+  updateCartItemCount: (id: number, count: number) => void;
+  removeFromCart: (id: number) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -60,8 +68,40 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     },
   ]);
 
+const [cart, setCart] = useState<CartItem[]>([]);
+
+  const addToCart = (product: Product) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, count: item.count + 1 }
+            : item
+        );
+      }
+      return [...prev, { ...product, count: 1 }];
+    });
+  };
+
+  const updateCartItemCount = (id: number, count: number) => {
+    if (count <= 0) {
+      setCart((prev) => prev.filter((item) => item.id !== id));
+    } else {
+      setCart((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, count } : item
+        )
+      );
+    }
+  };
+
+  const removeFromCart = (id: number) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
-    <ProductContext.Provider value={{ products, setProducts }}>
+    <ProductContext.Provider value={{ products, setProducts, cart, addToCart, updateCartItemCount, removeFromCart }}>
       {children}
     </ProductContext.Provider>
   );

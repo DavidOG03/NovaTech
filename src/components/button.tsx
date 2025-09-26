@@ -19,8 +19,8 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={`button flex justify-center items-center border-0 rounded-[3rem] transition-all duration-150 cursor-pointer text-black py-[2px] px-[2.25rem] ${
         isActive
-          ? "bg-gradient-to-br from-(--bg-pink) to-(--bg-color) text-white"
-          : "bg-white text-black hover:bg-[--grey]"
+          ? "bg-gradient-to-br from-pink to-background text-white"
+          : "bg-white text-black hover:bg-grey"
       }`}
       type="button"
     >

@@ -1,11 +1,21 @@
 @import "tailwindcss";
 
-@theme {
-  --font-display: "Satoshi", "sans-serif";
+:root {
+  --font-inter: "Inter Tight", "sans-serif";
+  /* --font-satoshi: "Satoshi", "sans-serif"; */
+  /* --font-code: "Fira Code", "monospace"; */
   --bg-color: #2f1528;
   --bg-pink: #572c4b;
   --light-black: #515151;
   --grey: #f7f7f7;
+}
+
+@theme {
+  /* --font-display: "Satoshi", "sans-serif"; */
+  --color-background: #2f1528;
+  --color-bg-pink: #572c4b;
+  --color-light-black: #515151;
+  --color-grey: #f7f7f7;
 }
 
 .link {
@@ -50,10 +60,9 @@
   background: #f7f7f7;
 }
 
-.filter.active{
-  background-color: linear-gradient(135deg, #2f1528 , #572c4b);
+.filter.active {
+  background-color: linear-gradient(135deg, #2f1528, #572c4b);
 }
-
 
 body {
   width: 100%;
@@ -63,7 +72,7 @@ body {
 #root {
   width: inherit;
   height: inherit;
-  font-family: "Inter Tight", san-serif
+  font-family: "Inter Tight", san-serif;
   /* overflow: hidden; */
   /* padding-bottom: 3rem; */
 }
