@@ -109,11 +109,12 @@
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    
+
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
-  }
+  },
+  "include": ["src", "vite-env.d.ts"]
 }
