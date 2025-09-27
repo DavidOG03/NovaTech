@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useProductContext}from "../context/productContent"
+import { useProductContext } from "../context/productContent";
 
 interface ItemProps {
   image: string;
@@ -18,7 +18,7 @@ const Item: React.FC<ItemProps> = ({ image, price, name, count }) => {
     }
   };
 
-  const {updateCartItemCount, removeFromCart} = useProductContext();
+  const { updateCartItemCount, removeFromCart } = useProductContext();
 
   return (
     <div className="cart flex flex-col md:flex-row justify-start md:justify-between lg:justify-between lg:items-center gap-4 w-full">
@@ -34,14 +34,14 @@ const Item: React.FC<ItemProps> = ({ image, price, name, count }) => {
         </div>
       </div>
       <div className="right flex flex-col justify-center items-center md:items-end gap-5">
-        <div className="count flex w-full max-w-[500px] mx-auto flex-auto justify-between items-center gap-4 py-3 px-4 rounded-[0.75rem] bg-(--grey)">
+        <div className="count flex w-full max-w-[500px] mx-auto flex-auto justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-grey">
           <button
             className="text-[1.5rem]"
             onClick={() => handleCountChange(itemCount - 1)}
           >
             -
           </button>
-          <span className="text-[1.5rem] px-2">{itemCount}</span>
+          <span className="text-[1.5rem] px-1">{itemCount}</span>
           <button
             className="text-[1.5rem]"
             onClick={() => handleCountChange(itemCount + 1)}
@@ -49,7 +49,7 @@ const Item: React.FC<ItemProps> = ({ image, price, name, count }) => {
             +
           </button>
         </div>
-        <div className="remove-item flex justify-end items-center gap-[6px] cursor-pointer bg-(--light-grey)">
+        <div className="remove-item flex justify-end items-center gap-[6px] cursor-pointer bg-grey">
           <img src="/images/delete_disabled.svg" alt="Delete Icon" />
           <p className="text-(--light-black) text-base">Remove</p>
         </div>

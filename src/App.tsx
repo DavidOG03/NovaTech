@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./ui/header";
-import Sidebar from "./ui/sidebar";
-import Dashboard from "./ui/dashboard";
+import Header from "./components/header";
+import Sidebar from "./components/sidebar";
+import Dashboard from "./pages/dashboard";
 import Order from "./order";
 import Cart from "./cart";
 import { gsap } from "gsap";
@@ -10,6 +10,11 @@ import Card from "./components/card";
 import Product from "./components/productDetails";
 import ProductDetails from "./components/productDetails";
 import { ProductProvider } from "./context/productContent";
+import { AuthProvider } from "./context/AuthContext";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -124,99 +129,108 @@ const App: React.FC = () => {
   };
 
   return (
-    <ProductProvider>
-      <Router>
-        <Header
-          onMenuClick={() => setSidebarOpen(true)}
-          handleFilterToggle={() => setIsFiltered((prev) => !prev)}
-          searchQuery={searchQuery}
-          handleSearch={(q: string) => setSearchQuery(q)}
-        />
+    <AuthProvider>
+      <ProductProvider>
+        <Router>
+          <Header
+            onMenuClick={() => setSidebarOpen(true)}
+            handleFilterToggle={() => setIsFiltered((prev) => !prev)}
+            searchQuery={searchQuery}
+            handleSearch={(q: string) => setSearchQuery(q)}
+          />
 
-        <div className="dashboard-layout px-4 md:px-6 lg:px-8 gap-[20px] md:ml-[190px] lg:ml-[270px]">
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          <div className="dashboard-layout px-4 md:px-6 lg:px-8 gap-[20px] md:ml-[190px] lg:ml-[270px]">
+            <Sidebar
+              isOpen={sidebarOpen}
+              onClose={() => setSidebarOpen(false)}
+            />
 
-          {sidebarOpen && (
-            <div className="md:hidden transition-all duration-150 fixed inset-0 z-5">
-              <div
-                className="absolute inset-0 bg-[#00000050]"
-                onClick={() => setSidebarOpen(false)}
-              />
-            </div>
-          )}
-
-          <main className="h-auto w-auto relative">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Dashboard
-                    filterEnabled={isFiltered}
-                    searchQuery={searchQuery}
-                    // handleItemClick={() => setIsItemClicked(true)}
-                  />
-                }
-              />
-              <Route
-                path="/cart"
-                element={<Cart numberOfItems={0} count={0} />}
-              />
-              <Route path="/order" element={<Order />} />
-              <Route
-                path="/product/:id"
-                element={<ProductDetails products={products} />}
-              />
-            </Routes>
-            <div className="similar-products flex flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl mb-4">
-              <div className="header w-full flex flex-auto justify-between items-center gap-8 mb-[2rem]">
-                <h1 className="text-[18px] md:text-[1.5rem] font-bold">
-                  Similar Products you may like
-                </h1>
-                <span className="more flex justify-end items-center gap-2 text-[#515151]">
-                  See More
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="#515151"
-                      d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
-                    ></path>
-                  </svg>
-                </span>
+            {sidebarOpen && (
+              <div className="md:hidden transition-all duration-150 fixed inset-0 z-5">
+                <div
+                  className="absolute inset-0 bg-[#00000050]"
+                  onClick={() => setSidebarOpen(false)}
+                />
               </div>
-              <div className="similar-product-card w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 ">
-                {similarProducts.map((product, index) => (
-                  <div
-                    ref={(el) => {
-                      cardsRef.current[similarProducts.length + index] = el;
-                    }}
-                    key={index}
-                    className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
-                    onClick={handleItemClick}
-                  >
-                    <Card
-                      image={product.image}
-                      name={product.name}
-                      price={product.price}
-                      lastPrice={product.lastPrice}
-                    />
-                  </div>
-                ))}
+            )}
+
+            <main className="h-auto w-auto relative">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard
+                        filterEnabled={isFiltered}
+                        searchQuery={searchQuery}
+                        // handleItemClick={() => setIsItemClicked(true)}
+                      />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/cart"
+                  element={<Cart numberOfItems={0} count={0} />}
+                />
+                <Route path="/order" element={<Order />} />
+                <Route
+                  path="/product/:id"
+                  element={<ProductDetails products={products} />}
+                />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+              </Routes>
+              <div className="similar-products flex flex-col justify-start items-start flex-wrap gap-[10px] p-4 md:p-[30px] bg-white rounded-2xl mb-4">
+                <div className="header w-full flex flex-auto justify-between items-center gap-8 mb-[2rem]">
+                  <h1 className="text-[18px] md:text-[1.5rem] font-bold">
+                    Similar Products you may like
+                  </h1>
+                  <span className="more flex justify-end items-center gap-2 text-[#515151]">
+                    See More
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#515151"
+                        d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"
+                      ></path>
+                    </svg>
+                  </span>
+                </div>
+                <div className="similar-product-card w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 ">
+                  {similarProducts.map((product, index) => (
+                    <div
+                      ref={(el) => {
+                        cardsRef.current[similarProducts.length + index] = el;
+                      }}
+                      key={index}
+                      className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
+                      onClick={handleItemClick}
+                    >
+                      <Card
+                        image={product.image}
+                        name={product.name}
+                        price={product.price}
+                        lastPrice={product.lastPrice}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            {/* {isItemClicked && <Popup
+              {/* {isItemClicked && <Popup
             image={similarProducts[0]?.image}
             handleItemClose={handleClosePopup}
           />} */}
-          </main>
-        </div>
+            </main>
+          </div>
 
-        <footer />
-      </Router>
-    </ProductProvider>
+          <footer />
+        </Router>
+      </ProductProvider>
+    </AuthProvider>
   );
 };
 
