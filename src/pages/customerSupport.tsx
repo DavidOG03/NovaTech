@@ -113,7 +113,7 @@ const CustomerSupport: React.FC = () => {
 
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className="bg-pink text-white px-4 py-2 rounded hover:bg-pink/75"
             >
               Send Message
             </button>
@@ -131,7 +131,7 @@ const CustomerSupport: React.FC = () => {
               📧 Email:{" "}
               <a
                 href="mailto:support@example.com"
-                className="text-blue-600 hover:underline"
+                className="text-pink hover:underline"
               >
                 support@example.com
               </a>
