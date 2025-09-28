@@ -12,10 +12,10 @@
 
 @theme {
   /* --font-display: "Satoshi", "sans-serif"; */
-  --color-background: #2f1528;
-  --color-bg-pink: #572c4b;
-  --color-light-black: #515151;
-  --color-grey: #f7f7f7;
+  --color-background: var(--bg-color);
+  --color-pink: var(--bg-pink);
+  --color-light-black: var(--light-black);
+  --color-grey: var(--grey);
 }
 
 .link {

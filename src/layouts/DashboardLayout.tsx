@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
+import gsap from "gsap";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

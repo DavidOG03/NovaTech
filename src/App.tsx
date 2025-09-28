@@ -1,13 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/header";
-import Sidebar from "./components/sidebar";
 import Dashboard from "./pages/dashboard";
-import Order from "./order";
-import Cart from "./cart";
-import { gsap } from "gsap";
-import Card from "./components/card";
-import Product from "./components/productDetails";
+import Order from "./pages/order";
+import Cart from "./pages/cart";
 import ProductDetails from "./components/productDetails";
 import { ProductProvider } from "./context/productContent";
 import { AuthProvider } from "./context/AuthContext";
@@ -16,6 +11,7 @@ import SignUp from "./pages/SignUp";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
+import CustomerSupport from "./pages/customerSupport";
 
 const App: React.FC = () => {
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
@@ -111,6 +107,14 @@ const App: React.FC = () => {
               element={
                 <DashboardLayout>
                   <ProductDetails products={products} />
+                </DashboardLayout>
+              }
+            />
+            <Route
+              path="/support"
+              element={
+                <DashboardLayout>
+                  <CustomerSupport />
                 </DashboardLayout>
               }
             />

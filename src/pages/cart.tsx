@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import Card from "./components/card.js";
-import Item from "./components/item.js";
+import Card from "../components/card.js";
+import Item from "../components/item.js";
 import { gsap } from "gsap";
 
 interface CartProps {

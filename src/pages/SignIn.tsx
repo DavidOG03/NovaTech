@@ -10,6 +10,7 @@ import { setUser, setError, setLoading } from "../stores/authSlice";
 import { RootState } from "../stores/store";
 import { mapAuthCodeToMessage } from "../utils/firebaseErrors";
 import { FirebaseError } from "firebase/app";
+import { useNavigate } from "react-router";
 
 // Define schema with Zod
 const schema = z.object({
@@ -22,6 +23,7 @@ type SignInFormData = z.infer<typeof schema>;
 
 const SignIn: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.auth);
 
   const {
@@ -42,6 +44,8 @@ const SignIn: React.FC = () => {
         data.password
       );
       dispatch(setUser(userCredential.user));
+
+      navigate("/"); // Redirect to dashboard or home after sign in
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         // Use your helper to map code → message
@@ -55,13 +59,13 @@ const SignIn: React.FC = () => {
     }
   };
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <img src="/images/novatech.svg" alt="novatech logo" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm space-y-4"
       >
         <h2 className="text-xl font-bold text-center">Sign In</h2>
-
         {/* Email */}
         <input
           type="email"
@@ -72,7 +76,6 @@ const SignIn: React.FC = () => {
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
         )}
-
         {/* Password */}
         <input
           type="password"
@@ -83,18 +86,20 @@ const SignIn: React.FC = () => {
         {errors.password && (
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
-
         {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-pink text-white py-2 rounded hover:bg-pink/75"
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
-
         {/* Error */}
         {error && <p className="text-red-500 text-sm">{error}</p>}
+        No account?{" "}
+        <a href="/signup" className="text-pink hover:underline">
+          Sign Up
+        </a>
       </form>
     </div>
   );

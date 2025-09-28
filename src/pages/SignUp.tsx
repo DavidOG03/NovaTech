@@ -8,6 +8,7 @@ import { auth } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, setError, setLoading } from "../stores/authSlice";
 import { RootState } from "../stores/store";
+import { useNavigate } from "react-router";
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
@@ -18,6 +19,7 @@ type SignUpFormData = z.infer<typeof schema>;
 
 const SignUp: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.auth);
 
   const {
@@ -35,6 +37,7 @@ const SignUp: React.FC = () => {
         data.password
       );
       dispatch(setUser(userCredential.user));
+      navigate("/"); // Redirect to dashboard or home after sign up
     } catch (err: unknown) {
       if (err instanceof Error) {
         dispatch(setError(err.message));
@@ -47,7 +50,8 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <img src="/images/novatech.svg" alt="Novatech Logo" className="mb-6" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm space-y-4"
@@ -77,12 +81,18 @@ const SignUp: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-pink text-white py-2 rounded hover:bg-pink/75"
         >
           {loading ? "Loading..." : "Sign Up"}
         </button>
 
         {error && <p className="text-red-500 text-sm">{error}</p>}
+        <p>
+          Already have an account?{" "}
+          <a href="/signin" className="text-pink hover:underline">
+            Sign In
+          </a>
+        </p>
       </form>
     </div>
   );

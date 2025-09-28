@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
 
-          <button className="hidden md:block bg-gradient-to-br from-bg-pink to-background transition-all duration-200 hover:bg-gradient-to-br hover:from-gray-100 hover:to-gray-100 hover:text-black text-white rounded-[3rem] py-2 px-4 cursor-pointer">
+          <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br hover:from-gray-100 hover:to-gray-100 hover:text-black text-white rounded-[3rem] py-2 px-4 cursor-pointer">
             Search
           </button>
         </div>
