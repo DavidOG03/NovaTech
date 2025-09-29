@@ -51,11 +51,11 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <img src="/images/novatech.svg" alt="Novatech Logo" className="mb-6" />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm space-y-4"
+        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
+        <img src="/images/novatech.svg" alt="Novatech Logo" className="mb-6" />
         <h2 className="text-xl font-bold text-center">Sign Up</h2>
 
         <input
