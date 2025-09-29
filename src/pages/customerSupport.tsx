@@ -45,8 +45,8 @@ const CustomerSupport: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-4xl mx-auto space-y-10">
+    <div className="min-h-screen bg-grey py-20 px-4">
+      <div className="max-w-5xl mx-auto space-y-10">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-800">Customer Support</h1>
@@ -125,7 +125,7 @@ const CustomerSupport: React.FC = () => {
           <h2 className="text-xl font-semibold mb-4">Other Ways to Reach Us</h2>
           <ul className="space-y-2 text-gray-700">
             <li>
-              📞 Phone: <span className="font-medium">+1 (800) 555-1234</span>
+              📞 Phone: <span className="font-medium">+234 915 3884 943</span>
             </li>
             <li>
               📧 Email:{" "}
@@ -133,7 +133,7 @@ const CustomerSupport: React.FC = () => {
                 href="mailto:support@example.com"
                 className="text-pink hover:underline"
               >
-                support@example.com
+                daveedog2003@gmail.com
               </a>
             </li>
             <li>💬 Live Chat: Available 9am – 6pm (Mon – Fri)</li>

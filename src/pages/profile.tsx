@@ -1,0 +1,101 @@
+// src/pages/Profile.tsx
+import React from "react";
+
+const Profile: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-grey flex justify-center py-22">
+      <div className="w-full max-w-5xl bg-white rounded-2xl p-6 space-y-8">
+        {/* Header */}
+        <div className="flex items-center gap-4 border-b border-b-grey pb-4">
+          <img
+            src="https://i.pravatar.cc/100?img=12"
+            alt="User avatar"
+            className="w-20 h-20 rounded-full object-cover border-2 border-pink"
+          />
+          <div>
+            <h2 className="text-2xl font-semibold">David Ogungbemi</h2>
+            <p className="text-gray-500">daveedog2003@gmail.com</p>
+            <button className="mt-2 text-sm px-4 py-1 bg-pink text-white rounded-lg hover:bg-pink/75">
+              Edit Profile
+            </button>
+          </div>
+        </div>
+
+        {/* Personal Info */}
+        <div>
+          <h3 className="text-lg font-semibold border-b border-b-grey pb-2 mb-4">
+            Personal Information
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-gray-500">Full Name</p>
+              <p className="font-medium">David Ogungemi</p>
+            </div>
+            <div>
+              <p className="text-gray-500">Phone Number</p>
+              <p className="font-medium">+234 915 388 4943</p>
+            </div>
+            <div>
+              <p className="text-gray-500">Address</p>
+              <p className="font-medium">Lagos, Nigeria</p>
+            </div>
+            <div>
+              <p className="text-gray-500">Joined</p>
+              <p className="font-medium">March 12, 2024</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Account Settings */}
+        <div>
+          <h3 className="text-lg font-semibold border-b border-b-grey pb-2 mb-4">
+            Account Settings
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <p>Email Notifications</p>
+              <input
+                type="checkbox"
+                className="w-5 h-5 accent-pink"
+                defaultChecked
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <p>Dark Mode</p>
+              <input type="checkbox" className="w-5 h-5 accent-pink" />
+            </div>
+          </div>
+        </div>
+
+        {/* Security */}
+        <div>
+          <h3 className="text-lg font-semibold border-b border-b-grey pb-2 mb-4">
+            Security
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <p className="text-gray-500">Password</p>
+              <button className="text-pink hover:underline">
+                Change Password
+              </button>
+            </div>
+            <div>
+              <p className="text-gray-500">Two-Factor Authentication</p>
+              <button className="text-pink hover:underline">Enable 2FA</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Danger Zone */}
+        <div className="pt-6 border-t">
+          <h3 className="text-lg font-semibold text-red-600">Danger Zone</h3>
+          <button className="mt-2 px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50">
+            Delete Account
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

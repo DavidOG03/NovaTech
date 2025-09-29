@@ -62,13 +62,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       activeIcon: "/images/profile.svg",
       icon: "/images/profile.svg",
       label: "Profile",
-      link: "/",
+      link: "/profile",
     },
     {
       activeIcon: "/images/headphones.svg",
       icon: "/images/headphones.svg",
       label: "Support",
-      link: "/",
+      link: "/support",
     },
   ];
 
