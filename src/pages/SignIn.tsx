@@ -96,7 +96,7 @@ const SignIn: React.FC = () => {
         </button>
         {/* Error */}
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        No account?{" "}
+        No account?
         <a href="/signup" className="text-pink hover:underline">
           Sign Up
         </a>

@@ -32,7 +32,7 @@ const ProductDetails: React.FC<ProductProps> = () => {
   const handleAddToCart = () => {
     // Add the product to the cart
     console.log("Product added to cart:", product);
-  }
+  };
 
   return (
     <div className="product w-full bg-white rounded-2xl mb-4 mt-[90px] p-6 flex flex-col gap-4">
@@ -61,7 +61,6 @@ const ProductDetails: React.FC<ProductProps> = () => {
               <button
                 className="text-[1.5rem] cursor-pointer px-2"
                 onClick={() => setCount((prev) => Math.max(prev - 1, 0))}
-
               >
                 -
               </button>
@@ -73,14 +72,18 @@ const ProductDetails: React.FC<ProductProps> = () => {
                 +
               </button>
             </div>
-            <button className="add-to-cart bg-[var(--bg-color)] w-full py-3 px-4 rounded-[50px] text-base text-white cursor-pointer"
-            onClick={handleAddToCart}
+            <button
+              className="add-to-cart bg-[var(--bg-color)] w-full py-3 px-4 rounded-[50px] text-base text-white cursor-pointer"
+              onClick={handleAddToCart}
             >
               Add to cart
             </button>
           </div>
 
-          <span> Continue Shopping</span>
+          <a href="/" className="text-pink">
+            {" "}
+            Continue Shopping
+          </a>
         </div>
       </div>
     </div>
