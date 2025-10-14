@@ -6,13 +6,14 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./stores/store";
-import { Analytics } from "@vercel/analytics/next";
+import { inject } from "@vercel/analytics";
+
+inject();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
-      <Analytics />
     </Provider>
   </React.StrictMode>
 );

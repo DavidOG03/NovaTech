@@ -1,15 +1,24 @@
 import React, { useState } from "react";
-import { useProductContext } from "../context/productContent";
+import { useProductContext } from "../context/ProductContext";
 
 interface ItemProps {
   image: string;
   price: string;
   name: string;
   count: number;
+  onUpdateQuantity?: (quantity: number) => void;
+  onRemove?: () => void;
   // productCount: number;
 }
 
-const Item: React.FC<ItemProps> = ({ image, price, name, count }) => {
+const Item: React.FC<ItemProps> = ({
+  image,
+  price,
+  name,
+  count,
+  onUpdateQuantity,
+  onRemove,
+}) => {
   const [itemCount, setItemCount] = useState(count);
 
   const handleCountChange = (newCount: number) => {
@@ -37,21 +46,26 @@ const Item: React.FC<ItemProps> = ({ image, price, name, count }) => {
         <div className="count flex w-full max-w-[500px] mx-auto flex-auto justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-grey">
           <button
             className="text-[1.5rem]"
-            onClick={() => handleCountChange(itemCount - 1)}
+            onClick={() => onUpdateQuantity?.(count - 1)}
           >
             -
           </button>
           <span className="text-[1.5rem] px-1">{itemCount}</span>
           <button
             className="text-[1.5rem]"
-            onClick={() => handleCountChange(itemCount + 1)}
+            onClick={() => onUpdateQuantity?.(count + 1)}
           >
             +
           </button>
         </div>
         <div className="remove-item flex justify-end items-center gap-[6px] cursor-pointer bg-grey">
           <img src="/images/delete_disabled.svg" alt="Delete Icon" />
-          <p className="text-(--light-black) text-base">Remove</p>
+          <button
+            className="text-(--light-black) text-base bg-transparent"
+            onClick={onRemove}
+          >
+            Remove
+          </button>
         </div>
       </div>
     </div>

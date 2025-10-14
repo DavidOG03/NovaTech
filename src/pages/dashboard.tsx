@@ -185,7 +185,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 {filteredProducts.map((product, idx) => (
                   <div
                     key={product.id}
-                    className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
+                    className="h-auto min-h-[297px] duration-300 hover:cursor-pointer  hover:border-[#f0f0f0] flex flex-col items-center justify-center  overflow-hidden cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
                     ref={(el) => {
                       cardsRef.current[idx] = el;
                     }}
@@ -234,7 +234,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 {filteredProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="h-auto min-h-[297px] transition-shadow duration-300 hover:cursor-pointer border-5 border-transparent hover:border-[#f0f0f0] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] overflow-hidden"
+                    className="h-auto min-h-[297px] duration-300 hover:cursor-pointer hover:border-[#f0f0f0] flex flex-col items-center justify-center overflow-hidden cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
                     ref={(el: HTMLDivElement | null) => {
                       cardsRef.current[filteredProducts.length + product.id] =
                         el;

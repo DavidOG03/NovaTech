@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Cart from "./pages/cart";
 import ProductDetails from "./components/productDetails";
-import { ProductProvider } from "./context/productContent";
+import { ProductProvider } from "./context/ProductContext";
 import { AuthProvider } from "./context/AuthContext";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -106,7 +106,7 @@ const App: React.FC = () => {
               path="/product/:id"
               element={
                 <DashboardLayout>
-                  <ProductDetails products={products} />
+                  <ProductDetails />
                 </DashboardLayout>
               }
             />

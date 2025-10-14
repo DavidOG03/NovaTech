@@ -1,10 +1,17 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface Product {
   id: number;
   image: string;
   name: string;
   price: string;
+  quantity: number;
   description: string;
   color: string;
 }
@@ -20,6 +27,9 @@ interface ProductContextType {
   addToCart: (product: Product) => void;
   updateCartItemCount: (id: number, count: number) => void;
   removeFromCart: (id: number) => void;
+  clearCart: () => void;
+  getCartCount: () => number;
+  getCartTotal: () => number;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -32,6 +42,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       name: "Iphone 16 Pro",
       price: "N1,400,050",
       description: "Latest model of Iphone",
+      quantity: 5,
       color: "Black",
     },
     {
@@ -40,6 +51,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       name: "Oraimo Pods",
       price: "N18,000",
       description: "High-quality wireless earbuds",
+      quantity: 5,
       color: "White",
     },
     {
@@ -48,6 +60,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       name: "Sony Headphones",
       price: "N480,000",
       description: "Noise-cancelling over-ear headphones",
+      quantity: 5,
       color: "Silver",
     },
     {
@@ -57,6 +70,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       price: "N480,000",
       description: "Portable gaming console",
       color: "Black",
+      quantity: 5,
     },
     {
       id: 5,
@@ -64,20 +78,30 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       name: "Samsung Tablet",
       price: "N480,000",
       description: "Latest model of Samsung tablet",
+      quantity: 5,
       color: "Silver",
     },
   ]);
 
-const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  // Load cart from memory on mount
+  useEffect(() => {
+    const savedCart = (window as any).__cartData || [];
+    setCart(savedCart);
+  }, []);
+
+  // Save cart to memory whenever it changes
+  useEffect(() => {
+    (window as any).__cartData = cart;
+  }, [cart]);
 
   const addToCart = (product: Product) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, count: item.count + 1 }
-            : item
+          item.id === product.id ? { ...item, count: item.count + 1 } : item
         );
       }
       return [...prev, { ...product, count: 1 }];
@@ -86,12 +110,10 @@ const [cart, setCart] = useState<CartItem[]>([]);
 
   const updateCartItemCount = (id: number, count: number) => {
     if (count <= 0) {
-      setCart((prev) => prev.filter((item) => item.id !== id));
+      removeFromCart(id);
     } else {
       setCart((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, count } : item
-        )
+        prev.map((item) => (item.id === id ? { ...item, count } : item))
       );
     }
   };
@@ -100,8 +122,35 @@ const [cart, setCart] = useState<CartItem[]>([]);
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
+  const getCartCount = () => {
+    return cart.reduce((total, item) => total + item.count, 0);
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => {
+      const price = parseFloat(item.price.replace(/[N,]/g, ""));
+      return total + price * item.count;
+    }, 0);
+  };
+
   return (
-    <ProductContext.Provider value={{ products, setProducts, cart, addToCart, updateCartItemCount, removeFromCart }}>
+    <ProductContext.Provider
+      value={{
+        products,
+        setProducts,
+        cart,
+        addToCart,
+        updateCartItemCount,
+        removeFromCart,
+        clearCart,
+        getCartCount,
+        getCartTotal,
+      }}
+    >
       {children}
     </ProductContext.Provider>
   );

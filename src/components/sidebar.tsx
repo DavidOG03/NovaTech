@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { CloseSquare } from "react-iconly";
+import { useProductContext } from "@/context/ProductContext";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -10,8 +11,10 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const [active, setActive] = useState(0);
   const [indicatorTop, setIndicatorTop] = useState(0);
-  const [cartCount, setCartCount] = useState(0);
   const linkRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const { getCartCount } = useProductContext();
+  const cartCount = getCartCount();
 
   // Initialize refs array with proper length
   useEffect(() => {
@@ -101,7 +104,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             }}
             onClick={() => handleLinkClick(index)}
             className={`link relative z-10 cursor-pointer flex items-center gap-3 px-4 py-4 rounded-[50px] transition-all duration-300 ${
-              active === index ? "text-white font-semibold" : "text-(--grey)"
+              active === index ? "text-white font-semibold" : "text-grey"
             }`}
             role="button"
             tabIndex={0}
@@ -118,7 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             />
             <span>{item.label}</span>
             {item.label === "Cart" && cartCount > 0 && (
-              <span className="ml-auto bg-(--grey) text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+              <span className="mr-auto bg-grey/15 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
                 {cartCount}
               </span>
             )}
