@@ -77,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed z-20 md:fixed left-0 md:left-4 top-0 md:top-[90px] h-full md:h-auto md:translate-none rounded-r-2xl md:rounded-3xl transition-transform duration-300 md:w-[180px] lg:w-[270px] pt-6 bg-(--bg-color) md:z-50 ${
+      className={`fixed z-20 md:fixed left-0 md:left-4 top-0 md:top-[90px] h-full md:h-auto md:translate-none rounded-r-2xl md:rounded-3xl transition-transform duration-300 md:w-[180px] lg:w-[230px] pt-6 bg-background md:z-50 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -90,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className="relative px-4">
         {/* Moving indicator */}
         <div
-          className="absolute left-4 w-auto md:w-39 lg:w-56 h-14 bg-[#FFFFFF10] rounded-[50px] transition-all duration-300"
+          className="absolute left-4 w-auto md:w-39 lg:w-50 h-14 bg-[#FFFFFF10] rounded-[50px] transition-all duration-300"
           style={{ top: `${indicatorTop}px` }}
         />
 

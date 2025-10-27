@@ -11,7 +11,14 @@ const ProductDetails: React.FC = () => {
   // Find the product by ID
   const product = products.find((p) => p.id === Number(id));
 
+  // Local state for quantity to add
   const [count, setCount] = useState<number>(1);
+
+  // Check if this product is already in cart and get its quantity
+  const productInCart = useProductContext().cart.find(
+    (item) => item.id === product?.id
+  );
+  const currentCartQuantity = productInCart ? productInCart.count : 0;
 
   if (!product) {
     return (
@@ -52,7 +59,7 @@ const ProductDetails: React.FC = () => {
         </div>
 
         <div className="details flex flex-col">
-          <span className="name pb-4 block text-2xl font-bold">
+          <span className="name pb-4 block text-2xl font-medium text-gray">
             {product.name}
           </span>
           <span className="price pb-6 text-3xl font-semibold block text-[var(--bg-color)]">
@@ -62,9 +69,19 @@ const ProductDetails: React.FC = () => {
           <p className="description pb-4 block text-gray-600">
             {product.description}
           </p>
-          <span className="pb-6 block">
+          <span className="pb-6 block ">
             <span className="font-semibold">Color:</span> {product.color}
           </span>
+
+          {/* Show current cart quantity if item is in cart */}
+          {currentCartQuantity > 0 && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+              <p className="text-green-700 text-sm">
+                ✓ {currentCartQuantity}{" "}
+                {currentCartQuantity === 1 ? "item" : "items"} already in cart
+              </p>
+            </div>
+          )}
 
           <div className="flex flex-col md:flex-row justify-between items-stretch gap-4 mt-auto">
             <div className="count flex w-full md:max-w-[180px] justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-[#F5F5F5] border border-gray-200">
@@ -118,7 +135,7 @@ const ProductDetails: React.FC = () => {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-32 object-contain  rounded-md mb-2"
+                    className="w-full h-32 object-contain rounded-md mb-2"
                   />
                 </div>
 

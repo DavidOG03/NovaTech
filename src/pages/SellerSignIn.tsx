@@ -21,7 +21,7 @@ const schema = z.object({
 // Infer TypeScript type from schema
 type SignInFormData = z.infer<typeof schema>;
 
-const SignIn: React.FC = () => {
+const SellerSignIn: React.FC = () => {
   const [showPassword,setShowPassword] = useState<Boolean>(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const SignIn: React.FC = () => {
       );
       dispatch(setUser(userCredential.user));
 
-      navigate("/"); // Redirect to dashboard or home after sign in
+      navigate("/seller-dashnoard"); // Redirect to dashboard or home after sign in
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         // Use your helper to map code → message
@@ -137,7 +137,7 @@ const SignIn: React.FC = () => {
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <span>
         No account?{" "}
-        <a href="/signup" className="text-pink hover:underline">
+        <a href="/seller-signup" className="text-pink hover:underline">
           Sign Up
         </a>
         </span>
@@ -146,4 +146,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SellerSignIn;

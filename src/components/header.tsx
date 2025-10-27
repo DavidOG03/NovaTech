@@ -53,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 handleSearch(e.target.value)
               }
-              className="w-full max-w-[526px] py-2 pl-4 md:pl-12 rounded-full bg-white outline-0 focus:outline-1"
+              className="w-full max-w-[526px] py-2 pl-8 md:pl-12 rounded-full bg-white outline-0 focus:outline-1"
             />
             <span className="search absolute top-1/2 left-2 md:left-6 -translate-y-1/2">
               <img

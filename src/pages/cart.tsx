@@ -9,8 +9,10 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
-  const { cart, removeFromCart, updateCartItemCount, getCartTotal, clearCart } =
+  const { cart, removeFromCart, updateCartItemCount, getCartTotal, getCartCount, clearCart } =
     useProductContext();
+
+  const cartCount = getCartCount();
 
   return (
     <div className="cart-container gap-5 min-h-screen w-full pt-[90px] pb-8 ">
@@ -18,7 +20,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
         <div className="bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem] flex-auto lg:min-w-[520px]">
           <div className="flex justify-between items-center pb-4 border border-[transparent] border-b-[#EFEFEF] ">
             <div className="flex justify-start items-center gap-1">
-              Cart <span>({cart.length})</span>
+              Cart <span>({cartCount})</span>
             </div>
             <button
               className="flex justify-end items-center gap-1"
@@ -27,14 +29,14 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
               <img src="/images/delete.svg" alt="delete icon" /> Delete
             </button>
           </div>
-          <div className="pt-4">
+          <div className="pt-4 flex flex-col gap-4">
             {cart.map((item) => (
               <Item
                 key={item.id}
                 image={item.image}
                 name={item.name}
                 price={item.price}
-                count={item.quantity}
+                count={count}
                 onUpdateQuantity={(newQuantity) =>
                   updateCartItemCount(item.id, newQuantity)
                 }

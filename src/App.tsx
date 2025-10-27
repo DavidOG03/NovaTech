@@ -7,11 +7,14 @@ import { ProductProvider } from "./context/ProductContext";
 import { AuthProvider } from "./context/AuthContext";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import SellerSignIn from "./pages/SignIn";
+import SellerSignUp from "./pages/SignUp";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CustomerSupport from "./pages/customerSupport";
 import Profile from "./pages/profile";
 import Orders from "./pages/order";
+import AccountType from "./pages/accountType";
 
 const App: React.FC = () => {
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
@@ -70,8 +73,8 @@ const App: React.FC = () => {
       <ProductProvider>
         <Router>
           <Routes>
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/account" element={<AccountType />} />
+           
             <Route
               path="/"
               element={
@@ -126,7 +129,12 @@ const App: React.FC = () => {
                 </DashboardLayout>
               }
             />
+             <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+             <Route path="/seller-signup" element={<SellerSignUp />} />
+            <Route path="/seller-signin" element={<SellerSignIn />} />
           </Routes>
+          
         </Router>
       </ProductProvider>
     </AuthProvider>
