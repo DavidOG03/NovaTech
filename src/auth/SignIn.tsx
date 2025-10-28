@@ -81,7 +81,7 @@ const SignIn: React.FC = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
+        className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
         <img src="/images/novatech.svg" alt="novatech logo" className="mb-4" />
         <h2 className="text-xl font-bold text-center">Sign In</h2>
@@ -90,7 +90,7 @@ const SignIn: React.FC = () => {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded-3xl"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -101,7 +101,7 @@ const SignIn: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded-3xl"
             autoComplete="current-password"
           />
           <span
@@ -144,7 +144,7 @@ const SignIn: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-pink text-white py-2 rounded hover:bg-pink/75"
+          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75"
         >
           {loading ? "Loading..." : "Sign In"}
         </button>

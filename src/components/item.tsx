@@ -15,11 +15,11 @@ const Item: React.FC<ItemProps> = ({
   image,
   price,
   name,
-  count = getCartCount(),
+  count,
   onUpdateQuantity,
   onRemove,
 }) => {
-  // const [itemCount, setItemCount] = useState(count);
+  const [itemCount, setItemCount] = useState(count);
 
   const handleCountChange = (newCount: number) => {
     if (newCount >= 0) {
@@ -27,7 +27,8 @@ const Item: React.FC<ItemProps> = ({
     }
   };
 
-  const { updateCartItemCount, removeFromCart, getCartCount } = useProductContext();
+  const { updateCartItemCount, removeFromCart, getCartCount } =
+    useProductContext();
 
   return (
     <div className="cart flex flex-col md:flex-row justify-start md:justify-between lg:justify-between lg:items-center gap-4 w-full">

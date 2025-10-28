@@ -25,7 +25,7 @@ function generateInitialsAvatar(name: string): string {
   return `https://ui-avatars.com/api/?name=${initials}&background=random`;
 }
 
-const SellerSignUp: React.FC = () => {
+const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState<Boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const SellerSignUp: React.FC = () => {
         data.password
       );
 
-      // Update profile with displayName + avatar
+      // Update Firebase display name & photo
       if (auth.currentUser) {
         await updateProfile(auth.currentUser, {
           displayName: data.name,
@@ -54,10 +54,36 @@ const SellerSignUp: React.FC = () => {
         });
       }
 
-      // Update Redux store with the refreshed user object
-      dispatch(setUser({ ...userCredential.user, displayName: data.name }));
+      // ✅ Create a safe (serializable) user object
+      const firebaseUser = userCredential.user;
+      const safeUser = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        displayName: data.name,
+        photoURL: generateInitialsAvatar(data.name),
+      };
 
-      navigate("/seller-dashboard"); // redirect to home after signup
+      // ✅ Store account type locally before redirecting
+      // For example, show a prompt or use a dropdown in your UI
+      // const accountType = window
+      //   .prompt("Are you signing up as a 'seller' or 'customer'?")
+      //   ?.toLowerCase();
+
+      // if (accountType === "seller" || accountType === "customer") {
+      //   localStorage.setItem("accountType", accountType);
+      // } else {
+      //   localStorage.setItem("accountType", "customer"); // default
+      // }
+
+      // ✅ Save clean user data to Redux
+      dispatch(setUser(safeUser));
+
+      // // ✅ Redirect user based on accountType
+      // if (accountType === "seller") {
+      //   navigate("/seller-dashboard");
+      // } else {
+      //   navigate("/products");
+      // }
     } catch (err: unknown) {
       if (err instanceof Error) {
         dispatch(setError(err.message));
@@ -85,7 +111,7 @@ const SellerSignUp: React.FC = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
+        className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
         <img src="/images/novatech.svg" alt="Novatech Logo" className="mb-6" />
         <h2 className="text-xl font-bold text-center">Sign Up</h2>
@@ -95,7 +121,7 @@ const SellerSignUp: React.FC = () => {
           type="text"
           placeholder="Name"
           {...register("name")}
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded-3xl"
         />
         {errors.name && (
           <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -105,7 +131,7 @@ const SellerSignUp: React.FC = () => {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded-3xl"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -116,7 +142,7 @@ const SellerSignUp: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded-3xl"
             autoComplete="current-password"
           />
           <span
@@ -159,7 +185,7 @@ const SellerSignUp: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-pink text-white py-2 rounded hover:bg-pink/75"
+          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75"
         >
           {loading ? "Loading..." : "Sign Up"}
         </button>
@@ -167,7 +193,7 @@ const SellerSignUp: React.FC = () => {
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <p>
           Already have an account?{" "}
-          <a href="/seller-signin" className="text-pink hover:underline">
+          <a href="/signin" className="text-pink hover:underline">
             Sign In
           </a>
         </p>
@@ -176,4 +202,4 @@ const SellerSignUp: React.FC = () => {
   );
 };
 
-export default SellerSignUp;
+export default SignUp;

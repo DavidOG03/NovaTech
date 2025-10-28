@@ -10,10 +10,10 @@ import Cart from "./pages/cart";
 import ProductDetails from "./components/productDetails";
 import { ProductProvider } from "./context/ProductContext";
 import { AuthProvider } from "./context/AuthContext";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import SellerSignIn from "./pages/SignIn";
-import SellerSignUp from "./pages/SignUp";
+import SignIn from "./auth/SignIn";
+import SignUp from "./auth/SignUp";
+import SellerSignIn from "./auth/SellerSignIn";
+import SellerSignUp from "./auth/SellerSignUp";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CustomerSupport from "./pages/customerSupport";
@@ -97,20 +97,21 @@ const App: React.FC = () => {
           <Routes>
             <Route
               path="/"
-              element={
-                !accountType ? (
-                  <AccountType
-                    onSelectAccount={handleAccountSelect}
-                    accountType={accountType}
-                  />
-                ) : (
-                  // redirect based on account type
-                  <Navigate
-                    to={accountType === "seller" ? "/seller-signin" : "/signin"}
-                    replace
-                  />
-                )
-              }
+              // element={
+              //   !accountType ? (
+              //     <AccountType
+              //     // onSelectAccount={handleAccountSelect}
+              //     // accountType={accountType}
+              //     />
+              //   ) : (
+              //     // redirect based on account type
+              //     <Navigate
+              //       to={accountType === "seller" ? "/seller-signin" : "/signin"}
+              //       replace
+              //     />
+              //   )
+              // }
+              element={<AccountType />}
             />
 
             <Route path="/signup" element={<SignUp />} />
@@ -121,65 +122,65 @@ const App: React.FC = () => {
             <Route
               path="/products"
               element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <Dashboard
-                      filterEnabled={isFiltered}
-                      searchQuery={searchQuery}
-                      // handleItemClick={() => setIsItemClicked(true)}
-                    />
-                  </DashboardLayout>
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <DashboardLayout>
+                  <Dashboard
+                    filterEnabled={isFiltered}
+                    searchQuery={searchQuery}
+                    // handleItemClick={() => setIsItemClicked(true)}
+                  />
+                </DashboardLayout>
+                // </ProtectedRoute>
               }
             />
             <Route
               path="/cart"
               element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <Cart numberOfItems={0} count={0} />
-                  </DashboardLayout>
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <DashboardLayout>
+                  <Cart numberOfItems={0} count={0} />
+                </DashboardLayout>
+                // </ProtectedRoute>
               }
             />
             <Route
               path="/order"
               element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <Orders />
-                  </DashboardLayout>
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <DashboardLayout>
+                  <Orders />
+                </DashboardLayout>
+                // </ProtectedRoute>
               }
             />
             <Route
               path="/product/:id"
               element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <ProductDetails />
-                  </DashboardLayout>
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <DashboardLayout>
+                  <ProductDetails />
+                </DashboardLayout>
+                // </ProtectedRoute>
               }
             />
             <Route
               path="/support"
               element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <CustomerSupport />
-                  </DashboardLayout>
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <DashboardLayout>
+                  <CustomerSupport />
+                </DashboardLayout>
+                // </ProtectedRoute>
               }
             />
             <Route
               path="/profile"
               element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <Profile />
-                  </DashboardLayout>
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <DashboardLayout>
+                  <Profile />
+                </DashboardLayout>
+                // </ProtectedRoute>
               }
             />
 

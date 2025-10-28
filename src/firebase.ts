@@ -35,11 +35,11 @@ export const db: Firestore = getFirestore(app);
 
 export interface FirebaseAuthError extends Error {
   code:
-    | "auth/email-already-in-use"
-    | "auth/invalid-email"
-    | "auth/weak-password"
-    | "auth/wrong-password"
-    | "auth/user-not-found"
-    | "auth/too-many-requests"
+    | "email-already-in-use"
+    | "invalid-email"
+    | "weak-password"
+    | "wrong-password"
+    | "user-not-found"
+    | "too-many-requests"
     | string; // fallback for unknown codes
 }

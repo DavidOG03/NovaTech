@@ -249,7 +249,7 @@ const SellerDashboard: React.FC = () => {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
         <div className="flex items-center justify-between mb-4">
-          <div className={`${colorClasses[color]} p-3 rounded-lg text-white`}>
+          <div className={`${colorClasses[color]} p-3 rounded-3xl text-white`}>
             {icon}
           </div>
           <div
@@ -279,7 +279,7 @@ const SellerDashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-r from-pink to-background p-2 rounded-lg">
+                <div className="bg-gradient-to-r from-pink to-background p-2 rounded-3xl">
                   <LayoutDashboard className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -298,18 +298,18 @@ const SellerDashboard: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Search products, orders..."
-                  className="pl-10 pr-4 py-2 w-64 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="pl-10 pr-4 py-2 w-64 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               {/* Notifications */}
-              <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
+              <button className="relative p-2 rounded-3xl hover:bg-gray-100 transition-colors">
                 <Bell className="w-6 h-6 text-gray-600" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
 
               {/* Settings */}
-              <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+              <button className="p-2 rounded-3xl hover:bg-gray-100 transition-colors">
                 <Settings className="w-6 h-6 text-gray-600" />
               </button>
 
@@ -335,17 +335,17 @@ const SellerDashboard: React.FC = () => {
         {/* Period Selector */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
-            <button className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2">
+            <button className="px-4 py-2 bg-white border border-gray-300 rounded-3xl hover:bg-gray-50 transition-colors flex items-center space-x-2">
               <span className="text-sm font-medium text-gray-700">
                 {selectedPeriod}
               </span>
               <ChevronDown className="w-4 h-4 text-gray-500" />
             </button>
-            <button className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="p-2 bg-white border border-gray-300 rounded-3xl hover:bg-gray-50 transition-colors">
               <Filter className="w-5 h-5 text-gray-600" />
             </button>
           </div>
-          <button className="px-4 py-2 bg-pink text-white rounded-lg hover:bg-background transition-colors flex items-center space-x-2">
+          <button className="px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors flex items-center space-x-2">
             <Download className="w-4 h-4" />
             <span className="text-sm font-medium">Export Report</span>
           </button>
@@ -367,13 +367,13 @@ const SellerDashboard: React.FC = () => {
                 Sales Overview
               </h2>
               <div className="flex items-center space-x-2">
-                <button className="px-3 py-1.5 text-sm bg-blue-50 text-pink rounded-lg font-medium">
+                <button className="px-3 py-1.5 text-sm bg-blue-50 text-pink rounded-3xl font-medium">
                   Week
                 </button>
-                <button className="px-3 py-1.5 text-sm text-gray-600 rounded-lg font-medium hover:bg-gray-100">
+                <button className="px-3 py-1.5 text-sm text-gray-600 rounded-3xl font-medium hover:bg-gray-100">
                   Month
                 </button>
-                <button className="px-3 py-1.5 text-sm text-gray-600 rounded-lg font-medium hover:bg-gray-100">
+                <button className="px-3 py-1.5 text-sm text-gray-600 rounded-3xl font-medium hover:bg-gray-100">
                   Year
                 </button>
               </div>
@@ -406,7 +406,7 @@ const SellerDashboard: React.FC = () => {
             <div className="space-y-4">
               {products.slice(0, 5).map((product, index) => (
                 <div key={product.id} className="flex items-center space-x-3">
-                  <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
+                  <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-3xl flex items-center justify-center text-2xl">
                     {product.image}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -434,7 +434,7 @@ const SellerDashboard: React.FC = () => {
               <h2 className="text-lg font-bold text-gray-900">
                 Products Inventory
               </h2>
-              <button className="px-4 py-2 bg-pink text-white rounded-lg hover:bg-background transition-colors flex items-center space-x-2">
+              <button className="px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors flex items-center space-x-2">
                 <Plus className="w-4 h-4" />
                 <span className="text-sm font-medium">Add Product</span>
               </button>
@@ -473,7 +473,7 @@ const SellerDashboard: React.FC = () => {
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
+                        <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-3xl flex items-center justify-center text-2xl">
                           {product.image}
                         </div>
                         <div className="ml-4">
@@ -505,7 +505,7 @@ const SellerDashboard: React.FC = () => {
                       {getProductStatusBadge(product.status)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                      <button className="p-2 rounded-3xl hover:bg-gray-100 transition-colors">
                         <MoreVertical className="w-5 h-5 text-gray-600" />
                       </button>
                     </td>

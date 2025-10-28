@@ -25,7 +25,7 @@ function generateInitialsAvatar(name: string): string {
   return `https://ui-avatars.com/api/?name=${initials}&background=random`;
 }
 
-const SignUp: React.FC = () => {
+const SellerSignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState<Boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const SignUp: React.FC = () => {
         data.password
       );
 
-      // Update Firebase display name & photo
+      // Update profile with displayName + avatar
       if (auth.currentUser) {
         await updateProfile(auth.currentUser, {
           displayName: data.name,
@@ -54,36 +54,10 @@ const SignUp: React.FC = () => {
         });
       }
 
-      // ✅ Create a safe (serializable) user object
-      const firebaseUser = userCredential.user;
-      const safeUser = {
-        uid: firebaseUser.uid,
-        email: firebaseUser.email,
-        displayName: data.name,
-        photoURL: generateInitialsAvatar(data.name),
-      };
+      // Update Redux store with the refreshed user object
+      dispatch(setUser({ ...userCredential.user, displayName: data.name }));
 
-      // ✅ Store account type locally before redirecting
-      // For example, show a prompt or use a dropdown in your UI
-      const accountType = window
-        .prompt("Are you signing up as a 'seller' or 'customer'?")
-        ?.toLowerCase();
-
-      if (accountType === "seller" || accountType === "customer") {
-        localStorage.setItem("accountType", accountType);
-      } else {
-        localStorage.setItem("accountType", "customer"); // default
-      }
-
-      // ✅ Save clean user data to Redux
-      dispatch(setUser(safeUser));
-
-      // ✅ Redirect user based on accountType
-      if (accountType === "seller") {
-        navigate("/seller-dashboard");
-      } else {
-        navigate("/product-listing");
-      }
+      navigate("/seller-dashboard"); // redirect to home after signup
     } catch (err: unknown) {
       if (err instanceof Error) {
         dispatch(setError(err.message));
@@ -121,7 +95,7 @@ const SignUp: React.FC = () => {
           type="text"
           placeholder="Name"
           {...register("name")}
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded-3xl"
         />
         {errors.name && (
           <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -131,7 +105,7 @@ const SignUp: React.FC = () => {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded-3xl"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -142,7 +116,7 @@ const SignUp: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded-3xl"
             autoComplete="current-password"
           />
           <span
@@ -185,7 +159,7 @@ const SignUp: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-pink text-white py-2 rounded hover:bg-pink/75"
+          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75"
         >
           {loading ? "Loading..." : "Sign Up"}
         </button>
@@ -193,7 +167,7 @@ const SignUp: React.FC = () => {
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <p>
           Already have an account?{" "}
-          <a href="/signin" className="text-pink hover:underline">
+          <a href="/seller-signin" className="text-pink hover:underline">
             Sign In
           </a>
         </p>
@@ -202,4 +176,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default SellerSignUp;

@@ -23,25 +23,13 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!user) {
+  // If user is not authenticated, send to SignIn
+  if (!user)
     return <Navigate to="/signin" replace state={{ from: location }} />;
-  }
 
+  // If user is authenticated but no account type selected yet
   const accountType = localStorage.getItem("accountType");
-
-  // If user has no account type, force them to pick one
-  if (!accountType) {
-    return <Navigate to="/account" replace />;
-  }
-
-  // Route according to account type
-  if (accountType === "customer" && location.pathname !== "/products") {
-    return <Navigate to="/" replace />;
-  }
-
-  if (accountType === "seller" && location.pathname !== "/seller-dashboard") {
-    return <Navigate to="/seller-dashboard" replace />;
-  }
+  if (!accountType) return <Navigate to="/" replace />;
 
   return <>{children}</>;
 }

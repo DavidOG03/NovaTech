@@ -1,5 +1,5 @@
 import { Bell } from "lucide-react";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -15,29 +15,23 @@ const Header: React.FC<HeaderProps> = ({
   handleSearch,
 }) => {
   const [filterActive, setFilterActive] = React.useState<boolean>(false);
+  const [userName, setUserName] = useState<string>("");
+
+  useEffect(() => {
+    // Fetch user name from localStorage or your API
+    const storedName = localStorage.getItem("username") || "Guest User";
+    setUserName(storedName);
+  }, []);
+
+  function generateInitialsAvatar(name: string): string {
+    const initials = encodeURIComponent(name);
+    return `https://ui-avatars.com/api/?name=${initials}&background=random`;
+  }
 
   return (
-    <header className="w-full flex justify-between items-center gap-[1.95rem] p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-[#f5f5f5]">
+    <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-[#f5f5f5]">
       {/* Left: Logo and Mobile Menu */}
       <div className="flex items-center gap-4">
-        <button
-          className="block md:hidden cursor-pointer"
-          onClick={onMenuClick}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            id="category"
-          >
-            <path
-              fill="#200E32"
-              d="M5.9199,11.4697 C7.3299,11.4697 8.4599,12.6107 8.4599,14.0307 L8.4599,14.0307 L8.4599,17.4397 C8.4599,18.8497 7.3299,19.9997 5.9199,19.9997 L5.9199,19.9997 L2.5399,19.9997 C1.1399,19.9997 -0.0001,18.8497 -0.0001,17.4397 L-0.0001,17.4397 L-0.0001,14.0307 C-0.0001,12.6107 1.1399,11.4697 2.5399,11.4697 L2.5399,11.4697 Z M17.46,11.4697 C18.86,11.4697 20,12.6107 20,14.0307 L20,14.0307 L20,17.4397 C20,18.8497 18.86,19.9997 17.46,19.9997 L17.46,19.9997 L14.08,19.9997 C12.67,19.9997 11.54,18.8497 11.54,17.4397 L11.54,17.4397 L11.54,14.0307 C11.54,12.6107 12.67,11.4697 14.08,11.4697 L14.08,11.4697 Z M5.9199,-9.32587341e-14 C7.3299,-9.32587341e-14 8.4599,1.15 8.4599,2.561 L8.4599,2.561 L8.4599,5.97 C8.4599,7.39 7.3299,8.53 5.9199,8.53 L5.9199,8.53 L2.5399,8.53 C1.1399,8.53 -0.0001,7.39 -0.0001,5.97 L-0.0001,5.97 L-0.0001,2.561 C-0.0001,1.15 1.1399,-9.32587341e-14 2.5399,-9.32587341e-14 L2.5399,-9.32587341e-14 Z M17.46,-9.32587341e-14 C18.86,-9.32587341e-14 20,1.15 20,2.561 L20,2.561 L20,5.97 C20,7.39 18.86,8.53 17.46,8.53 L17.46,8.53 L14.08,8.53 C12.67,8.53 11.54,7.39 11.54,5.97 L11.54,5.97 L11.54,2.561 C11.54,1.15 12.67,-9.32587341e-14 14.08,-9.32587341e-14 L14.08,-9.32587341e-14 Z"
-              transform="translate(2 2)"
-            ></path>
-          </svg>
-        </button>
         <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
       </div>
 
@@ -85,18 +79,33 @@ const Header: React.FC<HeaderProps> = ({
           {/* <img src="/images/bell.svg" alt="notification bell" /> */}
           <Bell className="w-6 h-6 text-gray-600" />
         </button>
-        <div className="profile grid grid-cols-2 gap-2 ">
+        <div className="profile grid grid-cols-[auto_1fr] gap-1 ">
           <img
-            src="/images/profile_pic.png"
+            src={generateInitialsAvatar(userName)}
             alt="Profile Picture"
             className="w-10 h-10 rounded-full"
           />
           <div className="flex flex-col justify-center items-start gap-1">
-            <span className="user text-base">Rufus</span>
+            <span className="user text-base">{userName}</span>
             <span className="greeting text-[10px]">Welcome</span>
           </div>
         </div>
       </div>
+      <button className="block md:hidden cursor-pointer" onClick={onMenuClick}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          id="category"
+        >
+          <path
+            fill="#200E32"
+            d="M5.9199,11.4697 C7.3299,11.4697 8.4599,12.6107 8.4599,14.0307 L8.4599,14.0307 L8.4599,17.4397 C8.4599,18.8497 7.3299,19.9997 5.9199,19.9997 L5.9199,19.9997 L2.5399,19.9997 C1.1399,19.9997 -0.0001,18.8497 -0.0001,17.4397 L-0.0001,17.4397 L-0.0001,14.0307 C-0.0001,12.6107 1.1399,11.4697 2.5399,11.4697 L2.5399,11.4697 Z M17.46,11.4697 C18.86,11.4697 20,12.6107 20,14.0307 L20,14.0307 L20,17.4397 C20,18.8497 18.86,19.9997 17.46,19.9997 L17.46,19.9997 L14.08,19.9997 C12.67,19.9997 11.54,18.8497 11.54,17.4397 L11.54,17.4397 L11.54,14.0307 C11.54,12.6107 12.67,11.4697 14.08,11.4697 L14.08,11.4697 Z M5.9199,-9.32587341e-14 C7.3299,-9.32587341e-14 8.4599,1.15 8.4599,2.561 L8.4599,2.561 L8.4599,5.97 C8.4599,7.39 7.3299,8.53 5.9199,8.53 L5.9199,8.53 L2.5399,8.53 C1.1399,8.53 -0.0001,7.39 -0.0001,5.97 L-0.0001,5.97 L-0.0001,2.561 C-0.0001,1.15 1.1399,-9.32587341e-14 2.5399,-9.32587341e-14 L2.5399,-9.32587341e-14 Z M17.46,-9.32587341e-14 C18.86,-9.32587341e-14 20,1.15 20,2.561 L20,2.561 L20,5.97 C20,7.39 18.86,8.53 17.46,8.53 L17.46,8.53 L14.08,8.53 C12.67,8.53 11.54,7.39 11.54,5.97 L11.54,5.97 L11.54,2.561 C11.54,1.15 12.67,-9.32587341e-14 14.08,-9.32587341e-14 L14.08,-9.32587341e-14 Z"
+            transform="translate(2 2)"
+          ></path>
+        </svg>
+      </button>
     </header>
   );
 };

@@ -141,12 +141,12 @@ const Dashboard: React.FC<DashboardProps> = ({
               filterEnabled ? "hidden" : "flex"
             }`}
           >
-            {categories.map((cat, idx) => (
+            {categories.map((category, idx) => (
               <Button
                 key={idx}
-                img={cat.img}
-                altText={cat.alt}
-                text={cat.text}
+                img={category.img}
+                altText={category.alt}
+                text={category.text}
                 isActive={activeCategories.includes(idx)}
                 onClick={() =>
                   setActiveCategories((prev) =>
@@ -241,12 +241,17 @@ const Dashboard: React.FC<DashboardProps> = ({
                     }}
                     onClick={handleItemClick}
                   >
-                    <Card
-                      image={product.image}
-                      name={product.name}
-                      price={product.price}
-                      lastPrice={product.lastPrice}
-                    />
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="w-full h-full flex flex-col items-center justify-center"
+                    >
+                      <Card
+                        image={product.image}
+                        name={product.name}
+                        price={product.price}
+                        lastPrice={product.lastPrice}
+                      />
+                    </Link>
                   </div>
                 ))}
               </div>

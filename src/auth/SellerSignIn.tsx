@@ -46,7 +46,7 @@ const SellerSignIn: React.FC = () => {
       );
       dispatch(setUser(userCredential.user));
 
-      navigate("/seller-dashnoard"); // Redirect to dashboard or home after sign in
+      navigate("/seller-dashboard"); // Redirect to dashboard or home after sign in
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         // Use your helper to map code → message
@@ -76,7 +76,7 @@ const SellerSignIn: React.FC = () => {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded-3xl"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -87,7 +87,7 @@ const SellerSignIn: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded-3xl"
             autoComplete="current-password"
           />
           <span
@@ -130,7 +130,7 @@ const SellerSignIn: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-pink text-white py-2 rounded hover:bg-pink/75"
+          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75"
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
