@@ -43,6 +43,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     }
   }, [active]);
 
+  // ✅ Logout function
+  const handleLogout = () => {
+    // Clear stored auth data (adjust to your setup)
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+
+    // Redirect to home page
+    navigate("/");
+  };
+
   const navItems = [
     {
       activeIcon: (
@@ -269,7 +279,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         ))}
       </div>
 
-      <button className="w-full text-left flex items-center gap-4 text-white px-8 py-4 mb-4 md:mb-6 transition-colors">
+      <button
+        className="w-full text-left flex items-center gap-4 text-white px-8 py-4 mb-4 md:mb-6 transition-colors cursor-pointer"
+        onClick={handleLogout}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24px"
