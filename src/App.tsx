@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Cart from "./pages/cart";
 import ProductDetails from "./components/productDetails";
@@ -15,6 +20,7 @@ import CustomerSupport from "./pages/customerSupport";
 import Profile from "./pages/profile";
 import Orders from "./pages/order";
 import AccountType from "./pages/accountType";
+import SellerDashboard from "./pages/sellerDashboard";
 
 const App: React.FC = () => {
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
@@ -23,6 +29,22 @@ const App: React.FC = () => {
   // Toggle filter state
   const toggleFilter = () => {
     setIsFiltered(!isFiltered);
+  };
+
+  const [accountType, setAccountType] = useState<string | null>(
+    localStorage.getItem("accountType")
+  );
+
+  useEffect(() => {
+    const storedType = localStorage.getItem("accountType");
+    if (storedType) {
+      setAccountType(storedType);
+    }
+  }, []);
+
+  const handleAccountSelect = (type: string) => {
+    localStorage.setItem("accountType", type);
+    setAccountType(type);
   };
 
   const products = [
@@ -73,10 +95,31 @@ const App: React.FC = () => {
       <ProductProvider>
         <Router>
           <Routes>
-            <Route path="/account" element={<AccountType />} />
-           
             <Route
               path="/"
+              element={
+                !accountType ? (
+                  <AccountType
+                    onSelectAccount={handleAccountSelect}
+                    accountType={accountType}
+                  />
+                ) : (
+                  // redirect based on account type
+                  <Navigate
+                    to={accountType === "seller" ? "/seller-signin" : "/signin"}
+                    replace
+                  />
+                )
+              }
+            />
+
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/seller-signup" element={<SellerSignUp />} />
+            <Route path="/seller-signin" element={<SellerSignIn />} />
+
+            <Route
+              path="/products"
               element={
                 <ProtectedRoute>
                   <DashboardLayout>
@@ -92,49 +135,58 @@ const App: React.FC = () => {
             <Route
               path="/cart"
               element={
-                <DashboardLayout>
-                  <Cart numberOfItems={0} count={0} />
-                </DashboardLayout>
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <Cart numberOfItems={0} count={0} />
+                  </DashboardLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/order"
               element={
-                <DashboardLayout>
-                  <Orders />
-                </DashboardLayout>
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <Orders />
+                  </DashboardLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/product/:id"
               element={
-                <DashboardLayout>
-                  <ProductDetails />
-                </DashboardLayout>
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <ProductDetails />
+                  </DashboardLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/support"
               element={
-                <DashboardLayout>
-                  <CustomerSupport />
-                </DashboardLayout>
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <CustomerSupport />
+                  </DashboardLayout>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/profile"
               element={
-                <DashboardLayout>
-                  <Profile />
-                </DashboardLayout>
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <Profile />
+                  </DashboardLayout>
+                </ProtectedRoute>
               }
             />
-             <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
-             <Route path="/seller-signup" element={<SellerSignUp />} />
-            <Route path="/seller-signin" element={<SellerSignIn />} />
+
+            <Route path="/seller-dashboard" element={<SellerDashboard />} />
+
+            {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
           </Routes>
-          
         </Router>
       </ProductProvider>
     </AuthProvider>

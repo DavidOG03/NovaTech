@@ -1,13 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
+interface AccountTypeProps {
+  onSelectAccount: (type: string) => void;
+  accountType: string | null;
+}
 
-export default function AccountType() {
-  const [accountType, setAccountType] = useState<string | null>(null);
+export default function AccountType({
+  onSelectAccount,
+  accountType,
+}: AccountTypeProps) {
+  // const [accountType, setAccountType] = useState<string | null>(null);
 
-  const toggleAccountType = (type: string) => {
-    setAccountType((prevType) => (prevType === type ? null : type));
-  };
+  // const toggleAccountType = (type: string) => {
+  //   setAccountType((prevType) => (prevType === type ? null : type));
+  // };
 
   return (
     <div className="account-type-selection bg-white p-8 w-full h-full pt-[100px]">
@@ -16,13 +23,13 @@ export default function AccountType() {
       </h1>
       <div className="flex justify-center items-stretch gap-[84px] mb-6">
         <button
-          onClick={() => toggleAccountType("Customer")}
+          onClick={() => onSelectAccount("Customer")}
           className={`px-8 pt-8 pb-[70px] border border-bordergray rounded-[10px] max-w-[272px] text-2xl font-medium text-left flex flex-col justify-between items-start${
             accountType === "Customer" ? " text-pink border-pink" : ""
           }`}
         >
           <div className="flex flex-row justify-between items-center mb-[40px] w-full">
-            <Customer/>
+            <img src="/images/customer-icon.svg" alt="customer icon" />
             <div
               className={`checkmark w-[20px] h-[20px] rounded-full border border-gray grid place-items-center  ${
                 accountType === "Customer" ? "border-pink" : ""
@@ -42,13 +49,13 @@ export default function AccountType() {
           </p>
         </button>
         <button
-          onClick={() => toggleAccountType("Vendor")}
+          onClick={() => onSelectAccount("Vendor")}
           className={`px-8 pt-8 pb-[70px] border  border-bordergray rounded-[10px] max-w-[272px] text-2xl font-medium text-left flex flex-col justify-between items-start ${
             accountType === "Vendor" ? " text-pink border-pink" : ""
           }`}
         >
           <div className="flex flex-row justify-between items-center mb-[40px] w-full">
-            <img src="/assets/vendor-icon.svg" alt="customer icon" />
+            <img src="/images/vendor-icon.svg" alt="customer icon" />
             <div
               className={`checkmark w-[20px] h-[20px] rounded-full border border-gray grid place-items-center  ${
                 accountType === "Vendor" ? "border-pink" : ""

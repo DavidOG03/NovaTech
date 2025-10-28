@@ -1,3 +1,4 @@
+import { Bell } from "lucide-react";
 import React, { ChangeEvent } from "react";
 
 interface HeaderProps {
@@ -81,7 +82,8 @@ const Header: React.FC<HeaderProps> = ({
       {/* Right: Notification and Profile */}
       <div className="hug hidden md:flex justify-end items-center gap-4">
         <button className="notification-bell bg-white p-2 rounded-full grid content-center cursor-pointer hover:bg-gray-100">
-          <img src="/images/bell.svg" alt="notification bell" />
+          {/* <img src="/images/bell.svg" alt="notification bell" /> */}
+          <Bell className="w-6 h-6 text-gray-600" />
         </button>
         <div className="profile grid grid-cols-2 gap-2 ">
           <img

@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       activeIcon: "/images/home_active.svg",
       icon: "/images/home.svg",
       label: "Home",
-      link: "/",
+      link: "/products",
     },
     {
       activeIcon: "/images/cart_active.svg",
