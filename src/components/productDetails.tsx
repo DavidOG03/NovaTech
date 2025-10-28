@@ -1,7 +1,8 @@
 import { useProductContext } from "../context/ProductContext";
 import React, { useState } from "react";
 import { CloseSquare } from "react-iconly";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
+import Card from "./card";
 
 const ProductDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const ProductDetails: React.FC = () => {
         <h2 className="text-2xl font-semibold mb-4">Product not found</h2>
         <button
           onClick={() => navigate("/")}
-          className="bg-[var(--bg-color)] text-white px-6 py-3 rounded-full"
+          className="bg-background text-white px-6 py-3 rounded-full"
         >
           Go back to home
         </button>
@@ -59,14 +60,14 @@ const ProductDetails: React.FC = () => {
         </div>
 
         <div className="details flex flex-col">
-          <span className="name pb-4 block text-2xl font-medium text-gray">
+          <span className="name pb-3 block text-2xl font-medium text-black/50">
             {product.name}
           </span>
-          <span className="price pb-6 text-3xl font-semibold block text-[var(--bg-color)]">
+          <span className="price pb-6 text-3xl font-semibold block text-background">
             {product.price}
           </span>
 
-          <p className="description pb-4 block text-gray-600">
+          <p className="description pb-3 block text-black/50">
             {product.description}
           </p>
           <span className="pb-6 block ">
@@ -83,10 +84,10 @@ const ProductDetails: React.FC = () => {
             </div>
           )}
 
-          <div className="flex flex-col md:flex-row justify-between items-stretch gap-4 mt-auto">
-            <div className="count flex w-full md:max-w-[180px] justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-[#F5F5F5] border border-gray-200">
+          <div className="flex flex-col justify-between items-start gap-4 mt-auto">
+            <div className="count flex w-full md:max-w-[180px] justify-between items-center gap-2 py-2 px-3 rounded-[0.75rem] bg-[#F5F5F5] border border-gray-200">
               <button
-                className="text-[1.5rem] cursor-pointer px-2 hover:text-[var(--bg-color)] transition-colors"
+                className="text-[1.5rem] cursor-pointer px-2 text-black/50 transition-colors"
                 onClick={() => setCount((prev) => Math.max(prev - 1, 1))}
               >
                 -
@@ -95,14 +96,14 @@ const ProductDetails: React.FC = () => {
                 {count}
               </span>
               <button
-                className="text-[1.5rem] cursor-pointer px-2 hover:text-[var(--bg-color)] transition-colors"
+                className="text-[1.5rem] cursor-pointer px-2 text-black/50 transition-colors"
                 onClick={() => setCount((prev) => prev + 1)}
               >
                 +
               </button>
             </div>
             <button
-              className="add-to-cart bg-[var(--bg-color)] w-full md:flex-1 py-3 px-6 rounded-[50px] text-base text-white cursor-pointer hover:opacity-90 transition-opacity font-semibold"
+              className="add-to-cart bg-background w-full max-w-[200px] md:flex-1 py-3 px-6 rounded-[50px] text-base text-white cursor-pointer hover:opacity-90 transition-opacity font-semibold"
               onClick={handleAddToCart}
             >
               Add to cart
@@ -110,8 +111,8 @@ const ProductDetails: React.FC = () => {
           </div>
 
           <button
-            onClick={() => navigate("/")}
-            className="text-[var(--bg-color)] mt-6 text-left hover:underline"
+            onClick={() => navigate("/products")}
+            className="text-background mt-6 text-left hover:underline"
           >
             ← Continue Shopping
           </button>
@@ -131,18 +132,17 @@ const ProductDetails: React.FC = () => {
                 onClick={() => navigate(`/product/${item.id}`)}
                 className="cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
               >
-                <div className="h-auto grid place-content-center">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-32 object-contain rounded-md mb-2"
+                <Link
+                  to={`/product/${item.id}`}
+                  className="w-full h-full flex flex-col items-center justify-center"
+                >
+                  <Card
+                    image={item.image}
+                    name={item.name}
+                    price={item.price}
+                    lastPrice={item.lastPrice}
                   />
-                </div>
-
-                <h4 className="text-sm font-semibold truncate">{item.name}</h4>
-                <p className="text-sm text-[var(--bg-color)] font-semibold">
-                  {item.price}
-                </p>
+                </Link>
               </div>
             ))}
         </div>

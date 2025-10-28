@@ -1,20 +1,36 @@
 // src/pages/Profile.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Profile: React.FC = () => {
+  const [userName, setUserName] = useState<string>("Guest User");
+  const [userEmail, setUserEmail] = useState<string>("Not Available");
+
+  useEffect(() => {
+    // Fetch user name and email from localStorage or API
+    const storedName = localStorage.getItem("name") || "Guest User";
+    const storedEmail = localStorage.getItem("email") || "Not Available";
+
+    setUserName(storedName);
+    setUserEmail(storedEmail);
+  }, []);
+
+  function generateInitialsAvatar(name: string): string {
+    const initials = encodeURIComponent(name);
+    return `https://ui-avatars.com/api/?name=${initials}&background=random`;
+  }
   return (
     <div className="min-h-screen bg-grey flex justify-center py-22">
       <div className="w-full max-w-5xl bg-white rounded-2xl p-6 space-y-8">
         {/* Header */}
         <div className="flex items-center gap-4 border-b border-b-grey pb-4">
           <img
-            src="https://i.pravatar.cc/100?img=12"
+            src={generateInitialsAvatar(userName)}
             alt="User avatar"
             className="w-20 h-20 rounded-full object-cover border-2 border-pink"
           />
           <div>
-            <h2 className="text-2xl font-semibold">David Ogungbemi</h2>
-            <p className="text-gray-500">daveedog2003@gmail.com</p>
+            <h2 className="text-2xl font-semibold">{userName}</h2>
+            <p className="text-gray-500">{userEmail}</p>
             <button className="mt-2 text-sm px-4 py-1 bg-pink text-white rounded-lg hover:bg-pink/75">
               Edit Profile
             </button>

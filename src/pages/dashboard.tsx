@@ -256,6 +256,41 @@ const Dashboard: React.FC<DashboardProps> = ({
                 ))}
               </div>
             </section>
+
+            {/* Promotional Banner Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+              {/* Banner 1 */}
+              <section className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-8 text-white shadow-sm hover:shadow-lg transition-shadow">
+                <div className="space-y-4">
+                  <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+                    Limited Time
+                  </div>
+                  <h3 className="text-3xl font-bold">Flash Sale</h3>
+                  <p className="text-white/90">
+                    Get up to 70% off on selected items
+                  </p>
+                  <button className="px-6 py-3 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Shop Now
+                  </button>
+                </div>
+              </section>
+
+              {/* Banner 2 */}
+              <section className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-8 text-white shadow-sm hover:shadow-lg transition-shadow">
+                <div className="space-y-4">
+                  <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+                    Free Shipping
+                  </div>
+                  <h3 className="text-3xl font-bold">Orders Over $50</h3>
+                  <p className="text-white/90">
+                    Enjoy free delivery on all eligible orders
+                  </p>
+                  <button className="px-6 py-3 bg-white text-green-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Learn More
+                  </button>
+                </div>
+              </section>
+            </div>
           </div>
         </>
       )}

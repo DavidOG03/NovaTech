@@ -10,7 +10,7 @@ import { setUser, setError, setLoading } from "../stores/authSlice";
 import { RootState } from "../stores/store";
 import { useNavigate } from "react-router";
 
-// Add name validation
+// ✅ Validation Schema
 const schema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email"),
@@ -19,14 +19,14 @@ const schema = z.object({
 
 type SignUpFormData = z.infer<typeof schema>;
 
-// Generate avatar URL using initials
+// ✅ Avatar Generator
 function generateInitialsAvatar(name: string): string {
   const initials = encodeURIComponent(name);
   return `https://ui-avatars.com/api/?name=${initials}&background=random`;
 }
 
 const SignUp: React.FC = () => {
-  const [showPassword, setShowPassword] = useState<Boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.auth);
@@ -46,7 +46,7 @@ const SignUp: React.FC = () => {
         data.password
       );
 
-      // Update Firebase display name & photo
+      // ✅ Update Firebase Profile
       if (auth.currentUser) {
         await updateProfile(auth.currentUser, {
           displayName: data.name,
@@ -54,7 +54,7 @@ const SignUp: React.FC = () => {
         });
       }
 
-      // ✅ Create a safe (serializable) user object
+      // ✅ Construct safe user object
       const firebaseUser = userCredential.user;
       const safeUser = {
         uid: firebaseUser.uid,
@@ -63,27 +63,15 @@ const SignUp: React.FC = () => {
         photoURL: generateInitialsAvatar(data.name),
       };
 
-      // ✅ Store account type locally before redirecting
-      // For example, show a prompt or use a dropdown in your UI
-      // const accountType = window
-      //   .prompt("Are you signing up as a 'seller' or 'customer'?")
-      //   ?.toLowerCase();
+      // ✅ Save to localStorage
+      localStorage.setItem("username", data.name);
+      localStorage.setItem("email", data.email);
 
-      // if (accountType === "seller" || accountType === "customer") {
-      //   localStorage.setItem("accountType", accountType);
-      // } else {
-      //   localStorage.setItem("accountType", "customer"); // default
-      // }
-
-      // ✅ Save clean user data to Redux
+      // ✅ Update Redux store
       dispatch(setUser(safeUser));
 
-      // // ✅ Redirect user based on accountType
-      // if (accountType === "seller") {
-      //   navigate("/seller-dashboard");
-      // } else {
-      //   navigate("/products");
-      // }
+      // ✅ Redirect (adjust route as needed)
+      navigate("/profile");
     } catch (err: unknown) {
       if (err instanceof Error) {
         dispatch(setError(err.message));
@@ -95,9 +83,7 @@ const SignUp: React.FC = () => {
     }
   };
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const togglePassword = () => setShowPassword(!showPassword);
 
   if (loading) {
     return (
@@ -116,7 +102,7 @@ const SignUp: React.FC = () => {
         <img src="/images/novatech.svg" alt="Novatech Logo" className="mb-6" />
         <h2 className="text-xl font-bold text-center">Sign Up</h2>
 
-        {/* Name field */}
+        {/* Name */}
         <input
           type="text"
           placeholder="Name"
@@ -127,6 +113,7 @@ const SignUp: React.FC = () => {
           <p className="text-red-500 text-sm">{errors.name.message}</p>
         )}
 
+        {/* Email */}
         <input
           type="email"
           placeholder="Email"
@@ -137,6 +124,7 @@ const SignUp: React.FC = () => {
           <p className="text-red-500 text-sm">{errors.email.message}</p>
         )}
 
+        {/* Password */}
         <div className="relative w-full">
           <input
             type={showPassword ? "text" : "password"}
@@ -182,6 +170,7 @@ const SignUp: React.FC = () => {
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
@@ -191,6 +180,7 @@ const SignUp: React.FC = () => {
         </button>
 
         {error && <p className="text-red-500 text-sm">{error}</p>}
+
         <p>
           Already have an account?{" "}
           <a href="/signin" className="text-pink hover:underline">

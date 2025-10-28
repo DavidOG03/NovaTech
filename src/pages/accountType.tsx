@@ -23,7 +23,7 @@ export default function AccountType() {
         Join as Customer or Vendor
       </h1>
 
-      <div className="flex justify-center items-stretch gap-[84px] mb-10">
+      <div className="flex justify-center items-stretch gap-8 mb-10">
         <button
           onClick={() => setAccountType("Customer")}
           className={`px-8 pt-8 pb-[70px] border border-bordergray rounded-3xl max-w-[272px] text-2xl font-medium text-left flex flex-col justify-between items-start transition-all ${

@@ -54,8 +54,19 @@ const SellerSignUp: React.FC = () => {
         });
       }
 
-      // Update Redux store with the refreshed user object
-      dispatch(setUser({ ...userCredential.user, displayName: data.name }));
+      // ✅ Construct safe user object
+      const firebaseUser = userCredential.user;
+      const safeUser = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        displayName: data.name,
+        photoURL: generateInitialsAvatar(data.name),
+      };
+      // ✅ Save to localStorage
+      localStorage.setItem("username", data.name);
+      localStorage.setItem("email", data.email);
+
+      dispatch(setUser(safeUser));
 
       navigate("/seller-dashboard"); // redirect to home after signup
     } catch (err: unknown) {

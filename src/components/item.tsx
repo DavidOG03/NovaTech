@@ -30,6 +30,22 @@ const Item: React.FC<ItemProps> = ({
   const { updateCartItemCount, removeFromCart, getCartCount } =
     useProductContext();
 
+  const cartCount = getCartCount();
+
+  const handleDecrease = () => {
+    if (itemCount > 1) {
+      const newCount = itemCount - 1;
+      setItemCount(newCount);
+      onUpdateQuantity?.(newCount);
+    }
+  };
+
+  const handleIncrease = () => {
+    const newCount = itemCount + 1;
+    setItemCount(newCount);
+    onUpdateQuantity?.(newCount);
+  };
+
   return (
     <div className="cart flex flex-col md:flex-row justify-start md:justify-between lg:justify-between lg:items-center gap-4 w-full">
       <div className="left flex justify-start items-center gap-[1.25rem]">
@@ -47,14 +63,14 @@ const Item: React.FC<ItemProps> = ({
         <div className="count flex w-full max-w-[500px] mx-auto flex-auto justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-grey">
           <button
             className="text-[1.5rem] cursor-pointer"
-            onClick={() => onUpdateQuantity?.(count - 1)}
+            onClick={handleDecrease}
           >
             -
           </button>
-          <span className="text-base px-1">{count}</span>
+          <span className="text-base px-1">{itemCount}</span>
           <button
             className="text-[1.5rem] cursor-pointer"
-            onClick={() => onUpdateQuantity?.(count + 1)}
+            onClick={handleIncrease}
           >
             +
           </button>
