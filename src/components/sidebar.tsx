@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { CloseSquare } from "react-iconly";
 import { useProductContext } from "@/context/ProductContext";
 
@@ -12,6 +12,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const [active, setActive] = useState(0);
   const [indicatorTop, setIndicatorTop] = useState(0);
   const linkRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const { getCartCount, getCartTotal, orders } = useProductContext();
   const cartCount = getCartCount();
@@ -22,7 +24,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     linkRefs.current = linkRefs.current.slice(0, navItems.length);
   }, []);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (linkRefs.current[active]) {
@@ -226,6 +227,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       link: "/support",
     },
   ];
+
+  // Automatically detect active route based on location
+  const activeIndex = navItems.findIndex((item) =>
+    location.pathname.startsWith(item.link)
+  );
+
+  // Update indicator position whenever active link changes
+  useEffect(() => {
+    if (linkRefs.current[activeIndex]) {
+      setIndicatorTop(linkRefs.current[activeIndex]!.offsetTop);
+    }
+  }, [activeIndex, location.pathname]);
 
   return (
     <div

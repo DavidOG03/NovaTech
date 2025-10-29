@@ -198,6 +198,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   };
   const clearOrders = () => {
     setOrders([]);
+    orders.length === 0;
   };
 
   const getCartCount = () => {

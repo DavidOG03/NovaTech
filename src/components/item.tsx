@@ -21,16 +21,16 @@ const Item: React.FC<ItemProps> = ({
 }) => {
   const [itemCount, setItemCount] = useState(count);
 
-  const handleCountChange = (newCount: number) => {
-    if (newCount >= 0) {
-      setItemCount(newCount);
-    }
-  };
+  // const handleCountChange = (newCount: number) => {
+  //   if (newCount >= 0) {
+  //     setItemCount(newCount);
+  //   }
+  // };
 
   const { updateCartItemCount, removeFromCart, getCartCount } =
     useProductContext();
 
-  const cartCount = getCartCount();
+  // const cartCount = getCartCount();
 
   const handleDecrease = () => {
     if (itemCount > 1) {
@@ -49,8 +49,8 @@ const Item: React.FC<ItemProps> = ({
   return (
     <div className="cart flex flex-col md:flex-row justify-start md:justify-between lg:justify-between lg:items-center gap-4 w-full">
       <div className="left flex justify-start items-center gap-[1.25rem]">
-        <div className="image grid place-items-center w-[100px] h-[100px] bg-grey rounded-[0.75rem]">
-          <img src={image} alt={name} />
+        <div className="image grid place-items-center object-cover w-[100px] h-[100px] bg-grey rounded-[0.75rem]">
+          <img src={image} alt={name} className="object-cover w-full" />
         </div>
         <div className="info flex flex-col justify-center items-start gap-2 md:gap-2">
           <span className="text-black text-[18px] md:text-[1.25rem]">
