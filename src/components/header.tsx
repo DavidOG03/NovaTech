@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useProductContext } from "@/context/ProductContext";
 import { Bell } from "lucide-react";
 import React, { ChangeEvent, useEffect, useState } from "react";
+import { Link } from "react-router";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -17,12 +18,37 @@ const Header: React.FC<HeaderProps> = ({
   handleSearch,
 }) => {
   const [filterActive, setFilterActive] = React.useState<boolean>(false);
-  const [userName, setUserName] = useState<string>("");
+  const [userName, setUserName] = useState<string>("John Doe");
   const { user } = useAuth();
+  const [theme, setTheme] = useState<string>(
+    localStorage.getItem("theme") || "light"
+  );
+
+  useEffect(() => {
+    // Update theme state whenever theme changes
+    const handleThemeChange = () => {
+      setTheme(localStorage.getItem("theme") || "light");
+    };
+
+    // Listen for theme changes triggered elsewhere
+    window.addEventListener("storage", handleThemeChange);
+
+    // Optional: also check body class if you use Tailwind's dark mode
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains("dark");
+      setTheme(isDark ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     // Fetch user name from localStorage or your API
-    const storedName = user?.name;
+    const storedName = user?.name || "John Doe";
     setUserName(storedName);
   }, []);
 
@@ -38,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({
     <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
       {/* Left: Logo and Mobile Menu */}
       <div className="flex items-center gap-4">
-        {localStorage.theme === "dark" ? (
+        {theme === "dark" ? (
           <img
             src="/images/novatech-light.webp"
             alt="Novatech logo"
@@ -73,25 +99,24 @@ const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
 
-          <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br  hover:from-gray-100 hover:to-gray-100 text-white rounded-[3rem] py-2 px-4 cursor-pointer">
+          <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br  hover:from-gray-300 hover:to-gray-300 hover:text-black text-white rounded-[3rem] py-2 px-4 cursor-pointer">
             Search
           </button>
         </div>
-        <a
-          className="bg-white relative py-2 px-2 rounded-full grid content-center cursor-pointer hover:bg-gray-500 
+        <Link
+          className="bg-red relative py-2 px-2 rounded-full grid content-center cursor-pointer hover:bg-red-700 
             "
-          href="/cart"
+          to="/cart"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24px"
             height="24px"
             viewBox="0 0 24 24"
-            className="hover:text-black"
           >
             <path
               fill="none"
-              stroke="#fff"
+              stroke="#ffffff"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={1.5}
@@ -101,12 +126,12 @@ const Header: React.FC<HeaderProps> = ({
           {cartCount > 0 && (
             <span className="bg-red-500 w-2 h-2 rounded-full absolute top-0 right-0"></span>
           )}
-        </a>
+        </Link>
       </div>
 
       {/* Right: Notification and Profile */}
       <div className="hug hidden md:flex justify-end items-center gap-4">
-        <button className="notification-bell bg-white p-2 rounded-full grid content-center cursor-pointer hover:bg-gray-500">
+        <button className="notification-bell bg-white p-2 rounded-full grid content-center cursor-pointer hover:bg-grey">
           <Bell className="w-6 h-6 text-light-black" />
         </button>
         <div className="profile grid grid-cols-[auto_1fr] gap-1 ">

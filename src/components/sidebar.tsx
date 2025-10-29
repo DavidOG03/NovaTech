@@ -13,9 +13,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const [indicatorTop, setIndicatorTop] = useState(0);
   const linkRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const { getCartCount, getCartTotal } = useProductContext();
+  const { getCartCount, getCartTotal, orders } = useProductContext();
   const cartCount = getCartCount();
   const totalCount = getCartTotal();
+  const totalOrder = orders.length > 0;
 
   // Initialize refs array with proper length
   useEffect(() => {
@@ -270,9 +271,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             {item.label === "Cart" && cartCount > 0 && (
               <span className="mr-auto bg-red-500 text-white text-xs rounded-full w-2 h-2 animate-pulse text-center"></span>
             )}
-            {/* {item.label === "Orders" && orderUpdate && (
+            {item.label === "Orders" && totalOrder && (
               <span className="mr-auto bg-red-500 text-white text-xs rounded-full w-2 h-2 animate-pulse text-center"></span>
-            )} */}
+            )}
           </div>
         ))}
       </div>

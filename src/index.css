@@ -10,6 +10,7 @@
   --grey: #f7f7f7;
   --white: #ffffff;
   --black: #080808;
+  --red: #9c0707;
 }
 
 @theme {
@@ -20,15 +21,17 @@
   --color-grey: var(--grey);
   --color-white: var(--white);
   --color-black: var(--black);
+  --color-red: var(--red);
 }
 
 .dark {
-  --bg-color: #c76baa;
+  --bg-color: #a3677a;
   --bg-pink: #d3a7c6;
-  --light-black: #adadad;
+  --light-black: #bfb5af;
   --grey: #181818;
-  --white: #000000;
+  --white: #080808;
   --black: #f7f7f7;
+  --red: #5c0909;
 }
 
 .link {

@@ -25,30 +25,25 @@ const Profile: React.FC = () => {
   }
 
   useEffect(() => {
-    // Check saved preference or system preference on mount
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+      setTheme(savedTheme);
     } else {
-      document.documentElement.classList.remove("dark");
-      setTheme("light");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      document.documentElement.classList.toggle("dark", prefersDark);
+      setTheme(prefersDark ? "dark" : "light");
+      localStorage.setItem("theme", prefersDark ? "dark" : "light");
     }
   }, []);
 
   const toggleTheme = () => {
-    if (theme === "dark") {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
-    }
+    const newTheme = theme === "dark" ? "light" : "dark";
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    localStorage.setItem("theme", newTheme);
+    setTheme(newTheme);
   };
 
   return (
@@ -119,10 +114,10 @@ const Profile: React.FC = () => {
                 className=" border-0 cursor-pointer rounded-lg"
                 onClick={toggleTheme}
               >
-                {theme === "dark" ? (
-                  <Sun color="#fff" />
-                ) : (
+                {theme === "light" ? (
                   <Moon color="#222" />
+                ) : (
+                  <Sun color="#fff" />
                 )}
               </button>
             </div>
@@ -131,7 +126,7 @@ const Profile: React.FC = () => {
 
         {/* Security */}
         <div>
-          <h3 className="text-lg font-semibold border-b border-b-grey pb-2 mb-4">
+          <h3 className="text-lg text-black font-semibold border-b border-b-grey pb-2 mb-4">
             Security
           </h3>
           <div className="space-y-4">

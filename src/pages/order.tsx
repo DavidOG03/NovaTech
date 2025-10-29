@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { useProductContext } from "@/context/ProductContext";
 import { Package, ShoppingBag, AlertCircle } from "lucide-react";
+import { Link } from "react-router";
+import toast from "react-hot-toast";
 
 const Orders: React.FC = () => {
   const { orders } = useProductContext();
+
+  // local copy of orders for UI updates
+  const [localOrders, setLocalOrders] = useState(orders);
+
+  // handle cancel/delete
+  const handleCancelOrder = (orderId: string | number) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+
+    // remove order from UI
+    const updatedOrders = localOrders.filter((order) => order.id !== orderId);
+    setLocalOrders(updatedOrders);
+
+    toast.success("Order cancelled successfully!");
+  };
 
   return (
     <div className="mt-22 px-6 bg-white rounded-3xl py-10">
@@ -12,7 +28,7 @@ const Orders: React.FC = () => {
         Your Orders
       </h2>
 
-      {orders.length === 0 ? (
+      {localOrders.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-22 text-gray-500">
           <AlertCircle size={48} className="mb-4" />
           <p className="text-lg font-medium">
@@ -20,26 +36,26 @@ const Orders: React.FC = () => {
           </p>
           <p className="text-sm">
             Go back to the{" "}
-            <a href="/products" className="text-background hover:underline">
+            <Link to="/products" className="text-background hover:underline">
               store
-            </a>{" "}
+            </Link>{" "}
             and add items to your cart.
           </p>
         </div>
       ) : (
         <div className="space-y-6">
-          {orders.map((order) => (
+          {localOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white text-gray-700 p-5 rounded-2xl shadow-md border border-gray-800"
+              className="bg-white text-light-black p-5 rounded-2xl shadow-md border border-gray-800"
             >
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg font-semibold text-pink">
                     Order ID: <span className="text-primary">{order.id}</span>
                   </h3>
-                  <p className="text-sm text-gray-400">Date: {order.date}</p>
+                  <p className="text-sm text-light-black">Date: {order.date}</p>
                 </div>
                 <span
                   className={`text-sm px-3 py-1 rounded-full ${
@@ -69,11 +85,13 @@ const Orders: React.FC = () => {
                       className="w-16 h-16 object-contain rounded-lg"
                     />
                     <div>
-                      <h4 className="text-sm font-semibold">{item.name}</h4>
-                      <p className="text-xs text-gray-400">
+                      <h4 className="text-sm font-semibold text-black">
+                        {item.name}
+                      </h4>
+                      <p className="text-xs text-light-black">
                         Quantity: {item.quantity}
                       </p>
-                      <p className="text-sm font-bold text-primary">
+                      <p className="text-sm font-bold text-black">
                         ₦{item.price.toLocaleString()}
                       </p>
                     </div>
@@ -83,13 +101,26 @@ const Orders: React.FC = () => {
 
               {/* Footer */}
               <div className="flex justify-between items-center border-t border-gray-700 pt-3">
-                <div className="flex items-center gap-2 text-sm text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-light-black">
                   <ShoppingBag size={16} />
                   <span>{order.items.length} items</span>
                 </div>
-                <p className="font-semibold text-primary">
-                  Total: ₦{order.total.toLocaleString()}
-                </p>
+
+                <div className="flex items-center gap-4">
+                  <p className="font-semibold text-pink">
+                    Total: ₦{order.total.toLocaleString()}
+                  </p>
+
+                  {/* Cancel Order button */}
+                  {order.status === "Pending" && (
+                    <button
+                      onClick={() => handleCancelOrder(order.id)}
+                      className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                    >
+                      Cancel Order
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}

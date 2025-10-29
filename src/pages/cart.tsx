@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import Card from "../components/card.js";
 import Item from "../components/item.js";
 import { useProductContext } from "@/context/ProductContext.js";
+import { Link } from "react-router";
+import toast from "react-hot-toast";
 
 interface CartProps {
   numberOfItems: number;
@@ -19,10 +21,19 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
     clearCart,
   } = useProductContext();
 
-  const cartCount = getCartCount();
   const totalCount = getCartTotal();
   const deliveryFee = Math.ceil(0.001 * totalCount);
   const totalWithDelivery = totalCount + deliveryFee;
+
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
+    updateOrder(); // your existing order logic
+    toast.success("Items have been added to your order page!");
+  };
 
   return (
     <div className="cart-container gap-5 min-h-screen w-full pt-[90px] pb-8 ">
@@ -30,7 +41,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
         <div className="bg-white rounded-2xl p-4 md:px-[1.5rem] md:py-[1.825rem] flex-auto lg:min-w-[520px]">
           <div className="flex justify-between items-center pb-4 border border-[transparent] border-b-[#EFEFEF] ">
             <div className="flex justify-start items-center gap-1 text-black">
-              Cart <span>({cartCount})</span>
+              Cart <span>({cart.length})</span>
             </div>
             <button
               className="flex justify-end items-center gap-1 text-black"
@@ -65,18 +76,21 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
                   onRemove={() => removeFromCart(item.id)}
                 />
               ))}
+              <Link to="/products" className="text-black hover:underline">
+                Continue Shopping
+              </Link>
             </div>
           ) : (
             <div className="w-full min-h-[200px] flex flex-col justify-center items-center">
               <span className="text-light-black block">
                 Your cart is empty.
               </span>
-              <a
-                href="/products"
+              <Link
+                to="/products"
                 className="text-pink hover:underline block mt-4"
               >
                 Start Shopping
-              </a>
+              </Link>
             </div>
           )}
         </div>
@@ -106,7 +120,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
           </div>
           <button
             className="bg-background w-full md:max-w-[400px] py-3 px-4 rounded-3xl text-[18px] mt-[18px] text-white hover:bg-pink cursor-pointer mx-auto"
-            onClick={updateOrder}
+            onClick={handleCheckout}
           >
             Proceed to checkout
           </button>

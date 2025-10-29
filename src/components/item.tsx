@@ -62,14 +62,14 @@ const Item: React.FC<ItemProps> = ({
       <div className="right flex flex-col justify-center items-center md:items-end gap-2">
         <div className="count flex w-full max-w-[500px] mx-auto flex-auto justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-grey">
           <button
-            className="text-[1.5rem] cursor-pointer"
+            className="text-[1.5rem] text-black cursor-pointer"
             onClick={handleDecrease}
           >
             -
           </button>
-          <span className="text-base px-1">{itemCount}</span>
+          <span className="text-base text-black px-1">{itemCount}</span>
           <button
-            className="text-[1.5rem] cursor-pointer"
+            className="text-[1.5rem] text-black cursor-pointer"
             onClick={handleIncrease}
           >
             +

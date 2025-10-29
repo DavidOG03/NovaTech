@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { CloseSquare } from "react-iconly";
 import { Link, useNavigate, useParams } from "react-router";
 import Card from "./card";
+import toast from "react-hot-toast";
 
 const ProductDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const ProductDetails: React.FC = () => {
     for (let i = 0; i < count; i++) {
       addToCart(product);
     }
-    alert(`${count} x ${product.name} added to cart!`);
+    toast.success(`${count} x ${product.name} added to cart!`);
     // Reset count after adding
     setCount(1);
   };

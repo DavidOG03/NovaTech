@@ -21,6 +21,7 @@ import Profile from "./pages/profile";
 import Orders from "./pages/order";
 import AccountType from "./pages/accountType";
 import SellerDashboard from "./pages/sellerDashboard";
+import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
@@ -109,6 +110,7 @@ const App: React.FC = () => {
     <AuthProvider>
       <ProductProvider>
         <Router>
+          <Toaster position="top-center" />
           <Routes>
             <Route
               path="/"
@@ -138,13 +140,13 @@ const App: React.FC = () => {
               path="/products"
               element={
                 <ProtectedRoute>
-                <DashboardLayout>
-                  <Dashboard
-                    filterEnabled={isFiltered}
-                    searchQuery={searchQuery}
-                    // handleItemClick={() => setIsItemClicked(true)}
-                  />
-                </DashboardLayout>
+                  <DashboardLayout>
+                    <Dashboard
+                      filterEnabled={isFiltered}
+                      searchQuery={searchQuery}
+                      // handleItemClick={() => setIsItemClicked(true)}
+                    />
+                  </DashboardLayout>
                 </ProtectedRoute>
               }
             />
@@ -152,9 +154,9 @@ const App: React.FC = () => {
               path="/cart"
               element={
                 <ProtectedRoute>
-                <DashboardLayout>
-                  <Cart numberOfItems={0} count={0} />
-                </DashboardLayout>
+                  <DashboardLayout>
+                    <Cart numberOfItems={0} count={0} />
+                  </DashboardLayout>
                 </ProtectedRoute>
               }
             />
@@ -162,9 +164,9 @@ const App: React.FC = () => {
               path="/order"
               element={
                 <ProtectedRoute>
-                <DashboardLayout>
-                  <Orders />
-                </DashboardLayout>
+                  <DashboardLayout>
+                    <Orders />
+                  </DashboardLayout>
                 </ProtectedRoute>
               }
             />
@@ -172,9 +174,9 @@ const App: React.FC = () => {
               path="/product/:id"
               element={
                 <ProtectedRoute>
-                <DashboardLayout>
-                  <ProductDetails />
-                </DashboardLayout>
+                  <DashboardLayout>
+                    <ProductDetails />
+                  </DashboardLayout>
                 </ProtectedRoute>
               }
             />
@@ -182,9 +184,9 @@ const App: React.FC = () => {
               path="/support"
               element={
                 <ProtectedRoute>
-                <DashboardLayout>
-                  <CustomerSupport />
-                </DashboardLayout>
+                  <DashboardLayout>
+                    <CustomerSupport />
+                  </DashboardLayout>
                 </ProtectedRoute>
               }
             />
@@ -192,9 +194,9 @@ const App: React.FC = () => {
               path="/profile"
               element={
                 <ProtectedRoute>
-                <DashboardLayout>
-                  <Profile />
-                </DashboardLayout>
+                  <DashboardLayout>
+                    <Profile />
+                  </DashboardLayout>
                 </ProtectedRoute>
               }
             />
