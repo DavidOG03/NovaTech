@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
     <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
       {/* Left: Logo and Mobile Menu */}
       <div className="flex items-center gap-4">
-        {localStorage.getItem("theme") === "dark" ? (
+        {localStorage.theme === "dark" ? (
           <img
             src="/images/novatech-light.webp"
             alt="Novatech logo"

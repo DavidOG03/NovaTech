@@ -6,7 +6,7 @@ const Orders: React.FC = () => {
   const { orders } = useProductContext();
 
   return (
-    <div className="pt-20 px-6 bg-white">
+    <div className="pt-24 px-6 bg-white">
       <h2 className="text-2xl text-black font-semibold mb-6 flex items-center gap-2">
         <Package className="text-primary" />
         Your Orders
