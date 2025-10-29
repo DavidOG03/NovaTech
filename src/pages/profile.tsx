@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 
 const Profile: React.FC = () => {
-  const [userName, setUserName] = useState<string>("Guest User");
+  const [userName, setUserName] = useState<string>("John Doe");
   const [userEmail, setUserEmail] = useState<string>("Not Available");
 
   useEffect(() => {
     // Fetch user name and email from localStorage or API
-    const storedName = localStorage.getItem("name") || "Guest User";
+    const storedName = localStorage.getItem("name") || "John Doe";
     const storedEmail = localStorage.getItem("email") || "Not Available";
 
     setUserName(storedName);

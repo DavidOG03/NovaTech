@@ -21,6 +21,22 @@ interface CartItem extends Product {
   count: number;
 }
 
+interface OrderItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+interface Order {
+  id: string;
+  date: string;
+  status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
+  total: number;
+  items: OrderItem[];
+}
+
 interface ProductContextType {
   products: Product[];
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
@@ -31,6 +47,8 @@ interface ProductContextType {
   clearCart: () => void;
   getCartCount: () => number;
   getCartTotal: () => number;
+  orders: Order[];
+  updateOrder: () => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -44,7 +62,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       price: "N1,400,050",
       lastPrice: "N1,500,000",
       description:
-        "512 GB, Fast charging, Wireless charging, Titanium body, 3,561 mAh battery, A18 Bionic chip, 48MP main camera, IOS 18, Face ID  ",
+        "512 GB, Fast charging, Wireless charging, Titanium body, 3,561 mAh battery, A18 Bionic chip, 48MP main camera, IOS 18, Face ID",
       quantity: 5,
       color: "Black",
     },
@@ -95,18 +113,26 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   ]);
 
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
-  // Load cart from memory on mount
+  // Load cart & orders from memory on mount
   useEffect(() => {
     const savedCart = (window as any).__cartData || [];
+    const savedOrders = (window as any).__orderData || [];
     setCart(savedCart);
+    setOrders(savedOrders);
   }, []);
 
-  // Save cart to memory whenever it changes
+  // Save cart & orders to memory whenever they change
   useEffect(() => {
     (window as any).__cartData = cart;
   }, [cart]);
 
+  useEffect(() => {
+    (window as any).__orderData = orders;
+  }, [orders]);
+
+  // Add to Cart
   const addToCart = (product: Product) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
@@ -119,6 +145,39 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  // Add Cart to Orders
+  const updateOrder = () => {
+    if (cart.length === 0) return;
+
+    // Convert prices to numbers and compute total
+    const orderItems: OrderItem[] = cart.map((item) => {
+      const priceNum = parseFloat(item.price.replace(/[N,]/g, ""));
+      return {
+        id: item.id,
+        name: item.name,
+        price: priceNum * item.count,
+        quantity: item.count,
+        image: item.image,
+      };
+    });
+
+    const total = orderItems.reduce((acc, item) => acc + item.price, 0);
+
+    // Create new order
+    const newOrder: Order = {
+      id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`, // Random ID like ORD-2345
+      date: new Date().toISOString().split("T")[0], // e.g., 2025-10-29
+      status: "Pending",
+      total,
+      items: orderItems,
+    };
+
+    setOrders((prev) => [...prev, newOrder]);
+    clearCart();
+     // empty the cart after placing an order
+  };
+
+  // --- Cart Helpers ---
   const updateCartItemCount = (id: number, count: number) => {
     if (count <= 0) {
       removeFromCart(id);
@@ -160,6 +219,8 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
         clearCart,
         getCartCount,
         getCartTotal,
+        orders,
+        updateOrder,
       }}
     >
       {children}

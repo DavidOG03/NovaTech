@@ -19,7 +19,7 @@ export default function AccountType() {
 
   return (
     <div className="account-type-selection bg-white p-8 w-full h-full pt-[100px]">
-      <h1 className="text-[40px] font-medium mb-14 text-center">
+      <h1 className="text-3xl md:text-5xl font-medium mb-14 text-center">
         Join as Customer or Vendor
       </h1>
 
@@ -44,7 +44,7 @@ export default function AccountType() {
               ></div>
             </div>
           </div>
-          <p className="max-w-[162px] -tracking-[0.25px]">
+          <p className="max-w-lg -tracking-[0.25px] text-base md:text-2xl">
             I’m a Customer, looking to buy
           </p>
         </button>
@@ -58,18 +58,18 @@ export default function AccountType() {
           <div className="flex flex-row justify-between items-center mb-[40px] w-full">
             <img src="/images/vendor-icon.svg" alt="vendor icon" />
             <div
-              className={`checkmark w-[20px] h-[20px] rounded-full border border-gray grid place-items-center ${
+              className={`checkmark w-5 h-5 rounded-full border border-gray grid place-items-center ${
                 accountType === "Vendor" ? "border-pink" : ""
               }`}
             >
               <div
-                className={`checkmark-small w-[10px] h-[10px] rounded-full ${
+                className={`checkmark-small w-2.5 h-2.5 rounded-full ${
                   accountType === "Vendor" ? "bg-pink" : "bg-white"
                 }`}
               ></div>
             </div>
           </div>
-          <p className="max-w-[162px] -tracking-[0.25px]">
+          <p className="max-w-lg text-base md:text-2xl -tracking-[0.25px]">
             I’m a Vendor, looking to sell
           </p>
         </button>
@@ -90,7 +90,7 @@ export default function AccountType() {
             : "Please select an account type"}
         </button>
 
-        <p className="text-center mt-6 max-w-[400px] mx-auto text-sm text-gray-500">
+        <p className="text-center mt-6 max-w-2xl mx-auto text-sm text-gray-500">
           By signing up as a Vendor, you agree to our Terms of Service and
           Privacy Policy.
         </p>

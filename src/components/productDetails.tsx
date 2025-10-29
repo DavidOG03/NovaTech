@@ -103,7 +103,7 @@ const ProductDetails: React.FC = () => {
               </button>
             </div>
             <button
-              className="add-to-cart bg-background w-full max-w-[200px] md:flex-1 py-3 px-6 rounded-[50px] text-base text-white cursor-pointer hover:opacity-90 transition-opacity font-semibold"
+              className="add-to-cart bg-background w-full md:max-w-[300px] md:flex-1 py-3 px-6 rounded-[50px] text-base text-white cursor-pointer hover:opacity-90 transition-opacity font-semibold"
               onClick={handleAddToCart}
             >
               Add to cart

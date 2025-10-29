@@ -265,16 +265,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               }
             }}
           >
-            {/* <img
-              src={active === index ? item.activeIcon : item.icon}
-              alt={item.label}
-              className="w-6 h-6"
-            /> */}
             {active === index ? item.activeIcon : item.icon}
             <span>{item.label}</span>
             {item.label === "Cart" && cartCount > 0 && (
               <span className="mr-auto bg-red-500 text-white text-xs rounded-full w-2 h-2 animate-pulse text-center"></span>
             )}
+            {/* {item.label === "Orders" && orderUpdate && (
+              <span className="mr-auto bg-red-500 text-white text-xs rounded-full w-2 h-2 animate-pulse text-center"></span>
+            )} */}
           </div>
         ))}
       </div>

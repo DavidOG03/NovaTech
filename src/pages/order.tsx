@@ -1,151 +1,92 @@
-// src/pages/Orders.tsx
-import React, { useState } from "react";
-
-interface OrderItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
-
-interface Order {
-  id: string;
-  date: string;
-  status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
-  total: number;
-  items: OrderItem[];
-}
-
-const sampleOrders: Order[] = [
-  {
-    id: "ORD-1001",
-    date: "2025-09-01",
-    status: "Delivered",
-    total: 1249,
-    items: [
-      {
-        id: "P1",
-        name: "iPhone 15 Pro",
-        price: 999,
-        quantity: 1,
-        image: "https://via.placeholder.com/60x60.png?text=iPhone",
-      },
-      {
-        id: "P2",
-        name: "AirPods Pro",
-        price: 250,
-        quantity: 1,
-        image: "https://via.placeholder.com/60x60.png?text=AirPods",
-      },
-    ],
-  },
-  {
-    id: "ORD-1002",
-    date: "2025-09-15",
-    status: "Shipped",
-    total: 599,
-    items: [
-      {
-        id: "P3",
-        name: "Samsung Galaxy Tab S9",
-        price: 599,
-        quantity: 1,
-        image: "https://via.placeholder.com/60x60.png?text=Galaxy+Tab",
-      },
-    ],
-  },
-  {
-    id: "ORD-1003",
-    date: "2025-09-20",
-    status: "Pending",
-    total: 120,
-    items: [
-      {
-        id: "P4",
-        name: "Gaming Mouse",
-        price: 60,
-        quantity: 2,
-        image: "https://via.placeholder.com/60x60.png?text=Mouse",
-      },
-    ],
-  },
-];
-
-const statusColors: Record<Order["status"], string> = {
-  Pending: "bg-yellow-100 text-yellow-800",
-  Shipped: "bg-blue-100 text-blue-800",
-  Delivered: "bg-green-100 text-green-800",
-  Cancelled: "bg-red-100 text-red-800",
-};
+import React from "react";
+import { useProductContext } from "@/context/ProductContext";
+import { Package, ShoppingBag, AlertCircle } from "lucide-react";
 
 const Orders: React.FC = () => {
-  const [expanded, setExpanded] = useState<string | null>(null);
-
-  const toggleExpand = (orderId: string) => {
-    setExpanded(expanded === orderId ? null : orderId);
-  };
+  const { orders } = useProductContext();
 
   return (
-    <div className="min-h-screen bg-grey py-22 flex justify-center">
-      <div className="w-full max-w-5xl bg-white rounded-2xl p-6">
-        <h2 className="text-2xl font-semibold mb-6">My Orders</h2>
+    <div className="pt-20 px-6">
+      <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+        <Package className="text-primary" />
+        Your Orders
+      </h2>
 
-        <div className="space-y-4">
-          {sampleOrders.map((order) => (
+      {orders.length === 0 ? (
+        <div className="flex flex-col items-center justify-center mt-22 text-gray-500">
+          <AlertCircle size={48} className="mb-4" />
+          <p className="text-lg font-medium">You haven’t placed any orders yet.</p>
+          <p className="text-sm">Go back to the <a href="/products" className="text-background hover:underline">store</a> and add items to your cart.</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {orders.map((order) => (
             <div
               key={order.id}
-              className="border rounded-lg p-4 hover:shadow-md transition"
+              className="bg-white text-gray-700 p-5 rounded-2xl shadow-md border border-gray-800"
             >
-              {/* Order Header */}
-              <div className="flex justify-between items-center">
+              {/* Header */}
+              <div className="flex justify-between items-center mb-4">
                 <div>
-                  <p className="font-semibold">Order #{order.id}</p>
-                  <p className="text-sm text-gray-500">Date: {order.date}</p>
+                  <h3 className="text-lg font-semibold">
+                    Order ID: <span className="text-primary">{order.id}</span>
+                  </h3>
+                  <p className="text-sm text-gray-400">Date: {order.date}</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span
-                    className={`px-3 py-1 text-sm rounded-full ${
-                      statusColors[order.status]
-                    }`}
-                  >
-                    {order.status}
-                  </span>
-                  <p className="font-medium">${order.total}</p>
-                  <button
-                    onClick={() => toggleExpand(order.id)}
-                    className="text-blue-600 hover:underline text-sm"
-                  >
-                    {expanded === order.id ? "Hide Details" : "View Details"}
-                  </button>
-                </div>
+                <span
+                  className={`text-sm px-3 py-1 rounded-full ${
+                    order.status === "Pending"
+                      ? "bg-yellow-500/20 text-yellow-400"
+                      : order.status === "Shipped"
+                      ? "bg-blue-500/20 text-blue-400"
+                      : order.status === "Delivered"
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-red-500/20 text-red-400"
+                  }`}
+                >
+                  {order.status}
+                </span>
               </div>
 
-              {/* Order Details */}
-              {expanded === order.id && (
-                <div className="mt-4 border-t pt-4 space-y-3">
-                  {order.items.map((item) => (
-                    <div key={item.id} className="flex items-center gap-4">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 rounded border"
-                      />
-                      <div className="flex-1">
-                        <p className="font-medium">{item.name}</p>
-                        <p className="text-sm text-gray-500">
-                          Qty: {item.quantity}
-                        </p>
-                      </div>
-                      <p className="font-medium">${item.price}</p>
+              {/* Items */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                {order.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-grey rounded-xl p-4 flex items-center gap-4"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 object-contain rounded-lg"
+                    />
+                    <div>
+                      <h4 className="text-sm font-semibold">{item.name}</h4>
+                      <p className="text-xs text-gray-400">
+                        Quantity: {item.quantity}
+                      </p>
+                      <p className="text-sm font-bold text-primary">
+                        ₦{item.price.toLocaleString()}
+                      </p>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="flex justify-between items-center border-t border-gray-700 pt-3">
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <ShoppingBag size={16} />
+                  <span>{order.items.length} items</span>
                 </div>
-              )}
+                <p className="font-semibold text-primary">
+                  Total: ₦{order.total.toLocaleString()}
+                </p>
+              </div>
             </div>
           ))}
         </div>
-      </div>
+      )}
     </div>
   );
 };

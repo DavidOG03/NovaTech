@@ -25,7 +25,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   // If user is not authenticated, send to SignIn
   if (!user)
-    return <Navigate to="/signin" replace state={{ from: location }} />;
+    return <Navigate to="/" replace state={{ from: location }} />;
 
   // If user is authenticated but no account type selected yet
   const accountType = localStorage.getItem("accountType");

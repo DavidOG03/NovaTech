@@ -70,11 +70,10 @@ const Dashboard: React.FC<DashboardProps> = ({
   const products: ProductItem[] = [
     {
       id: 1,
-
       image: "/images/iphone.png",
-      name: "Iphone 16 Pro",
+      name: "Iphone 13 Pro",
       price: "N1,400,050",
-      lastPrice: "N1,600,050",
+      lastPrice: "N1,500,000",
       category: "Phones",
     },
     {
@@ -82,23 +81,31 @@ const Dashboard: React.FC<DashboardProps> = ({
       image: "/images/oraimo_pods.png",
       name: "Oraimo Pods",
       price: "N18,000",
-      lastPrice: "N26,000",
+      lastPrice: "N25,000",
       category: "Accessories",
     },
     {
       id: 3,
-      image: "/images/ps5_portable.png",
-      name: "PS5 Portable",
+      image: "/images/headphone.webp",
+      name: "Sony Headphones",
       price: "N480,000",
-      lastPrice: "N550,000",
-      category: "Consoles",
+      lastPrice: "N520,000",
+      category: "Accessories",
     },
     {
       id: 4,
+      image: "/images/ps5_portable.png",
+      name: "PS5 Portable",
+      price: "N480,000",
+      lastPrice: "N520,000",
+      category: "Consoles",
+    },
+    {
+      id: 5,
       image: "/images/tablet.png",
       name: "Samsung Tablet",
       price: "N480,000",
-      lastPrice: "N550,000",
+      lastPrice: "N520,000",
       category: "Tablets",
     },
   ];

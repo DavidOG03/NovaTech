@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     // Fetch user name from localStorage or your API
-    const storedName = localStorage.getItem("username") || "Guest User";
+    const storedName = localStorage.getItem("username") || "John Doe";
     setUserName(storedName);
   }, []);
 

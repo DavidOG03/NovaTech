@@ -13,6 +13,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
     cart,
     removeFromCart,
     updateCartItemCount,
+    updateOrder,
     getCartTotal,
     getCartCount,
     clearCart,
@@ -20,9 +21,9 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
 
   const cartCount = getCartCount();
   const totalCount = getCartTotal();
-
   const deliveryFee = Math.ceil(0.001 * totalCount);
   const totalWithDelivery = totalCount + deliveryFee;
+  
   return (
     <div className="cart-container gap-5 min-h-screen w-full pt-[90px] pb-8 ">
       <div className="header flex flex-col xl:flex-row justify-center gap-4 mb-6">
@@ -88,7 +89,7 @@ const Cart: React.FC<CartProps> = ({ numberOfItems, count }) => {
               {totalWithDelivery.toLocaleString()}
             </span>
           </div>
-          <button className="bg-[var(--bg-color)] w-full py-5 px-16 rounded-[50px] text-[18px] mt-[18px] text-white">
+          <button className="bg-background w-full md:max-w-[400px] py-3 px-4 rounded-3xl text-[18px] mt-[18px] text-white hover:bg-pink cursor-pointer mx-auto" onClick={updateOrder}>
             Proceed to checkout
           </button>
         </div>
