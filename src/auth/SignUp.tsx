@@ -71,7 +71,7 @@ const SignUp: React.FC = () => {
       dispatch(setUser(safeUser));
 
       // ✅ Redirect (adjust route as needed)
-      navigate("/profile");
+      navigate("/products");
     } catch (err: unknown) {
       if (err instanceof Error) {
         dispatch(setError(err.message));
