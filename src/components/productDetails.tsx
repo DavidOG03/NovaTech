@@ -47,11 +47,14 @@ const ProductDetails: React.FC = () => {
 
   return (
     <div className="product w-full bg-white rounded-2xl mb-4 mt-[90px] p-6 flex flex-col gap-4">
-      <div className="close-button cursor-pointer" onClick={() => navigate(-1)}>
-        <CloseSquare set="bold" />
+      <div
+        className="close-button cursor-pointer w-8 h-8 grid place-items-center rounded-full bg-grey hover:bg-grey/75 transition-colors"
+        onClick={() => navigate(-1)}
+      >
+        <CloseSquare set="bold" primaryColor="background" />
       </div>
       <div className="product_box w-full grid md:grid-cols-2 gap-8">
-        <div className="image object-cover">
+        <div className="image h-full object-cover">
           <img
             src={product.image}
             alt={product.name}
@@ -63,15 +66,16 @@ const ProductDetails: React.FC = () => {
           <span className="name pb-3 block text-2xl font-medium text-black/50">
             {product.name}
           </span>
-          <span className="price pb-6 text-3xl font-semibold block text-background">
+          <span className="price pb-6 text-3xl text-black font-semibold block ">
             {product.price}
           </span>
 
-          <p className="description pb-3 block text-black/50">
+          <p className="description pb-3 block text-light-black">
             {product.description}
           </p>
           <span className="pb-6 block ">
-            <span className="font-semibold">Color:</span> {product.color}
+            <span className="font-semibold text-light-black">Color:</span>{" "}
+            {product.color}
           </span>
 
           {/* Show current cart quantity if item is in cart */}
@@ -85,14 +89,14 @@ const ProductDetails: React.FC = () => {
           )}
 
           <div className="flex flex-col justify-between items-start gap-4 mt-auto">
-            <div className="count flex w-full md:max-w-[180px] justify-between items-center gap-2 py-2 px-3 rounded-[0.75rem] bg-[#F5F5F5] border border-gray-200">
+            <div className="count flex w-full md:max-w-[180px] justify-between items-center gap-2 py-2 px-3 rounded-[0.75rem] bg-grey border border-light-black">
               <button
                 className="text-[1.5rem] cursor-pointer px-2 text-black/50 transition-colors"
                 onClick={() => setCount((prev) => Math.max(prev - 1, 1))}
               >
                 -
               </button>
-              <span className="text-[1rem] font-semibold min-w-[30px] text-center">
+              <span className="text-[1rem] text-light-black font-semibold min-w-[30px] text-center">
                 {count}
               </span>
               <button

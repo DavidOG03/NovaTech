@@ -241,7 +241,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className="relative px-4">
         {/* Moving indicator */}
         <div
-          className="absolute left-4 w-auto md:w-39 lg:w-50 h-14 bg-[#FFFFFF10] rounded-[50px] transition-all duration-300"
+          className="absolute left-4 w-auto md:w-39 lg:w-50 h-14 bg-white/10 rounded-[50px] transition-all duration-300"
           style={{ top: `${indicatorTop}px` }}
         />
 

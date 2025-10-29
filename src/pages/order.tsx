@@ -6,8 +6,8 @@ const Orders: React.FC = () => {
   const { orders } = useProductContext();
 
   return (
-    <div className="pt-20 px-6">
-      <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+    <div className="pt-20 px-6 bg-white">
+      <h2 className="text-2xl text-black font-semibold mb-6 flex items-center gap-2">
         <Package className="text-primary" />
         Your Orders
       </h2>
@@ -15,8 +15,16 @@ const Orders: React.FC = () => {
       {orders.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-22 text-gray-500">
           <AlertCircle size={48} className="mb-4" />
-          <p className="text-lg font-medium">You haven’t placed any orders yet.</p>
-          <p className="text-sm">Go back to the <a href="/products" className="text-background hover:underline">store</a> and add items to your cart.</p>
+          <p className="text-lg font-medium">
+            You haven’t placed any orders yet.
+          </p>
+          <p className="text-sm">
+            Go back to the{" "}
+            <a href="/products" className="text-background hover:underline">
+              store
+            </a>{" "}
+            and add items to your cart.
+          </p>
         </div>
       ) : (
         <div className="space-y-6">

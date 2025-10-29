@@ -29,10 +29,18 @@ const Header: React.FC<HeaderProps> = ({
   }
 
   return (
-    <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-[#f5f5f5]">
+    <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
       {/* Left: Logo and Mobile Menu */}
       <div className="flex items-center gap-4">
-        <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
+        {localStorage.getItem("theme") === "dark" ? (
+          <img
+            src="/images/novatech-light.webp"
+            alt="Novatech logo"
+            className="h-6"
+          />
+        ) : (
+          <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
+        )}
       </div>
 
       {/* Middle: Search */}
@@ -76,8 +84,7 @@ const Header: React.FC<HeaderProps> = ({
       {/* Right: Notification and Profile */}
       <div className="hug hidden md:flex justify-end items-center gap-4">
         <button className="notification-bell bg-white p-2 rounded-full grid content-center cursor-pointer hover:bg-gray-100">
-          {/* <img src="/images/bell.svg" alt="notification bell" /> */}
-          <Bell className="w-6 h-6 text-gray-600" />
+          <Bell className="w-6 h-6 text-light-black" />
         </button>
         <div className="profile grid grid-cols-[auto_1fr] gap-1 ">
           <img
@@ -86,8 +93,10 @@ const Header: React.FC<HeaderProps> = ({
             className="w-10 h-10 rounded-full"
           />
           <div className="flex flex-col justify-center items-start gap-1">
-            <span className="user text-base">{userName}</span>
-            <span className="greeting text-[10px]">Welcome</span>
+            <span className="user text-base text-light-black">{userName}</span>
+            <span className="greeting text-[10px] text-light-black">
+              Welcome
+            </span>
           </div>
         </div>
       </div>

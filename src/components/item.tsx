@@ -53,10 +53,10 @@ const Item: React.FC<ItemProps> = ({
           <img src={image} alt={name} />
         </div>
         <div className="info flex flex-col justify-center items-start gap-2 md:gap-2">
-          <span className="text-(--light-black) text-[18px] md:text-[1.25rem]">
+          <span className="text-black text-[18px] md:text-[1.25rem]">
             {name}
           </span>
-          <span className="text-[1.25rem]">{price}</span>
+          <span className="text-[1.25rem] text-light-black">{price}</span>
         </div>
       </div>
       <div className="right flex flex-col justify-center items-center md:items-end gap-2">

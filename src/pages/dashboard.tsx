@@ -170,10 +170,10 @@ const Dashboard: React.FC<DashboardProps> = ({
             {/* Hot Deals */}
             <section className="hot-deals p-2 md:p-[1.5rem] w-auto bg-white rounded-2xl mt-2">
               <div className="header flex justify-between items-center mb-[2rem]">
-                <h1 className="text-2xl md:text-[1.5rem] font-semibold">
+                <h1 className="text-2xl md:text-[1.5rem] text-black font-semibold">
                   Hot Deals
                 </h1>
-                <span className="more flex justify-end items-center gap-2 text-[#515151] cursor-pointer">
+                <span className="more flex justify-end items-center gap-2 text-light-black cursor-pointer">
                   See More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -219,10 +219,10 @@ const Dashboard: React.FC<DashboardProps> = ({
             {/* Top Picks */}
             <section className="top-picks-section p-4 md:p-[30px] w-auto bg-white rounded-2xl mt-4">
               <div className="header flex justify-between items-center mb-[2rem]">
-                <h1 className="text-2xl md:text-[1.5rem] font-semibold">
+                <h1 className="text-2xl md:text-[1.5rem] text-black font-semibold">
                   Top Picks
                 </h1>
-                <span className="more flex justify-end items-center gap-2 text-(--light-black) cursor-pointer">
+                <span className="more flex justify-end items-center gap-2 text-light-black cursor-pointer">
                   See More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
