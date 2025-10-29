@@ -1,5 +1,9 @@
+import { useAuth } from "@/context/AuthContext";
+import { useProductContext } from "@/context/ProductContext";
+import { auth } from "@/firebase";
 import { Bell } from "lucide-react";
 import React, { ChangeEvent, useEffect, useState } from "react";
+import { Navigate } from "react-router";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -16,10 +20,11 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const [filterActive, setFilterActive] = React.useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
+  const { user } = useAuth();
 
   useEffect(() => {
     // Fetch user name from localStorage or your API
-    const storedName = localStorage.getItem("username") || "John Doe";
+    const storedName = user?.name;
     setUserName(storedName);
   }, []);
 
@@ -27,6 +32,9 @@ const Header: React.FC<HeaderProps> = ({
     const initials = encodeURIComponent(name);
     return `https://ui-avatars.com/api/?name=${initials}&background=random`;
   }
+
+  const { getCartCount, getCartTotal } = useProductContext();
+  const cartCount = getCartCount();
 
   return (
     <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
@@ -56,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 handleSearch(e.target.value)
               }
-              className="w-full max-w-[526px] py-2 pl-8 md:pl-12 rounded-full bg-white outline-0 focus:outline-1"
+              className="w-full max-w-[526px] py-2 pl-8 md:pl-12 rounded-full bg-white text-black outline-0 focus:outline-1"
             />
             <span className="search absolute top-1/2 left-2 md:left-6 -translate-y-1/2">
               <img
@@ -71,14 +79,30 @@ const Header: React.FC<HeaderProps> = ({
             Search
           </button>
         </div>
-        <button
-          className={`filter bg-white py-2 px-2 rounded-full grid content-center cursor-pointer hover:bg-gray-100 ${
-            filterActive ? "active" : ""
-          }`}
-          onClick={handleFilterToggle}
+        <a
+          className={`bg-white relative py-2 px-2 rounded-full grid content-center cursor-pointer hover:bg-gray-100 
+            `}
+          href="/cart"
         >
-          <img src="/images/filter.svg" alt="filter icon" />
-        </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M16.5 21a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m-8 0a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3M3.71 5.4h15.214c1.378 0 2.373 1.27 1.995 2.548l-1.654 5.6C19.01 14.408 18.196 15 17.27 15H8.112c-.927 0-1.742-.593-1.996-1.452zm0 0L3 3m7.5 7h4"
+            ></path>
+          </svg>
+          {cartCount > 0 && (
+            <span className="bg-red-500 w-2 h-2 rounded-full absolute top-0 right-0"></span>
+          )}
+        </a>
       </div>
 
       {/* Right: Notification and Profile */}
@@ -93,7 +117,9 @@ const Header: React.FC<HeaderProps> = ({
             className="w-10 h-10 rounded-full"
           />
           <div className="flex flex-col justify-center items-start gap-1">
-            <span className="user text-base text-light-black">{userName}</span>
+            <span className="user text-base text-light-black capitalize">
+              {userName}
+            </span>
             <span className="greeting text-[10px] text-light-black">
               Welcome
             </span>

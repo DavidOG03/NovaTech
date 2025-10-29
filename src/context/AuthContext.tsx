@@ -70,11 +70,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       auth,
       async (firebaseUser: FirebaseUser | null) => {
         if (firebaseUser) {
-          // Fetch profile from Firestore
           const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
           setUser({
             uid: firebaseUser.uid,
             email: firebaseUser.email,
+            name: firebaseUser.displayName, // ✅ add this
+            photoURL: firebaseUser.photoURL,
+            emailNotifications: false, // ✅ add this
             ...(userDoc.exists() ? userDoc.data() : {}),
           } as UserProfile);
         } else {

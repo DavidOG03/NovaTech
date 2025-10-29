@@ -1,21 +1,23 @@
 // src/pages/Profile.tsx
+import { useAuth } from "@/context/AuthContext";
 import { Moon, Sun } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 const Profile: React.FC = () => {
-  const [userName, setUserName] = useState<string>("John Doe");
-  const [userEmail, setUserEmail] = useState<string>("Not Available");
+  const [userName, setUserName] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string>("");
   const [theme, setTheme] = useState<string>("light");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     // Fetch user name and email from localStorage or API
-    const storedName = localStorage.getItem("name") || "John Doe";
-    const storedEmail = localStorage.getItem("email") || "Not Available";
+    const storedName = user?.name || "John Doe";
+    const storedEmail = user?.email || "Not Available";
 
     setUserName(storedName);
     setUserEmail(storedEmail);
-  }, []);
+  }, [user]);
 
   function generateInitialsAvatar(name: string): string {
     const initials = encodeURIComponent(name);
@@ -60,7 +62,9 @@ const Profile: React.FC = () => {
             className="w-20 h-20 rounded-full object-cover border-2 border-pink"
           />
           <div>
-            <h2 className="text-2xl font-semibold text-black">{userName}</h2>
+            <h2 className="text-2xl font-semibold text-black capitalize">
+              {userName}
+            </h2>
             <p className="text-light-black">{userEmail}</p>
             <button className="mt-2 text-sm px-4 py-1 bg-pink text-white rounded-lg hover:bg-pink/75">
               Edit Profile
@@ -76,12 +80,14 @@ const Profile: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <p className="text-black">Full Name</p>
-              <p className="font-medium text-light-black">David Ogungemi</p>
+              <p className="font-medium text-light-black capitalize">
+                {userName}
+              </p>
             </div>
-            <div>
+            {/* <div>
               <p className="text-black">Phone Number</p>
               <p className="font-medium text-light-black">+234 915 388 4943</p>
-            </div>
+            </div> */}
             {/* <div>
               <p className="text-black">Address</p>
               <p className="font-medium text-light-black">Lagos, Nigeria</p>
