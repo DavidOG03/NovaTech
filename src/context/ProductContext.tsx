@@ -45,6 +45,7 @@ interface ProductContextType {
   updateCartItemCount: (id: number, count: number) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
+  clearOrders: () => void;
   getCartCount: () => number;
   getCartTotal: () => number;
   orders: Order[];
@@ -174,7 +175,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 
     setOrders((prev) => [...prev, newOrder]);
     clearCart();
-     // empty the cart after placing an order
+    // empty the cart after placing an order
   };
 
   // --- Cart Helpers ---
@@ -194,6 +195,9 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => {
     setCart([]);
+  };
+  const clearOrders = () => {
+    setOrders([]);
   };
 
   const getCartCount = () => {
@@ -217,6 +221,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
         updateCartItemCount,
         removeFromCart,
         clearCart,
+        clearOrders,
         getCartCount,
         getCartTotal,
         orders,

@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import toast from "react-hot-toast";
 
 const Orders: React.FC = () => {
-  const { orders } = useProductContext();
+  const { orders, clearOrders } = useProductContext();
 
   // local copy of orders for UI updates
   const [localOrders, setLocalOrders] = useState(orders);
@@ -17,6 +17,9 @@ const Orders: React.FC = () => {
     // remove order from UI
     const updatedOrders = localOrders.filter((order) => order.id !== orderId);
     setLocalOrders(updatedOrders);
+    if (updatedOrders.length < 1) {
+      clearOrders();
+    }
 
     toast.success("Order cancelled successfully!");
   };
