@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({
   handleSearch,
 }) => {
   const [filterActive, setFilterActive] = React.useState<boolean>(false);
-  const [userName, setUserName] = useState<string>("John Doe");
+  const [userName, setUserName] = useState<string>("");
   const { user } = useAuth();
   const [theme, setTheme] = useState<string>(
     localStorage.getItem("theme") || "light"

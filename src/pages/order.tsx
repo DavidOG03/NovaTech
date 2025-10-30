@@ -7,16 +7,17 @@ import toast from "react-hot-toast";
 const Orders: React.FC = () => {
   const { orders, clearOrders } = useProductContext();
 
-  // local copy of orders for UI updates
   const [localOrders, setLocalOrders] = useState(orders);
 
-  // handle cancel/delete
+  // cancel/delete
   const handleCancelOrder = (orderId: string | number) => {
     if (!window.confirm("Are you sure you want to cancel this order?")) return;
 
-    // remove order from UI
+    // remove order
     const updatedOrders = localOrders.filter((order) => order.id !== orderId);
+
     setLocalOrders(updatedOrders);
+
     if (updatedOrders.length < 1) {
       clearOrders();
     }

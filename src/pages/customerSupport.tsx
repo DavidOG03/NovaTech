@@ -56,7 +56,7 @@ const CustomerSupport: React.FC = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-white shadow rounded-lg p-6 space-y-4">
+        <div className="bg-white rounded-lg p-6 space-y-4">
           <h2 className="text-xl font-semibold text-black">
             Frequently Asked Questions
           </h2>
@@ -74,7 +74,7 @@ const CustomerSupport: React.FC = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-white rounded-lg p-6">
           <h2 className="text-xl text-black font-semibold mb-4">Contact Us</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
@@ -123,7 +123,7 @@ const CustomerSupport: React.FC = () => {
         </div>
 
         {/* Support Info */}
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-white rounded-lg p-6">
           <h2 className="text-xl text-black font-semibold mb-4">
             Other Ways to Reach Us
           </h2>
