@@ -5,15 +5,15 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Dashboard from "./pages/dashboard";
+import Products from "./pages/products";
 import Cart from "./pages/cart";
 import ProductDetails from "./components/productDetails";
 import { ProductProvider } from "./context/ProductContext";
 import { AuthProvider } from "./context/AuthContext";
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
-import SellerSignIn from "./auth/SellerSignIn";
-import SellerSignUp from "./auth/SellerSignUp";
+// import SellerSignIn from "./auth/SellerSignIn";
+// import SellerSignUp from "./auth/SellerSignUp";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CustomerSupport from "./pages/customerSupport";
@@ -33,18 +33,18 @@ const App: React.FC = () => {
   };
 
   const [accountType, setAccountType] = useState<string | null>(
-    localStorage.getItem("accountType")
+    localStorage.getItem("selectedAccountType")
   );
 
   useEffect(() => {
-    const storedType = localStorage.getItem("accountType");
+    const storedType = localStorage.getItem("selectedAccountType");
     if (storedType) {
       setAccountType(storedType);
     }
   }, []);
 
   const handleAccountSelect = (type: string) => {
-    localStorage.setItem("accountType", type);
+    localStorage.setItem("selectedAccountType", type);
     setAccountType(type);
   };
 
@@ -114,34 +114,30 @@ const App: React.FC = () => {
           <Routes>
             <Route
               path="/"
-              // element={
-              //   !accountType ? (
-              //     <AccountType
-              //     // onSelectAccount={handleAccountSelect}
-              //     // accountType={accountType}
-              //     />
-              //   ) : (
-              //     // redirect based on account type
-              //     <Navigate
-              //       to={accountType === "seller" ? "/seller-signin" : "/signin"}
-              //       replace
-              //     />
-              //   )
-              // }
-              element={<AccountType />}
+              element={
+                !accountType ? (
+                  <AccountType />
+                ) : (
+                  // redirect based on account type
+                  <Navigate
+                    to={accountType === "vendor" ? "/seller-signin" : "/signin"}
+                    replace
+                  />
+                )
+              }
             />
 
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/seller-signup" element={<SellerSignUp />} />
-            <Route path="/seller-signin" element={<SellerSignIn />} />
+            {/* <Route path="/seller-signup" element={<SellerSignUp />} />
+            <Route path="/seller-signin" element={<SellerSignIn />} /> */}
 
             <Route
               path="/products"
               element={
                 <ProtectedRoute>
                   <DashboardLayout>
-                    <Dashboard
+                    <Products
                       filterEnabled={isFiltered}
                       searchQuery={searchQuery}
                       // handleItemClick={() => setIsItemClicked(true)}

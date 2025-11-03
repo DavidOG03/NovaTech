@@ -1,13 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, FirebaseAuthError } from "../firebase";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser, setError, setLoading } from "../stores/authSlice";
-import { RootState } from "../stores/store";
+import { useAuth } from "../context/AuthContext";
 import { mapAuthCodeToMessage } from "../utils/firebaseErrors";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router";
@@ -23,9 +19,10 @@ type SignInFormData = z.infer<typeof schema>;
 
 const SignIn: React.FC = () => {
   const [showPassword, setShowPassword] = useState<Boolean>(false);
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { login, activeRole } = useAuth();
 
   const {
     register,
@@ -35,62 +32,77 @@ const SignIn: React.FC = () => {
     resolver: zodResolver(schema),
   });
 
+  const [theme, setTheme] = useState<string>(
+    localStorage.getItem("theme") || "light"
+  );
+
+  useEffect(() => {
+    // Update theme state whenever theme changes
+    const handleThemeChange = () => {
+      setTheme(localStorage.getItem("theme") || "light");
+    };
+
+    window.addEventListener("storage", handleThemeChange);
+
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains("dark");
+      setTheme(isDark ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+      observer.disconnect();
+    };
+  }, []);
+
   // Explicit typing for submit handler
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    dispatch(setLoading(true));
+    setLoading(true);
+    setError("");
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      const firebaseUser = userCredential.user;
-
-      // ✅ Extract only serializable data
-      const safeUser = {
-        uid: firebaseUser.uid,
-        email: firebaseUser.email,
-        displayName: firebaseUser.displayName || null,
-        photoURL: firebaseUser.photoURL || null,
-      };
-
-      dispatch(setUser(safeUser));
-
-      // ✅ Redirect based on accountType
-      const accountType = localStorage.getItem("accountType");
-      if (accountType === "seller") {
-        navigate("/seller-dashboard");
-      } else {
-        navigate("/products");
-      }
+      await login(data.email, data.password);
+      activeRole === "vendor"
+        ? navigate("/seller-dashboard")
+        : navigate("/products");
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         const message = mapAuthCodeToMessage(err.code);
-        dispatch(setError(message));
+        setError(message);
       } else {
-        dispatch(setError("An unknown error occurred"));
+        setError("An unknown error occurred");
       }
     } finally {
-      dispatch(setLoading(false));
+      setLoading(false);
     }
   };
+
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
-        <img src="/images/novatech.svg" alt="novatech logo" className="mb-4" />
-        <h2 className="text-xl font-bold text-center">Sign In</h2>
+        {theme === "dark" ? (
+          <img
+            src="/images/novatech-light.webp"
+            alt="Novatech logo"
+            className="h-6"
+          />
+        ) : (
+          <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
+        )}
+        <h2 className="text-xl font-bold text-center text-black">Sign In</h2>
         {/* Email */}
         <input
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded-3xl"
+          className="w-full px-3 py-2 border rounded-3xl bg-grey"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -101,7 +113,7 @@ const SignIn: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded-3xl"
+            className="w-full px-3 py-2 border rounded-3xl bg-grey"
             autoComplete="current-password"
           />
           <span
@@ -150,7 +162,7 @@ const SignIn: React.FC = () => {
         </button>
         {/* Error */}
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <span>
+        <span className="text-black">
           No account?{" "}
           <a href="/signup" className="text-pink hover:underline">
             Sign Up

@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user, loading } = useAuth();
+  const { currentUser, loading } = useAuth();
   const location = useLocation();
 
   // Step 1: Wait for Firebase auth to finish initializing
@@ -24,11 +24,11 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   // If user is not authenticated, send to SignIn
-  if (!user)
+  if (!currentUser)
     return <Navigate to="/" replace state={{ from: location }} />;
 
   // If user is authenticated but no account type selected yet
-  const accountType = localStorage.getItem("accountType");
+  const accountType = localStorage.getItem("selectedAccountType");
   if (!accountType) return <Navigate to="/" replace />;
 
   return <>{children}</>;

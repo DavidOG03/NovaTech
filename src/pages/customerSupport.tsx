@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import emailjs from "@emailjs/browser";
 
 // Zod schema for form validation
 const schema = z.object({
@@ -21,7 +22,7 @@ const faqs = [
   {
     question: "Where can I view my billing history?",
     answer:
-      "You can find your invoices and billing history under Account Settings > Billing.",
+      "You can find your invoices and billing history under Profile > Account Settings > Billing.",
   },
   {
     question: "How do I contact support?",
@@ -31,6 +32,12 @@ const faqs = [
 ];
 
 const CustomerSupport: React.FC = () => {
+  const [formStatus, setFormStatus] = useState({
+    submitting: false,
+    success: false,
+    error: false,
+  });
+
   const {
     register,
     handleSubmit,
@@ -40,8 +47,28 @@ const CustomerSupport: React.FC = () => {
 
   const onSubmit: SubmitHandler<SupportFormData> = (data) => {
     console.log("Support request submitted:", data);
-    reset();
-    alert("Your message has been sent. We'll get back to you soon!");
+    setFormStatus({ submitting: true, success: false, error: false });
+
+    emailjs
+      .send(
+        "service_tbha9vf",
+        "template_8toimsl",
+        {
+          name: data.name,
+          email: data.email,
+          message: data.message,
+        },
+        "1lo5s4O9sOSYeI011"
+      )
+      .then((response) => {
+        console.log("SUCCESS!", response.status, response.text);
+        setFormStatus({ submitting: false, success: true, error: false });
+        reset();
+      })
+      .catch((err) => {
+        console.error("FAILED...", err);
+        setFormStatus({ submitting: false, success: false, error: true });
+      });
   };
 
   return (
@@ -115,7 +142,7 @@ const CustomerSupport: React.FC = () => {
 
             <button
               type="submit"
-              className="bg-pink text-white px-4 py-2 rounded hover:bg-pink/75"
+              className="bg-pink text-white px-4 py-2 rounded hover:bg-pink/75 cursor-pointer"
             >
               Send Message
             </button>
@@ -134,7 +161,7 @@ const CustomerSupport: React.FC = () => {
             <li>
               📧 Email:{" "}
               <a
-                href="mailto:support@example.com"
+                href="mailto:daveedog2003@gmail.com"
                 className="text-pink hover:underline"
               >
                 daveedog2003@gmail.com

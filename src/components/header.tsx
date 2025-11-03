@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useProductContext } from "@/context/ProductContext";
+import { useSearch } from "@/context/SearchContext";
 import { Bell } from "lucide-react";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router";
@@ -7,22 +8,18 @@ import { Link } from "react-router";
 interface HeaderProps {
   onMenuClick: () => void;
   handleFilterToggle: () => void;
-  searchQuery: string;
-  handleSearch: (query: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  onMenuClick,
-  handleFilterToggle,
-  searchQuery,
-  handleSearch,
-}) => {
-  const [filterActive, setFilterActive] = React.useState<boolean>(false);
+const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
+  const [filterActive, setFilterActive] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
-  const { user } = useAuth();
   const [theme, setTheme] = useState<string>(
     localStorage.getItem("theme") || "light"
   );
+
+  const { currentUser } = useAuth();
+
+  const { searchQuery, setSearchQuery } = useSearch();
 
   useEffect(() => {
     // Update theme state whenever theme changes
@@ -30,10 +27,8 @@ const Header: React.FC<HeaderProps> = ({
       setTheme(localStorage.getItem("theme") || "light");
     };
 
-    // Listen for theme changes triggered elsewhere
     window.addEventListener("storage", handleThemeChange);
 
-    // Optional: also check body class if you use Tailwind's dark mode
     const observer = new MutationObserver(() => {
       const isDark = document.documentElement.classList.contains("dark");
       setTheme(isDark ? "dark" : "light");
@@ -47,23 +42,27 @@ const Header: React.FC<HeaderProps> = ({
   }, []);
 
   useEffect(() => {
-    // Fetch user name from localStorage or your API
-    const storedName = user?.name || "John Doe";
-    setUserName(storedName);
-  }, []);
+    if (currentUser) {
+      const name =
+        currentUser.displayName ||
+        currentUser.email?.split("@")[0] ||
+        "John Doe";
+      setUserName(name);
+    }
+  }, [currentUser]);
 
   function generateInitialsAvatar(name: string): string {
     const initials = encodeURIComponent(name);
     return `https://ui-avatars.com/api/?name=${initials}&background=random`;
   }
 
-  const { getCartCount, getCartTotal } = useProductContext();
+  const { getCartCount } = useProductContext();
   const cartCount = getCartCount();
 
   return (
     <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
       {/* Left: Logo and Mobile Menu */}
-      <div className="flex items-center gap-4">
+      <Link to={"/products"} className="flex items-center gap-4">
         {theme === "dark" ? (
           <img
             src="/images/novatech-light.webp"
@@ -73,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({
         ) : (
           <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
         )}
-      </div>
+      </Link>
 
       {/* Middle: Search */}
       <div className="middle flex flex-1/2 justify-end items-center gap-2">
@@ -86,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({
               placeholder="Search Gadget"
               value={searchQuery}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleSearch(e.target.value)
+                setSearchQuery(e.target.value)
               }
               className="w-full max-w-[526px] py-2 pl-8 md:pl-12 rounded-full bg-white text-black outline-0 focus:outline-1"
             />
@@ -99,13 +98,13 @@ const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
 
-          <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br  hover:from-gray-300 hover:to-gray-300 hover:text-black text-white rounded-[3rem] py-2 px-4 cursor-pointer">
+          <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br hover:from-light-black hover:to-light-black hover:text-white text-white rounded-[3rem] py-2 px-4 cursor-pointer">
             Search
           </button>
         </div>
+
         <Link
-          className="bg-red relative py-2 px-2 rounded-full grid content-center cursor-pointer hover:bg-red-700 
-            "
+          className="bg-background relative py-2 px-2 rounded-full grid content-center cursor-pointer hover:bg-background/75"
           to="/cart"
         >
           <svg
@@ -150,7 +149,12 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
       </div>
-      <button className="block md:hidden cursor-pointer" onClick={onMenuClick}>
+
+      {/* Mobile Menu */}
+      <button
+        className="block md:hidden cursor-pointer text-background"
+        onClick={onMenuClick}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

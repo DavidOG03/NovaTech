@@ -4,6 +4,7 @@ import Card from "../components/card";
 import { gsap } from "gsap";
 // import Product from "../components/productDetails";
 import { Link } from "react-router";
+import { useSearch } from "@/context/SearchContext";
 
 interface Category {
   img: string;
@@ -25,19 +26,11 @@ interface DashboardProps {
   filterEnabled: boolean;
   searchQuery?: string;
   handleItemClick?: () => void;
-  // handleClosePopup?: () => void;
-  // isItemClicked?: boolean;
-  // setIsItemClicked?: (value: boolean) => void;
-  // cardsRef?: React.RefObject<Array<HTMLDivElement | null>>;
-  // activeCategories?: number[];
-  // setActiveCategories?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 // 3. Component
-const Dashboard: React.FC<DashboardProps> = ({
-  filterEnabled,
-  searchQuery = "",
-}) => {
+const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
+  const { searchQuery } = useSearch();
   // 4. Typed refs and state
   const cardsRef = useRef<Array<HTMLDivElement | null>>([]);
   const [activeCategories, setActiveCategories] = useState<number[]>([]);
@@ -188,32 +181,38 @@ const Dashboard: React.FC<DashboardProps> = ({
                   </svg>
                 </span>
               </div>
-              <div className="deal-card w-full sm:w-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-                {filteredProducts.map((product, idx) => (
-                  <div
-                    key={product.id}
-                    className="h-auto min-h-[297px] duration-300 hover:cursor-pointer  hover:border-[#f0f0f0] flex flex-col items-center justify-center  overflow-hidden cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
-                    ref={(el) => {
-                      cardsRef.current[idx] = el;
-                    }}
-                    onClick={handleItemClick}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <Link
-                      to={`/product/${product.id}`}
-                      className="w-full h-full flex flex-col items-center justify-center"
+              {filteredProducts.length === 0 ? (
+                <p className="text-light-black text-center mt-4 text-xl">
+                  No products
+                </p>
+              ) : (
+                <div className="deal-card w-full sm:w-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {filteredProducts.map((product, idx) => (
+                    <div
+                      key={product.id}
+                      className="h-auto min-h-[297px] duration-300 hover:cursor-pointer  hover:border-[#f0f0f0] flex flex-col items-center justify-center  overflow-hidden cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
+                      ref={(el) => {
+                        cardsRef.current[idx] = el;
+                      }}
+                      onClick={handleItemClick}
+                      role="button"
+                      tabIndex={0}
                     >
-                      <Card
-                        image={product.image}
-                        name={product.name}
-                        price={product.price}
-                        lastPrice={product.lastPrice}
-                      />
-                    </Link>
-                  </div>
-                ))}
-              </div>
+                      <Link
+                        to={`/product/${product.id}`}
+                        className="w-full h-full flex flex-col items-center justify-center"
+                      >
+                        <Card
+                          image={product.image}
+                          name={product.name}
+                          price={product.price}
+                          lastPrice={product.lastPrice}
+                        />
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Top Picks */}
@@ -237,37 +236,43 @@ const Dashboard: React.FC<DashboardProps> = ({
                   </svg>
                 </span>
               </div>
-              <div className="top-picks grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-                {filteredProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="h-auto min-h-[297px] duration-300 hover:cursor-pointer hover:border-[#f0f0f0] flex flex-col items-center justify-center overflow-hidden cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
-                    ref={(el: HTMLDivElement | null) => {
-                      cardsRef.current[filteredProducts.length + product.id] =
-                        el;
-                    }}
-                    onClick={handleItemClick}
-                  >
-                    <Link
-                      to={`/product/${product.id}`}
-                      className="w-full h-full flex flex-col items-center justify-center"
+              {filteredProducts.length === 0 ? (
+                <p className="text-light-black text-center mt-4 text-xl">
+                  No products
+                </p>
+              ) : (
+                <div className="top-picks grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {filteredProducts.map((product) => (
+                    <div
+                      key={product.id}
+                      className="h-auto min-h-[297px] duration-300 hover:cursor-pointer hover:border-[#f0f0f0] flex flex-col items-center justify-center overflow-hidden cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
+                      ref={(el: HTMLDivElement | null) => {
+                        cardsRef.current[filteredProducts.length + product.id] =
+                          el;
+                      }}
+                      onClick={handleItemClick}
                     >
-                      <Card
-                        image={product.image}
-                        name={product.name}
-                        price={product.price}
-                        lastPrice={product.lastPrice}
-                      />
-                    </Link>
-                  </div>
-                ))}
-              </div>
+                      <Link
+                        to={`/product/${product.id}`}
+                        className="w-full h-full flex flex-col items-center justify-center"
+                      >
+                        <Card
+                          image={product.image}
+                          name={product.name}
+                          price={product.price}
+                          lastPrice={product.lastPrice}
+                        />
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Promotional Banner Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
               {/* Banner 1 */}
-              <section className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-8 text-white shadow-sm hover:shadow-lg transition-shadow">
+              <section className="bg-gradient-to-r from-pink to-background rounded-2xl p-8 text-white shadow-sm hover:shadow-lg transition-shadow">
                 <div className="space-y-4">
                   <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
                     Limited Time
@@ -276,13 +281,12 @@ const Dashboard: React.FC<DashboardProps> = ({
                   <p className="text-white/90">
                     Get up to 70% off on selected items
                   </p>
-                  <button className="px-6 py-3 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                  <button className="px-6 py-3 bg-white text-pink rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                     Shop Now
                   </button>
                 </div>
               </section>
-
-              {/* Banner 2 */}
+              {/* Banner 2
               <section className="bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl p-8 text-white shadow-sm hover:shadow-lg transition-shadow">
                 <div className="space-y-4">
                   <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
@@ -296,7 +300,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                     Learn More
                   </button>
                 </div>
-              </section>
+              </section> */}
             </div>
           </div>
         </>
@@ -305,4 +309,4 @@ const Dashboard: React.FC<DashboardProps> = ({
   );
 };
 
-export default Dashboard;
+export default Products;

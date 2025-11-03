@@ -8,7 +8,7 @@ import { auth } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, setError, setLoading } from "../stores/authSlice";
 import { RootState } from "../stores/store";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 // ✅ Validation Schema
 const schema = z.object({
@@ -183,9 +183,9 @@ const SignUp: React.FC = () => {
 
         <p>
           Already have an account?{" "}
-          <a href="/signin" className="text-pink hover:underline">
+          <Link to="/signin" className="text-pink hover:underline">
             Sign In
-          </a>
+          </Link>
         </p>
       </form>
     </div>

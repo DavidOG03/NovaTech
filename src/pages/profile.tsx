@@ -8,36 +8,36 @@ const Profile: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [theme, setTheme] = useState<string>("light");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    // Fetch user name and email from localStorage or API
-    const storedName = user?.name || "John Doe";
-    const storedEmail = user?.email || "Not Available";
+    // Fetch currentUser name and email from localStorage or API
+    const storedName = currentUser?.displayName || "John Doe";
+    const storedEmail = currentUser?.email || "Not Available";
 
     setUserName(storedName);
     setUserEmail(storedEmail);
-  }, [user]);
+  }, [currentUser]);
 
   function generateInitialsAvatar(name: string): string {
     const initials = encodeURIComponent(name);
     return `https://ui-avatars.com/api/?name=${initials}&background=random`;
   }
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-      setTheme(savedTheme);
-    } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      document.documentElement.classList.toggle("dark", prefersDark);
-      setTheme(prefersDark ? "dark" : "light");
-      localStorage.setItem("theme", prefersDark ? "dark" : "light");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedTheme = localStorage.getItem("theme");
+  //   if (savedTheme) {
+  //     document.documentElement.classList.toggle("dark", savedTheme === "dark");
+  //     setTheme(savedTheme);
+  //   } else {
+  //     const prefersDark = window.matchMedia(
+  //       "(prefers-color-scheme: dark)"
+  //     ).matches;
+  //     document.documentElement.classList.toggle("dark", prefersDark);
+  //     setTheme(prefersDark ? "dark" : "light");
+  //     localStorage.setItem("theme", prefersDark ? "dark" : "light");
+  //   }
+  // }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -53,7 +53,7 @@ const Profile: React.FC = () => {
         <div className="flex items-center gap-4 border-b border-b-grey pb-4">
           <img
             src={generateInitialsAvatar(userName)}
-            alt="User avatar"
+            alt="currentUser avatar"
             className="w-20 h-20 rounded-full object-cover border-2 border-pink"
           />
           <div>
@@ -61,9 +61,9 @@ const Profile: React.FC = () => {
               {userName}
             </h2>
             <p className="text-light-black">{userEmail}</p>
-            <button className="mt-2 text-sm px-4 py-1 bg-pink text-white rounded-lg hover:bg-pink/75">
+            {/* <button className="mt-2 text-sm px-4 py-1 bg-pink text-white rounded-lg hover:bg-pink/75">
               Edit Profile
-            </button>
+            </button> */}
           </div>
         </div>
 

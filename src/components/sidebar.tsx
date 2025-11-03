@@ -50,6 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     // Clear stored auth data (adjust to your setup)
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
+    localStorage.setItem("theme", "light");
 
     // Redirect to home page
     navigate("/");

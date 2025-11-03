@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
+import { SearchProvider } from "@/context/SearchContext";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -12,12 +13,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   return (
-    <>
+    <SearchProvider>
       <Header
         onMenuClick={() => setSidebarOpen(true)}
         handleFilterToggle={() => setIsFiltered((prev) => !prev)}
-        searchQuery={searchQuery}
-        handleSearch={(q: string) => setSearchQuery(q)}
       />
 
       <div className="dashboard-layout px-4 md:px-6 lg:px-8 gap-[20px] md:ml-[190px] lg:ml-[230px] bg-grey">
@@ -34,7 +33,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
         <main className="min-h-screen w-auto relative">{children}</main>
       </div>
-    </>
+    </SearchProvider>
   );
 };
 export default DashboardLayout;
