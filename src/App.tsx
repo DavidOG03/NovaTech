@@ -115,15 +115,9 @@ const App: React.FC = () => {
             <Route
               path="/"
               element={
-                !accountType ? (
+                
                   <AccountType />
-                ) : (
-                  // redirect based on account type
-                  <Navigate
-                    to={accountType === "vendor" ? "/seller-signin" : "/signin"}
-                    replace
-                  />
-                )
+                
               }
             />
 
