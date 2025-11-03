@@ -1,4 +1,5 @@
-import React from "react";
+import { Heart } from "lucide-react";
+import React, { useState } from "react";
 interface CardProps {
   image?: string;
   name?: string;
@@ -7,8 +8,18 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ image, name, price, lastPrice }) => {
+  const handleAddToWishList = () => {
+    setWishlisted(true);
+  };
+  const [wishlisted, setWishlisted] = useState<boolean>(false);
   return (
-    <div className="card h-auto min-h-[297px] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem]">
+    <div className="card h-auto min-h-[297px] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] relative">
+      <Heart
+        className={`absolute top-2 right-2 text-black z-10 ${
+          wishlisted ? "bg-background" : "bg-transparent"
+        } `}
+        onClick={handleAddToWishList}
+      />
       <img
         src={image}
         alt="hot deal image"
