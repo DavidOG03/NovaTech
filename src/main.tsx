@@ -5,7 +5,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
-import { store } from "./stores/store";
+import { store } from "./redux/store";
 import { inject } from "@vercel/analytics";
 
 inject();

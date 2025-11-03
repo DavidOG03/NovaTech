@@ -5,22 +5,22 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Products from "./pages/products";
-import Cart from "./pages/cart";
-import ProductDetails from "./components/productDetails";
+import Products from "./pages/products/products";
+import Cart from "./pages/cart/cart";
+import ProductDetails from "./pages/products/ProductDetails";
 import { ProductProvider } from "./context/ProductContext";
 import { AuthProvider } from "./context/AuthContext";
-import SignIn from "./auth/SignIn";
-import SignUp from "./auth/SignUp";
+import SignIn from "./auth/pages/SignIn";
+import SignUp from "./auth/pages/SignUp";
 // import SellerSignIn from "./auth/SellerSignIn";
 // import SellerSignUp from "./auth/SellerSignUp";
-import ProtectedRoute from "./components/ProtectedRoute";
-import DashboardLayout from "./layouts/DashboardLayout";
-import CustomerSupport from "./pages/customerSupport";
-import Profile from "./pages/profile";
-import Orders from "./pages/order";
-import AccountType from "./pages/accountType";
-import SellerDashboard from "./pages/sellerDashboard";
+import ProtectedRoute from "./components/shared/ProtectedRoute";
+import DashboardLayout from "./layouts/dashboard/DashboardLayout";
+import CustomerSupport from "./pages/support/customerSupport";
+import Profile from "./pages/account/profile";
+import Orders from "./pages/dashboard/order";
+import AccountType from "./pages/account/accountType";
+import SellerDashboard from "./pages/dashboard/sellerDashboard";
 import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {

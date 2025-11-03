@@ -4,10 +4,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, setError, setLoading } from "../stores/authSlice";
-import { RootState } from "../stores/store";
+import { setUser, setError, setLoading } from "../../redux/slices/authSlice";
+import { RootState } from "../../redux/store";
 import { Link, useNavigate } from "react-router";
 
 // ✅ Validation Schema

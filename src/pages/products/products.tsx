@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Button from "../components/button";
-import Card from "../components/card";
+import Button from "../../components/ui/button";
+import Card from "../../components/ui/card";
 import { gsap } from "gsap";
 // import Product from "../components/productDetails";
 import { Link } from "react-router";

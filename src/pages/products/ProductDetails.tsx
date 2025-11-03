@@ -1,8 +1,8 @@
-import { useProductContext } from "../context/ProductContext";
+import { useProductContext } from "../../context/ProductContext";
 import React, { useState } from "react";
 import { CloseSquare } from "react-iconly";
 import { Link, useNavigate, useParams } from "react-router";
-import Card from "./card";
+import Card from "../../components/ui/card";
 import toast from "react-hot-toast";
 
 const ProductDetails: React.FC = () => {

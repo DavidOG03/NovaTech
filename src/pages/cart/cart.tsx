@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import Card from "../components/card.js";
-import Item from "../components/item.js";
+import Card from "../../components/ui/card.js";
+import Item from "../../components/ui/ProductItem.js";
 import { useProductContext } from "@/context/ProductContext.js";
 import { Link } from "react-router";
 import toast from "react-hot-toast";

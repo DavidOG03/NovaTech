@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Header from "@/components/header";
-import Sidebar from "@/components/sidebar";
+import Header from "@/components/layout/Header";
+import Sidebar from "@/components/layout/Sidebar";
 import { SearchProvider } from "@/context/SearchContext";
 
 interface DashboardLayoutProps {

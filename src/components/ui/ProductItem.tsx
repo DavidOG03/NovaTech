@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useProductContext } from "../context/ProductContext";
+import { useProductContext } from "../../context/ProductContext";
 
 interface ItemProps {
   image: string;
@@ -11,7 +11,7 @@ interface ItemProps {
   // productCount: number;
 }
 
-const Item: React.FC<ItemProps> = ({
+const ProductItem: React.FC<ItemProps> = ({
   image,
   price,
   name,
@@ -89,4 +89,4 @@ const Item: React.FC<ItemProps> = ({
   );
 };
 
-export default Item;
+export default ProductItem;
