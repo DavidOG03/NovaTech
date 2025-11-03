@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 
 interface SearchContextType {
   searchQuery: string;
-  setSearchQuery: (q: string) => void;
+  setSearchQuery: (query: string) => void;
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);

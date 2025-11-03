@@ -3,6 +3,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import emailjs from "@emailjs/browser";
+import toast from "react-hot-toast";
+import { Mail } from "lucide-react";
+import { Chat } from "react-iconly";
 
 // Zod schema for form validation
 const schema = z.object({
@@ -27,7 +30,7 @@ const faqs = [
   {
     question: "How do I contact support?",
     answer:
-      "You can use the contact form below, or reach us by phone or live chat.",
+      "You can use the contact form below, or reach us by email or live chat.",
   },
 ];
 
@@ -62,6 +65,7 @@ const CustomerSupport: React.FC = () => {
       )
       .then((response) => {
         console.log("SUCCESS!", response.status, response.text);
+        toast.success("Your request has been successfully submitted");
         setFormStatus({ submitting: false, success: true, error: false });
         reset();
       })
@@ -72,7 +76,7 @@ const CustomerSupport: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-grey py-20 px-4">
+    <div className="min-h-screen bg-grey py-20">
       <div className="max-w-5xl mx-auto space-y-10">
         {/* Header */}
         <div className="text-center">
@@ -83,7 +87,7 @@ const CustomerSupport: React.FC = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-white rounded-lg p-6 space-y-4">
+        <div className="bg-white rounded-lg p-4 space-y-4">
           <h2 className="text-xl font-semibold text-black">
             Frequently Asked Questions
           </h2>
@@ -101,7 +105,7 @@ const CustomerSupport: React.FC = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white rounded-lg p-6">
+        <div className="bg-white rounded-lg p-4">
           <h2 className="text-xl text-black font-semibold mb-4">Contact Us</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
@@ -144,13 +148,13 @@ const CustomerSupport: React.FC = () => {
               type="submit"
               className="bg-pink text-white px-4 py-2 rounded hover:bg-pink/75 cursor-pointer"
             >
-              Send Message
+              {formStatus.submitting ? "Sending..." : "Send Message"}
             </button>
           </form>
         </div>
 
         {/* Support Info */}
-        <div className="bg-white rounded-lg p-6">
+        <div className="bg-white rounded-lg p-4">
           <h2 className="text-xl text-black font-semibold mb-4">
             Other Ways to Reach Us
           </h2>
@@ -158,8 +162,8 @@ const CustomerSupport: React.FC = () => {
             {/* <li>
               📞 Phone: <span className="font-medium">+234 915 3884 943</span>
             </li> */}
-            <li>
-              📧 Email:{" "}
+            <li className="flex gap-2">
+              <Mail /> Email:{" "}
               <a
                 href="mailto:daveedog2003@gmail.com"
                 className="text-pink hover:underline"
@@ -167,7 +171,9 @@ const CustomerSupport: React.FC = () => {
                 daveedog2003@gmail.com
               </a>
             </li>
-            <li>💬 Live Chat: Available 9am – 6pm (Mon – Fri)</li>
+            <li className="flex gap-2">
+              <Chat /> Live Chat: Available 9am – 6pm (Mon – Fri)
+            </li>
           </ul>
         </div>
       </div>
