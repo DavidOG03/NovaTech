@@ -21,6 +21,7 @@ import Profile from "./pages/account/profile";
 import Orders from "./pages/dashboard/order";
 import AccountType from "./pages/account/accountType";
 import SellerDashboard from "./pages/dashboard/sellerDashboard";
+import LandingPage from "./pages/landing-page/LandingPage"
 import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
@@ -115,8 +116,8 @@ const App: React.FC = () => {
             <Route
               path="/"
               element={
-                
-                  <AccountType />
+                <LandingPage/>
+                  // <AccountType />
                 
               }
             />
