@@ -5,6 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { fetchGadgets } from "../firebase";
 
 interface Product {
   id: number;
@@ -122,6 +123,32 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     const savedOrders = (window as any).__orderData || [];
     setCart(savedCart);
     setOrders(savedOrders);
+  }, []);
+
+  // Fetch gadgets from Firestore on mount
+  useEffect(() => {
+    const loadGadgets = async () => {
+      try {
+        const gadgets = await fetchGadgets();
+        // Transform Firestore documents to match Product interface
+        const transformedGadgets = gadgets.map((gadget: any) => ({
+          id: gadget.id,
+          image: gadget.image || "/images/placeholder.png",
+          name: gadget.name || "Unknown Product",
+          price: gadget.price || "N0",
+          lastPrice: gadget.lastPrice || gadget.price || "N0",
+          description: gadget.description || "",
+          quantity: gadget.quantity || 0,
+          color: gadget.color || "Black",
+        }));
+        setProducts(transformedGadgets);
+      } catch (error) {
+        console.error("Failed to load gadgets from Firestore:", error);
+        // Keep fallback products if fetch fails
+      }
+    };
+
+    loadGadgets();
   }, []);
 
   // Save cart & orders to memory whenever they change

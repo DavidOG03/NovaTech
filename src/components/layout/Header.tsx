@@ -4,6 +4,7 @@ import { useSearch } from "@/context/SearchContext";
 import { Bell } from "lucide-react";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router";
+import ThemeToggle from "@/components/shared/ThemeToggle";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -13,33 +14,10 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
   const [filterActive, setFilterActive] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
-  const [theme, setTheme] = useState<string>(
-    localStorage.getItem("theme") || "light"
-  );
 
   const { currentUser } = useAuth();
 
   const { searchQuery, setSearchQuery } = useSearch();
-
-  useEffect(() => {
-    // Update theme state whenever theme changes
-    const handleThemeChange = () => {
-      setTheme(localStorage.getItem("theme") || "light");
-    };
-
-    window.addEventListener("storage", handleThemeChange);
-
-    const observer = new MutationObserver(() => {
-      const isDark = document.documentElement.classList.contains("dark");
-      setTheme(isDark ? "dark" : "light");
-    });
-    observer.observe(document.documentElement, { attributes: true });
-
-    return () => {
-      window.removeEventListener("storage", handleThemeChange);
-      observer.disconnect();
-    };
-  }, []);
 
   useEffect(() => {
     if (currentUser) {
@@ -63,15 +41,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
     <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
       {/* Left: Logo and Mobile Menu */}
       <Link to={"/products"} className="flex items-center gap-4">
-        {theme === "dark" ? (
-          <img
-            src="/images/novatech-light.webp"
-            alt="Novatech logo"
-            className="h-6"
-          />
-        ) : (
-          <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
-        )}
+        <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
       </Link>
 
       {/* Middle: Search */}
@@ -130,6 +100,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
 
       {/* Right: Notification and Profile */}
       <div className="hug hidden md:flex justify-end items-center gap-4">
+        <ThemeToggle />
         <button className="notification-bell bg-white p-2 rounded-full grid content-center cursor-pointer hover:bg-grey">
           <Bell className="w-6 h-6 text-light-black" />
         </button>

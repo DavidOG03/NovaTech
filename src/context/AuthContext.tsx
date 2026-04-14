@@ -53,7 +53,8 @@ interface AuthContextType {
       photoURL?: string;
       storeName?: string;
       storeDescription?: string;
-    }
+      phoneNumber?: string;
+    },
   ) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
@@ -93,16 +94,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           savedActiveRole &&
           (savedActiveRole === "buyer" || savedActiveRole === "vendor")
         ) {
-          // Validate that saved role is available
-          if (profile.role === "both" || profile.role === savedActiveRole) {
-            finalActiveRole = savedActiveRole as ActiveRole;
-          } else {
-            // User doesn't have access to saved role
-            finalActiveRole =
-              profile.role === "buyer" || profile.role === "vendor"
-                ? profile.role
-                : "buyer";
-          }
+          // Use saved active role (allow free switching)
+          finalActiveRole = savedActiveRole as ActiveRole;
         } else if (profile.activeRole) {
           // Use activeRole from profile
           finalActiveRole = profile.activeRole;
@@ -159,14 +152,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       photoURL?: string;
       storeName?: string;
       storeDescription?: string;
-    }
+      phoneNumber?: string;
+    },
   ) => {
     try {
-      const { name, photoURL, storeName, storeDescription } = extras || {};
+      const { name, photoURL, storeName, storeDescription, phoneNumber } =
+        extras || {};
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       const user = userCredential.user;
 
@@ -196,6 +191,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (role === "vendor" || role === "both") {
         userProfileData.storeName = storeName || "";
         userProfileData.storeDescription = storeDescription || "";
+        userProfileData.phoneNumber = phoneNumber || "";
       }
 
       // Save to single users collection
@@ -222,7 +218,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       const user = userCredential.user;
 
@@ -255,11 +251,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const switchRole = async (newActiveRole: ActiveRole) => {
     if (!currentUser || !userProfile) {
       throw new Error("No user logged in");
-    }
-
-    // Validate that user has access to the requested role
-    if (userProfile.role !== "both" && userProfile.role !== newActiveRole) {
-      throw new Error(`User does not have ${newActiveRole} access`);
     }
 
     try {

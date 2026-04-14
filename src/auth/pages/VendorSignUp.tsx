@@ -11,12 +11,14 @@ import { useAuth } from "../../context/AuthContext";
 
 // ✅ Validation Schema
 const schema = z.object({
-  name: z.string().min(2, "Name is required"),
+  businessName: z.string().min(2, "Business name is required"),
+  fullName: z.string().min(2, "Full name is required"),
   email: z.string().email("Invalid email"),
+  phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-type SignUpFormData = z.infer<typeof schema>;
+type VendorSignUpFormData = z.infer<typeof schema>;
 
 // ✅ Avatar Generator
 function generateInitialsAvatar(name: string): string {
@@ -24,7 +26,7 @@ function generateInitialsAvatar(name: string): string {
   return `https://ui-avatars.com/api/?name=${initials}&background=random`;
 }
 
-const SignUp: React.FC = () => {
+const VendorSignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,20 +37,23 @@ const SignUp: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormData>({ resolver: zodResolver(schema) });
+  } = useForm<VendorSignUpFormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
+  const onSubmit: SubmitHandler<VendorSignUpFormData> = async (data) => {
     dispatch(setLoading(true));
     try {
-      // Use AuthContext's signUp with role: "buyer"
+      // Use AuthContext's signUp with role: "vendor"
       const userCredential = await authSignUp(
         data.email,
         data.password,
-        "buyer",
+        "vendor",
         {
-          name: data.name,
-          photoURL: generateInitialsAvatar(data.name),
-        }
+          name: data.fullName,
+          photoURL: generateInitialsAvatar(data.fullName),
+          storeName: data.businessName,
+          storeDescription: "",
+          phoneNumber: data.phoneNumber,
+        },
       );
 
       // ✅ Construct safe user object
@@ -56,19 +61,22 @@ const SignUp: React.FC = () => {
       const safeUser = {
         uid: firebaseUser.uid,
         email: firebaseUser.email,
-        displayName: data.name,
-        photoURL: generateInitialsAvatar(data.name),
+        displayName: data.fullName,
+        photoURL: generateInitialsAvatar(data.fullName),
       };
 
       // ✅ Save to localStorage
-      localStorage.setItem("username", data.name);
+      localStorage.setItem("username", data.fullName);
       localStorage.setItem("email", data.email);
+      localStorage.setItem("businessName", data.businessName);
+      localStorage.setItem("phoneNumber", data.phoneNumber);
+      localStorage.setItem("userRole", "vendor");
 
       // ✅ Update Redux store
       dispatch(setUser(safeUser));
 
-      // ✅ Redirect to products
-      navigate("/products");
+      // ✅ Redirect to vendor dashboard
+      navigate("/seller-dashboard");
     } catch (err: unknown) {
       if (err instanceof Error) {
         dispatch(setError(err.message));
@@ -85,40 +93,71 @@ const SignUp: React.FC = () => {
   if (loading) {
     return (
       <div className="w-full min-h-screen grid place-items-center">
-        <div className="w-8 h-8 border-5 border-pink rounded-full animate-spin "></div>
+        <div className="w-8 h-8 border-5 border-pink rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-grey py-8">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
-        <img src="/images/novatech.svg" alt="Novatech Logo" className="mb-6" />
-        <h2 className="text-xl font-bold text-center">Sign Up</h2>
+        <img
+          src="/images/novatech.svg"
+          alt="Novatech Logo"
+          className="mb-4 h-6"
+        />
+        <h2 className="text-xl font-bold text-center text-black">
+          Vendor Sign Up
+        </h2>
+        <p className="text-sm text-light-black text-center">
+          Join us as a vendor partner
+        </p>
 
-        {/* Name */}
+        {/* Business Name */}
         <input
           type="text"
-          placeholder="Name"
-          {...register("name")}
-          className="w-full px-3 py-2 border rounded-3xl"
+          placeholder="Business Name"
+          {...register("businessName")}
+          className="w-full px-3 py-2 border rounded-3xl bg-grey focus:outline-none focus:ring-2 focus:ring-pink"
         />
-        {errors.name && (
-          <p className="text-red-500 text-sm">{errors.name.message}</p>
+        {errors.businessName && (
+          <p className="text-red-500 text-sm">{errors.businessName.message}</p>
+        )}
+
+        {/* Full Name */}
+        <input
+          type="text"
+          placeholder="Full Name"
+          {...register("fullName")}
+          className="w-full px-3 py-2 border rounded-3xl bg-grey focus:outline-none focus:ring-2 focus:ring-pink"
+        />
+        {errors.fullName && (
+          <p className="text-red-500 text-sm">{errors.fullName.message}</p>
         )}
 
         {/* Email */}
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded-3xl"
+          className="w-full px-3 py-2 border rounded-3xl bg-grey focus:outline-none focus:ring-2 focus:ring-pink"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
+
+        {/* Phone Number */}
+        <input
+          type="tel"
+          placeholder="Phone Number"
+          {...register("phoneNumber")}
+          className="w-full px-3 py-2 border rounded-3xl bg-grey focus:outline-none focus:ring-2 focus:ring-pink"
+        />
+        {errors.phoneNumber && (
+          <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
         )}
 
         {/* Password */}
@@ -127,8 +166,8 @@ const SignUp: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded-3xl"
-            autoComplete="current-password"
+            className="w-full px-3 py-2 border rounded-3xl bg-grey focus:outline-none focus:ring-2 focus:ring-pink"
+            autoComplete="new-password"
           />
           <span
             role="button"
@@ -171,16 +210,19 @@ const SignUp: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75"
+          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75 transition-colors font-semibold"
         >
-          {loading ? "Loading..." : "Sign Up"}
+          {loading ? "Creating Account..." : "Create Vendor Account"}
         </button>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-        <p>
+        <p className="text-black text-sm">
           Already have an account?{" "}
-          <Link to="/signin" className="text-pink hover:underline">
+          <Link
+            to="/vendor/signin"
+            className="text-pink hover:underline font-semibold"
+          >
             Sign In
           </Link>
         </p>
@@ -189,4 +231,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default VendorSignUp;

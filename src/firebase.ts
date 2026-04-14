@@ -1,6 +1,11 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
-import { getFirestore, Firestore } from "firebase/firestore";
+import {
+  getFirestore,
+  Firestore,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
 
 interface FirebaseConfig {
@@ -42,4 +47,20 @@ export interface FirebaseAuthError extends Error {
     | "user-not-found"
     | "too-many-requests"
     | string; // fallback for unknown codes
+}
+
+// Function to fetch gadgets from Firestore
+export async function fetchGadgets() {
+  try {
+    const gadgetsCollection = collection(db, "gadgets");
+    const gadgetSnapshot = await getDocs(gadgetsCollection);
+    const gadgetList = gadgetSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return gadgetList;
+  } catch (error) {
+    console.error("Error fetching gadgets:", error);
+    throw error;
+  }
 }

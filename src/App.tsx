@@ -12,17 +12,16 @@ import { ProductProvider } from "./context/ProductContext";
 import { AuthProvider } from "./context/AuthContext";
 import SignIn from "./auth/pages/SignIn";
 import SignUp from "./auth/pages/SignUp";
-// import SellerSignIn from "./auth/SellerSignIn";
-// import SellerSignUp from "./auth/SellerSignUp";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
+import HomeRouter from "./components/shared/HomeRouter";
 import DashboardLayout from "./layouts/dashboard/DashboardLayout";
 import CustomerSupport from "./pages/support/customerSupport";
 import Profile from "./pages/account/profile";
 import Orders from "./pages/dashboard/order";
-import AccountType from "./pages/account/accountType";
-import SellerDashboard from "./pages/dashboard/sellerDashboard";
-import LandingPage from "./pages/landing-page/LandingPage"
 import { Toaster } from "react-hot-toast";
+import VendorSignUp from "./auth/pages/VendorSignUp";
+import VendorSignIn from "./auth/pages/VendorSignIn";
+import SellerDashboard from "./pages/vendor/SellerDashboard";
 
 const App: React.FC = () => {
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
@@ -34,7 +33,7 @@ const App: React.FC = () => {
   };
 
   const [accountType, setAccountType] = useState<string | null>(
-    localStorage.getItem("selectedAccountType")
+    localStorage.getItem("selectedAccountType"),
   );
 
   useEffect(() => {
@@ -113,19 +112,12 @@ const App: React.FC = () => {
         <Router>
           <Toaster position="top-center" />
           <Routes>
-            <Route
-              path="/"
-              element={
-                <LandingPage/>
-                  // <AccountType />
-                
-              }
-            />
+            <Route path="/" element={<HomeRouter />} />
 
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            {/* <Route path="/seller-signup" element={<SellerSignUp />} />
-            <Route path="/seller-signin" element={<SellerSignIn />} /> */}
+            <Route path="/vendor/signup" element={<VendorSignUp />} />
+            <Route path="/vendor/signin" element={<VendorSignIn />} />
 
             <Route
               path="/products"

@@ -1,12 +1,11 @@
 // src/pages/Profile.tsx
 import { useAuth } from "@/context/AuthContext";
-import { Moon, Sun } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import ThemeToggle from "@/components/shared/ThemeToggle";
 
 const Profile: React.FC = () => {
   const [userName, setUserName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
-  const [theme, setTheme] = useState<string>("light");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { currentUser } = useAuth();
 
@@ -23,28 +22,6 @@ const Profile: React.FC = () => {
     const initials = encodeURIComponent(name);
     return `https://ui-avatars.com/api/?name=${initials}&background=random`;
   }
-
-  // useEffect(() => {
-  //   const savedTheme = localStorage.getItem("theme");
-  //   if (savedTheme) {
-  //     document.documentElement.classList.toggle("dark", savedTheme === "dark");
-  //     setTheme(savedTheme);
-  //   } else {
-  //     const prefersDark = window.matchMedia(
-  //       "(prefers-color-scheme: dark)"
-  //     ).matches;
-  //     document.documentElement.classList.toggle("dark", prefersDark);
-  //     setTheme(prefersDark ? "dark" : "light");
-  //     localStorage.setItem("theme", prefersDark ? "dark" : "light");
-  //   }
-  // }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-    localStorage.setItem("theme", newTheme);
-    setTheme(newTheme);
-  };
 
   return (
     <div className="min-h-screen bg-grey flex justify-center py-22">
@@ -110,16 +87,7 @@ const Profile: React.FC = () => {
             </div>
             <div className="flex items-center justify-between">
               <p className="text-light-black">Dark Mode</p>
-              <button
-                className=" border-0 cursor-pointer rounded-lg"
-                onClick={toggleTheme}
-              >
-                {theme === "light" ? (
-                  <Moon color="#222" />
-                ) : (
-                  <Sun color="#fff" />
-                )}
-              </button>
+              <ThemeToggle />
             </div>
           </div>
         </div>

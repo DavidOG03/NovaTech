@@ -25,13 +25,13 @@
 }
 
 .dark {
-  --bg-color: #a3677a;
-  --bg-pink: #d3a7c6;
-  --light-black: #bfb5af;
-  --grey: #181818;
-  --white: #080808;
-  --black: #f7f7f7;
-  --red: #5c0909;
+  --bg-color: #140a12;
+  --bg-pink: #3d1f35;
+  --light-black: #a1a1a1;
+  --grey: #1f1f1f;
+  --white: #f5f5f5;
+  --black: #000000;
+  --red: #ff4d4d;
 }
 
 .link {

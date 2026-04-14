@@ -29,11 +29,20 @@ export default function AccountType() {
   const handleConfirm = () => {
     if (!accountType) return;
 
-    // Store selected account type in localStorage for signup page
-    localStorage.setItem("selectedAccountType", accountType);
+    setLoading(true);
 
-    // Navigate to unified signup page with role parameter
-    navigate(`/signup?role=${accountType}`);
+    // Route based on account type
+    if (accountType === "buyer") {
+      // Navigate to customer signup page
+      localStorage.setItem("selectedAccountType", "buyer");
+      navigate("/signup");
+    } else if (accountType === "vendor") {
+      // Navigate to vendor signup page
+      localStorage.setItem("selectedAccountType", "vendor");
+      navigate("/vendor/signup");
+    }
+
+    setLoading(false);
   };
 
   // If user is logged in, show loading while redirecting
@@ -268,8 +277,17 @@ export default function AccountType() {
           <p className="text-center text-gray-600">
             Already have an account?{" "}
             <button
-              onClick={() => navigate("/signin")}
-              className="text-pink font-semibold hover:underline"
+              onClick={() => {
+                if (accountType === "vendor") {
+                  navigate("/vendor/signin");
+                } else {
+                  navigate("/signin");
+                }
+              }}
+              disabled={!accountType}
+              className={`font-semibold hover:underline ${
+                accountType ? "text-pink cursor-pointer" : "text-gray-400 cursor-not-allowed"
+              }`}
             >
               Sign In
             </button>

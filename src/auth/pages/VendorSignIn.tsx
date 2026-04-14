@@ -6,42 +6,81 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../context/AuthContext";
 import { mapAuthCodeToMessage } from "../../utils/firebaseErrors";
 import { FirebaseError } from "firebase/app";
-import { useNavigate } from "react-router";
-import ThemeToggle from "../../components/shared/ThemeToggle";
+import { useNavigate, Link } from "react-router";
 
 // Define schema with Zod
 const schema = z.object({
-  email: z.string().email("Invalid email"),
+  fullName: z.string().min(2, "Full name is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 // Infer TypeScript type from schema
-type SignInFormData = z.infer<typeof schema>;
+type VendorSignInFormData = z.infer<typeof schema>;
 
-const SignIn: React.FC = () => {
-  const [showPassword, setShowPassword] = useState<Boolean>(false);
+const VendorSignIn: React.FC = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login, activeRole } = useAuth();
+  const { login } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInFormData>({
+  } = useForm<VendorSignInFormData>({
     resolver: zodResolver(schema),
   });
 
+  const [theme, setTheme] = useState<string>(
+    localStorage.getItem("theme") || "light",
+  );
+
+  useEffect(() => {
+    // Update theme state whenever theme changes
+    const handleThemeChange = () => {
+      setTheme(localStorage.getItem("theme") || "light");
+    };
+
+    window.addEventListener("storage", handleThemeChange);
+
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains("dark");
+      setTheme(isDark ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+      observer.disconnect();
+    };
+  }, []);
+
   // Explicit typing for submit handler
-  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
+  const onSubmit: SubmitHandler<VendorSignInFormData> = async (data) => {
     setLoading(true);
     setError("");
     try {
-      await login(data.email, data.password);
-      activeRole === "vendor"
-        ? navigate("/seller-dashboard")
-        : navigate("/products");
+      // For vendor sign in with full name, we need to find the email from storage or use an alternative approach
+      const storedEmail = localStorage.getItem("email");
+
+      if (!storedEmail) {
+        setError("No vendor account found. Please sign up first.");
+        setLoading(false);
+        return;
+      }
+
+      // Sign in using email and password
+      await login(storedEmail, data.password);
+
+      // Verify the logged-in user's name matches
+      const storedName = localStorage.getItem("username");
+      if (storedName !== data.fullName) {
+        setError("Full name or password incorrect");
+        return;
+      }
+
+      navigate("/seller-dashboard");
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         const message = mapAuthCodeToMessage(err.code);
@@ -59,30 +98,45 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray">
+    <div className="flex flex-col items-center justify-center h-screen bg-grey">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
-        <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
-        <h2 className="text-xl font-bold text-center text-black">Sign In</h2>
-        {/* Email */}
-        <input
-          type="email"
-          placeholder="Email"
-          {...register("email")}
-          className="w-full px-3 py-2 border rounded-3xl bg-grey"
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        {theme === "dark" ? (
+          <img
+            src="/images/novatech-light.webp"
+            alt="Novatech logo"
+            className="h-6"
+          />
+        ) : (
+          <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
         )}
+        <h2 className="text-xl font-bold text-center text-black">
+          Vendor Sign In
+        </h2>
+        <p className="text-sm text-light-black text-center">
+          Access your vendor dashboard
+        </p>
+
+        {/* Full Name */}
+        <input
+          type="text"
+          placeholder="Full Name"
+          {...register("fullName")}
+          className="w-full px-3 py-2 border rounded-3xl bg-grey focus:outline-none focus:ring-2 focus:ring-pink"
+        />
+        {errors.fullName && (
+          <p className="text-red-500 text-sm">{errors.fullName.message}</p>
+        )}
+
         {/* Password */}
         <div className="relative w-full">
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded-3xl bg-grey"
+            className="w-full px-3 py-2 border rounded-3xl bg-grey focus:outline-none focus:ring-2 focus:ring-pink"
             autoComplete="current-password"
           />
           <span
@@ -121,25 +175,31 @@ const SignIn: React.FC = () => {
         {errors.password && (
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
+
         {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75"
+          className="w-full bg-pink text-white py-2 rounded-3xl hover:bg-pink/75 transition-colors font-semibold"
         >
-          {loading ? "Loading..." : "Sign In"}
+          {loading ? "Signing In..." : "Sign In"}
         </button>
+
         {/* Error */}
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <span className="text-black">
-          No account?{" "}
-          <a href="/signup" className="text-pink hover:underline">
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+        <span className="text-black text-sm">
+          Don't have a vendor account?{" "}
+          <Link
+            to="/vendor/signup"
+            className="text-pink hover:underline font-semibold"
+          >
             Sign Up
-          </a>
+          </Link>
         </span>
       </form>
     </div>
   );
 };
 
-export default SignIn;
+export default VendorSignIn;
