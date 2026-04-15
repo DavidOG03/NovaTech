@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { X } from "lucide-react";
 import { db } from "@/firebase";
+import { uploadImageToCloudinary } from "@/utils/cloudinary";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import toast from "react-hot-toast";
 
@@ -8,7 +9,7 @@ interface GadgetFormData {
   name: string;
   price: string;
   description: string;
-  image: string;
+  image: string; // will store URL after upload
   quantity: string;
   color: string;
 }
@@ -33,6 +34,8 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
     color: "Black",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleAddGadget = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,12 +46,17 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
 
     setIsSubmitting(true);
     try {
+      let imageUrl = gadgetForm.image;
+      // If a file is selected, upload to Cloudinary
+      if (imageFile) {
+        imageUrl = await uploadImageToCloudinary(imageFile);
+      }
       const gadgetsCollection = collection(db, "gadgets");
       await addDoc(gadgetsCollection, {
         name: gadgetForm.name,
         price: `N${parseFloat(gadgetForm.price).toLocaleString()}`,
         description: gadgetForm.description,
-        image: gadgetForm.image || "/images/placeholder.png",
+        image: imageUrl || "/images/placeholder.png",
         quantity: parseInt(gadgetForm.quantity),
         color: gadgetForm.color,
         createdAt: serverTimestamp(),
@@ -64,6 +72,8 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
         quantity: "",
         color: "Black",
       });
+      setImageFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       onGadgetAdded?.();
     } catch (error) {
       console.error("Error adding gadget:", error);
@@ -153,18 +163,29 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
             />
           </div>
 
-          {/* Image URL */}
+          {/* Image Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Image URL
+              Image Upload (or URL)
             </label>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                setImageFile(file || null);
+                // If user clears file, keep text input value
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink mb-2"
+            />
             <input
               type="text"
               value={gadgetForm.image}
               onChange={(e) =>
                 setGadgetForm({ ...gadgetForm, image: e.target.value })
               }
-              placeholder="https://..."
+              placeholder="https://... (optional if uploading)"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
