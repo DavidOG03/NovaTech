@@ -20,16 +20,16 @@ interface TopProductsProps {
 
 const TopProducts: React.FC<TopProductsProps> = ({ products }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <h2 className="text-lg font-bold text-gray-900 mb-6">Top Products</h2>
+    <div className="bg-grey rounded-xl shadow-sm border border-light-black/25 p-6">
+      <h2 className="text-lg font-bold text-light-black mb-6">Top Products</h2>
       <div className="space-y-4">
         {products.length === 0 ? (
           <div className="text-center py-8">
             <Star className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p className="text-lg font-medium text-gray-500">
+            <p className="text-lg font-medium text-light-black">
               No products found
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-light-black">
               Top products will appear here once you have sales data.
             </p>
           </div>
@@ -40,7 +40,7 @@ const TopProducts: React.FC<TopProductsProps> = ({ products }) => {
                 {product.image}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-light-black truncate">
                   {product.name}
                 </p>
                 <p className="text-xs text-light-black">

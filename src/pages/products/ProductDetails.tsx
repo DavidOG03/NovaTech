@@ -11,14 +11,14 @@ const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   // Find the product by ID
-  const product = products.find((p) => p.id === Number(id));
+  const product = products.find((p) => p.id === id);
 
   // Local state for quantity to add
   const [count, setCount] = useState<number>(1);
 
   // Check if this product is already in cart and get its quantity
   const productInCart = useProductContext().cart.find(
-    (item) => item.id === product?.id
+    (item) => item.id === product?.id,
   );
   const currentCartQuantity = productInCart ? productInCart.count : 0;
 

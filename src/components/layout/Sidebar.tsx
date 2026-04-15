@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     localStorage.setItem("theme", "light");
 
     // Redirect to home page
-    navigate("/");
+    navigate("/signin");
   };
 
   const navItems = [
@@ -231,7 +231,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   // Automatically detect active route based on location
   const activeIndex = navItems.findIndex((item) =>
-    location.pathname.startsWith(item.link)
+    location.pathname.startsWith(item.link),
   );
 
   // Update indicator position whenever active link changes

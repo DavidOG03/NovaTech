@@ -10,10 +10,10 @@ import AccountType from "../../pages/account/accountType";
  * - If user is not authenticated, show the account type selection
  */
 const HomeRouter: React.FC = () => {
-  const { currentUser, userRole, activeRole, loading } = useAuth();
+  const { currentUser, userProfile, activeRole, loading } = useAuth();
 
   // While checking authentication status
-  if (loading) {
+  if (loading || (currentUser && !userProfile)) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <img
@@ -26,11 +26,21 @@ const HomeRouter: React.FC = () => {
   }
 
   // If user is authenticated with a cached session
-  if (currentUser && userRole && activeRole) {
+  if (currentUser && userProfile) {
     // Redirect to appropriate dashboard based on active role
     if (activeRole === "vendor") {
       return <Navigate to="/seller-dashboard" replace />;
-    } else if (activeRole === "buyer") {
+    }
+
+    if (activeRole === "buyer" || userProfile.role === "buyer") {
+      return <Navigate to="/products" replace />;
+    }
+
+    if (userProfile.role === "vendor") {
+      return <Navigate to="/seller-dashboard" replace />;
+    }
+
+    if (userProfile.role === "both") {
       return <Navigate to="/products" replace />;
     }
   }

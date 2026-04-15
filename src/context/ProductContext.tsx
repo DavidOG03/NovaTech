@@ -6,59 +6,23 @@ import React, {
   ReactNode,
 } from "react";
 import { fetchGadgets } from "../firebase";
-
-interface Product {
-  id: number;
-  image: string;
-  name: string;
-  price: string;
-  quantity: number;
-  description: string;
-  color: string;
-  lastPrice: string;
-}
-
-interface CartItem extends Product {
-  count: number;
-}
-
-interface OrderItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
-
-interface Order {
-  id: string;
-  date: string;
-  status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
-  total: number;
-  items: OrderItem[];
-}
-
-interface ProductContextType {
-  products: Product[];
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  cart: CartItem[];
-  addToCart: (product: Product) => void;
-  updateCartItemCount: (id: number, count: number) => void;
-  removeFromCart: (id: number) => void;
-  clearCart: () => void;
-  clearOrders: () => void;
-  getCartCount: () => number;
-  getCartTotal: () => number;
-  orders: Order[];
-  updateOrder: () => void;
-}
+import { mapFirebaseCodeToMessage } from "@/utils/firebaseErrors";
+import {
+  Gadget,
+  RawGadget,
+  CartItem,
+  Order,
+  OrderItem,
+  ProductContextType,
+} from "@/types/gadgets.types";
+import { FirebaseError } from "firebase/app";
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
-  const [products, setProducts] = useState<Product[]>([
+  const [products, setProducts] = useState<Gadget[]>([
     {
-      id: 1,
+      id: "1",
       image: "/images/iphone.png",
       name: "Iphone 13 Pro",
       price: "N1,400,050",
@@ -69,7 +33,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       color: "Black",
     },
     {
-      id: 2,
+      id: "2",
       image: "/images/oraimo_pods.png",
       name: "Oraimo Pods",
       price: "N18,000",
@@ -80,7 +44,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       color: "Black",
     },
     {
-      id: 3,
+      id: "3",
       image: "/images/headphone.webp",
       name: "Sony Headphones",
       price: "N480,000",
@@ -91,7 +55,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       color: "Black",
     },
     {
-      id: 4,
+      id: "4",
       image: "/images/ps5_portable.png",
       name: "PS5 Portable",
       price: "N480,000",
@@ -102,7 +66,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       quantity: 5,
     },
     {
-      id: 5,
+      id: "5",
       image: "/images/tablet.png",
       name: "Samsung Tablet",
       price: "N480,000",
@@ -116,6 +80,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [productsLoading, setProductsLoading] = useState<boolean>(true);
 
   // Load cart & orders from memory on mount
   useEffect(() => {
@@ -128,23 +93,31 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   // Fetch gadgets from Firestore on mount
   useEffect(() => {
     const loadGadgets = async () => {
+      setProductsLoading(true);
       try {
         const gadgets = await fetchGadgets();
         // Transform Firestore documents to match Product interface
-        const transformedGadgets = gadgets.map((gadget: any) => ({
-          id: gadget.id,
-          image: gadget.image || "/images/placeholder.png",
-          name: gadget.name || "Unknown Product",
-          price: gadget.price || "N0",
-          lastPrice: gadget.lastPrice || gadget.price || "N0",
-          description: gadget.description || "",
-          quantity: gadget.quantity || 0,
-          color: gadget.color || "Black",
-        }));
+        const transformedGadgets: Gadget[] = gadgets.map(
+          (gadget: RawGadget) => ({
+            id: gadget.id,
+            image: gadget.image || "/images/placeholder.png",
+            name: gadget.name || "Unknown Product",
+            price: gadget.price || "N0",
+            lastPrice: gadget.lastPrice || gadget.price || "N0",
+            description: gadget.description || "",
+            quantity: gadget.quantity || 0,
+            color: gadget.color || "Black",
+          }),
+        );
         setProducts(transformedGadgets);
       } catch (error) {
         console.error("Failed to load gadgets from Firestore:", error);
+        if (error instanceof FirebaseError) {
+          console.warn(mapFirebaseCodeToMessage(error.code));
+        }
         // Keep fallback products if fetch fails
+      } finally {
+        setProductsLoading(false);
       }
     };
 
@@ -161,12 +134,12 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   }, [orders]);
 
   // Add to Cart
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Gadget) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, count: item.count + 1 } : item
+          item.id === product.id ? { ...item, count: item.count + 1 } : item,
         );
       }
       return [...prev, { ...product, count: 1 }];
@@ -206,17 +179,17 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // --- Cart Helpers ---
-  const updateCartItemCount = (id: number, count: number) => {
+  const updateCartItemCount = (id: string, count: number) => {
     if (count <= 0) {
       removeFromCart(id);
     } else {
       setCart((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, count } : item))
+        prev.map((item) => (item.id === id ? { ...item, count } : item)),
       );
     }
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
@@ -244,6 +217,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       value={{
         products,
         setProducts,
+        productsLoading,
         cart,
         addToCart,
         updateCartItemCount,

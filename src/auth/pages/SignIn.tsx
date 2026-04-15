@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 import { mapAuthCodeToMessage } from "../../utils/firebaseErrors";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router";
-import ThemeToggle from "../../components/shared/ThemeToggle";
+import { useTheme } from "@/hooks/useTheme";
 
 // Define schema with Zod
 const schema = z.object({
@@ -23,7 +23,8 @@ const SignIn: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login, activeRole } = useAuth();
+  const { login, userProfile } = useAuth();
+  const theme = useTheme();
 
   const {
     register,
@@ -39,7 +40,12 @@ const SignIn: React.FC = () => {
     setError("");
     try {
       await login(data.email, data.password);
-      activeRole === "vendor"
+      const nextRole = userProfile?.activeRole || userProfile?.role || "buyer";
+      localStorage.setItem(
+        "selectedAccountType",
+        nextRole === "vendor" ? "vendor" : "buyer",
+      );
+      nextRole === "vendor"
         ? navigate("/seller-dashboard")
         : navigate("/products");
     } catch (err: unknown) {
@@ -59,19 +65,29 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray">
+    <div className="flex flex-col items-center justify-center h-screen bg-light-black/25">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
+        className="bg-grey p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
-        <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
-        <h2 className="text-xl font-bold text-center text-black">Sign In</h2>
+        <img
+          src={
+            theme === "dark"
+              ? "/images/novatech-light.webp"
+              : "/images/novatech.svg"
+          }
+          alt="NovaTech Logo"
+          className="h-8"
+        />
+        <h2 className="text-xl font-bold text-center text-light-black">
+          Sign In
+        </h2>
         {/* Email */}
         <input
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded-3xl bg-grey"
+          className="w-full px-3 py-2 border border-light-black/25 rounded-3xl bg-grey text-light-black focus:outline-none focus:ring-2 focus:ring-pink"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -82,7 +98,7 @@ const SignIn: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded-3xl bg-grey"
+            className="w-full px-3 py-2 border border-light-black/25 rounded-3xl bg-grey text-light-black focus:outline-none focus:ring-2 focus:ring-pink"
             autoComplete="current-password"
           />
           <span
@@ -131,7 +147,7 @@ const SignIn: React.FC = () => {
         </button>
         {/* Error */}
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <span className="text-black">
+        <span className="text-light-black">
           No account?{" "}
           <a href="/signup" className="text-pink hover:underline">
             Sign Up

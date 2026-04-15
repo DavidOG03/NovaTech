@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { ShoppingBag, Store, ArrowRight, CheckCircle2 } from "lucide-react";
 
@@ -10,21 +10,7 @@ export default function AccountType() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { currentUser, userProfile, userRole } = useAuth();
-
-  // Redirect if user is already logged in
-  useEffect(() => {
-    if (currentUser && userProfile) {
-      // User is already registered, redirect to appropriate page
-      if (userProfile.role === "buyer") {
-        navigate("/products");
-      } else if (userProfile.role === "vendor") {
-        navigate("/seller-dashboard");
-      } else if (userProfile.role === "both") {
-        navigate("/products"); // Home page with role switcher
-      }
-    }
-  }, [currentUser, userProfile, navigate]);
+  const { currentUser, userProfile } = useAuth();
 
   const handleConfirm = () => {
     if (!accountType) return;
@@ -45,16 +31,12 @@ export default function AccountType() {
     setLoading(false);
   };
 
-  // If user is logged in, show loading while redirecting
   if (currentUser && userProfile) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-pink border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Redirecting...</p>
-        </div>
-      </div>
-    );
+    if (userProfile.role === "vendor") {
+      return <Navigate to="/seller-dashboard" replace />;
+    }
+
+    return <Navigate to="/products" replace />;
   }
 
   return (

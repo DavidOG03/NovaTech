@@ -47,10 +47,12 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-8">
-      <div className="p-6 border-b border-gray-200">
+    <div className="bg-grey rounded-xl shadow-sm border border-light-black/25 mb-8">
+      <div className="p-6 border-b border-light-black/25">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-900">Gadgets Inventory</h2>
+          <h2 className="text-lg font-bold text-light-black">
+            Gadgets Inventory
+          </h2>
           <button
             onClick={onAddGadget}
             className="px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors flex items-center space-x-2"
@@ -63,7 +65,7 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-grey border-b border-light-black/25">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
                 Product
@@ -85,14 +87,16 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-grey divide-y divide-gray-200">
             {products.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-6 py-12 text-center">
                   <div className="text-gray-500">
                     <Package className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg font-medium">No gadgets found</p>
-                    <p className="text-sm">
+                    <p className="text-lg font-medium text-light-black">
+                      No gadgets found
+                    </p>
+                    <p className="text-sm text-light-black">
                       Start by adding your first gadget to the inventory.
                     </p>
                   </div>

@@ -46,7 +46,7 @@ const SellerDashboard: React.FC = () => {
   const [showAddGadgetModal, setShowAddGadgetModal] = useState(false);
   const [gadgets, setGadgets] = useState<Gadget[]>([]);
   const [loading, setLoading] = useState(true);
-  const { userProfile, switchRole } = useAuth();
+  const { userProfile, switchRole, logout } = useAuth();
   const { getCartTotal, orders } = useProductContext();
   const navigate = useNavigate();
   const totalRevenue = getCartTotal();
@@ -97,10 +97,27 @@ const SellerDashboard: React.FC = () => {
     try {
       await switchRole("buyer");
       toast.success("Switched to customer mode");
-      navigate("/products");
+      navigate("/products", {
+        state: {
+          userProfile: userProfile
+            ? { ...userProfile, activeRole: "buyer" }
+            : null,
+        },
+      });
     } catch (error) {
       console.error("Error switching role:", error);
       toast.error("Failed to switch role");
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      navigate("/signin");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error("Failed to log out");
     }
   };
 
@@ -142,11 +159,12 @@ const SellerDashboard: React.FC = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-grey">
       {/* Header */}
       <DashboardHeader
         userName={userName}
         onSwitchToBuyer={handleSwitchToBuyer}
+        onLogout={handleLogout}
         generateInitialsAvatar={generateInitialsAvatar}
       />
 
@@ -155,7 +173,7 @@ const SellerDashboard: React.FC = () => {
         {/* Period Selector */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
-            <button className="px-4 py-2 bg-white border border-gray-300 rounded-3xl hover:bg-gray-50 transition-colors flex items-center space-x-2">
+            <button className="px-4 py-2 bg-grey border border-light-black rounded-3xl hover:bg-grey/50 transition-colors flex items-center space-x-2">
               <span className="text-sm font-medium text-light-black">
                 {selectedPeriod}
               </span>

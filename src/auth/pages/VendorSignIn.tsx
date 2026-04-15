@@ -80,6 +80,7 @@ const VendorSignIn: React.FC = () => {
         return;
       }
 
+      localStorage.setItem("selectedAccountType", "vendor");
       navigate("/seller-dashboard");
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {

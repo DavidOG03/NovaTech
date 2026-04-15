@@ -10,9 +10,17 @@ const errorMap: FirebaseErrorMap = {
   "auth/wrong-password": "Wrong password. Try again or reset it.",
   "auth/user-not-found": "No account found with this email.",
   "auth/too-many-requests": "Too many attempts. Please try again later.",
+  "permission-denied":
+    "You do not have permission to access this Firestore data.",
+  "firestore/permission-denied":
+    "You do not have permission to access this Firestore data.",
   default: "An unexpected error occurred. Please try again.",
 };
 
 export function mapAuthCodeToMessage(code: string): string {
+  return errorMap[code] || errorMap.default;
+}
+
+export function mapFirebaseCodeToMessage(code: string): string {
   return errorMap[code] || errorMap.default;
 }

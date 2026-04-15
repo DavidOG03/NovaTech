@@ -3,8 +3,9 @@ import { useProductContext } from "@/context/ProductContext";
 import { useSearch } from "@/context/SearchContext";
 import { Bell } from "lucide-react";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import ThemeToggle from "@/components/shared/ThemeToggle";
+import { useTheme } from "@/hooks/useTheme";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -14,20 +15,21 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
   const [filterActive, setFilterActive] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
+  const theme = useTheme();
+  const navigate = useNavigate();
 
-  const { currentUser } = useAuth();
+  const { currentUser, userProfile, activeRole, switchRole } = useAuth();
 
   const { searchQuery, setSearchQuery } = useSearch();
 
   useEffect(() => {
-    if (currentUser) {
-      const name =
-        currentUser.displayName ||
-        currentUser.email?.split("@")[0] ||
-        "John Doe";
-      setUserName(name);
-    }
-  }, [currentUser]);
+    const name =
+      userProfile?.name ||
+      currentUser?.displayName ||
+      currentUser?.email?.split("@")[0] ||
+      "John Doe";
+    setUserName(name);
+  }, [currentUser, userProfile]);
 
   function generateInitialsAvatar(name: string): string {
     const initials = encodeURIComponent(name);
@@ -36,12 +38,37 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
 
   const { getCartCount } = useProductContext();
   const cartCount = getCartCount();
+  const canSwitchToVendor =
+    userProfile?.role === "vendor" || userProfile?.role === "both";
+
+  const showBecomeSellerButton =
+    !!currentUser && !canSwitchToVendor && activeRole === "buyer";
+
+  const showSwitchToVendorButton =
+    !!currentUser && canSwitchToVendor && activeRole === "buyer";
+
+  const handleSwitchToVendor = async () => {
+    try {
+      await switchRole("vendor");
+      navigate("/seller-dashboard");
+    } catch (error) {
+      console.error("Error switching to vendor:", error);
+    }
+  };
 
   return (
     <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
       {/* Left: Logo and Mobile Menu */}
       <Link to={"/products"} className="flex items-center gap-4">
-        <img src="/images/novatech.svg" alt="Novatech logo" className="h-6" />
+        <img
+          src={
+            theme === "dark"
+              ? "/images/novatech-light.webp"
+              : "/images/novatech.svg"
+          }
+          alt="Novatech logo"
+          className="h-6"
+        />
       </Link>
 
       {/* Middle: Search */}
@@ -57,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setSearchQuery(e.target.value)
               }
-              className="w-full max-w-[526px] py-2 pl-8 md:pl-12 rounded-full bg-white text-black outline-0 focus:outline-1"
+              className="w-full max-w-[526px] py-2 pl-8 md:pl-12 rounded-full bg-white text-black border border-light-black/25 focus:border-2 focus:border-pink focus:ring-0 transition duration-200"
             />
             <span className="search absolute top-1/2 left-2 md:left-6 -translate-y-1/2">
               <img
@@ -66,11 +93,10 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
                 className="w-4 h-4"
               />
             </span>
+            <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br hover:from-light-black hover:to-light-black hover:text-white text-white rounded-[3rem] py-1.5 px-4 cursor-pointer absolute top-1/2 right-1 -translate-y-1/2">
+              Search
+            </button>
           </div>
-
-          <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br hover:from-light-black hover:to-light-black hover:text-white text-white rounded-[3rem] py-2 px-4 cursor-pointer">
-            Search
-          </button>
         </div>
 
         <Link
@@ -100,6 +126,25 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
 
       {/* Right: Notification and Profile */}
       <div className="hug hidden md:flex justify-end items-center gap-4">
+        {showBecomeSellerButton && (
+          <Link
+            to="/vendor/signup"
+            className="bg-background text-white rounded-[3rem] py-2 px-4 transition-all duration-200 hover:bg-background/85"
+          >
+            Become a seller
+          </Link>
+        )}
+
+        {showSwitchToVendorButton && (
+          <button
+            type="button"
+            onClick={handleSwitchToVendor}
+            className="bg-background text-white rounded-[3rem] py-2 px-4 transition-all duration-200 hover:bg-background/85 cursor-pointer"
+          >
+            Switch to vendor
+          </button>
+        )}
+
         <ThemeToggle />
         <button className="notification-bell bg-white p-2 rounded-full grid content-center cursor-pointer hover:bg-grey">
           <Bell className="w-6 h-6 text-light-black" />
@@ -110,14 +155,14 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
             alt="Profile Picture"
             className="w-10 h-10 rounded-full"
           />
-          <div className="flex flex-col justify-center items-start gap-1">
+          {/* <div className="flex flex-col justify-center items-start gap-1">
             <span className="user text-base text-light-black capitalize">
               {userName}
             </span>
             <span className="greeting text-[10px] text-light-black">
               Welcome
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
 

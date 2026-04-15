@@ -8,6 +8,7 @@ import { setUser, setError, setLoading } from "../../redux/slices/authSlice";
 import { RootState } from "../../redux/store";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "@/hooks/useTheme";
 
 // ✅ Validation Schema
 const schema = z.object({
@@ -30,6 +31,7 @@ const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.auth);
   const { signUp: authSignUp } = useAuth();
+  const theme = useTheme();
 
   const {
     register,
@@ -48,7 +50,7 @@ const SignUp: React.FC = () => {
         {
           name: data.name,
           photoURL: generateInitialsAvatar(data.name),
-        }
+        },
       );
 
       // ✅ Construct safe user object
@@ -63,6 +65,7 @@ const SignUp: React.FC = () => {
       // ✅ Save to localStorage
       localStorage.setItem("username", data.name);
       localStorage.setItem("email", data.email);
+      localStorage.setItem("selectedAccountType", "buyer");
 
       // ✅ Update Redux store
       dispatch(setUser(safeUser));
@@ -91,20 +94,30 @@ const SignUp: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-light-black/25">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
+        className="bg-grey p-6 rounded-3xl shadow-lg w-full max-w-sm space-y-4 flex flex-col items-center justify-center"
       >
-        <img src="/images/novatech.svg" alt="Novatech Logo" className="mb-6" />
-        <h2 className="text-xl font-bold text-center">Sign Up</h2>
+        <img
+          src={
+            theme === "dark"
+              ? "/images/novatech-light.webp"
+              : "/images/novatech.svg"
+          }
+          alt="NovaTech Logo"
+          className="h-8"
+        />
+        <h2 className="text-xl font-bold text-center text-light-black">
+          Sign Up
+        </h2>
 
         {/* Name */}
         <input
           type="text"
           placeholder="Name"
           {...register("name")}
-          className="w-full px-3 py-2 border rounded-3xl"
+          className="w-full px-3 py-2 border border-light-black/25 rounded-3xl bg-grey text-light-black focus:outline-none focus:ring-2 focus:ring-pink"
         />
         {errors.name && (
           <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -115,7 +128,7 @@ const SignUp: React.FC = () => {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full px-3 py-2 border rounded-3xl"
+          className="w-full px-3 py-2 border border-light-black/25 rounded-3xl bg-grey text-light-black focus:outline-none focus:ring-2 focus:ring-pink"
         />
         {errors.email && (
           <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -127,7 +140,7 @@ const SignUp: React.FC = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...register("password")}
-            className="w-full px-3 py-2 border rounded-3xl"
+            className="w-full px-3 py-2 border border-light-black/25 rounded-3xl bg-grey text-light-black focus:outline-none focus:ring-2 focus:ring-pink"
             autoComplete="current-password"
           />
           <span

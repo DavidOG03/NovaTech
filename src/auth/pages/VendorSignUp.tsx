@@ -71,6 +71,7 @@ const VendorSignUp: React.FC = () => {
       localStorage.setItem("businessName", data.businessName);
       localStorage.setItem("phoneNumber", data.phoneNumber);
       localStorage.setItem("userRole", "vendor");
+      localStorage.setItem("selectedAccountType", "vendor");
 
       // ✅ Update Redux store
       dispatch(setUser(safeUser));

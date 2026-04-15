@@ -2,41 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
 import { gsap } from "gsap";
-// import Product from "../components/productDetails";
+
 import { Link } from "react-router";
 import { useSearch } from "@/context/SearchContext";
-
-interface Category {
-  img: string;
-  alt: string;
-  text: string;
-}
-
-interface ProductItem {
-  id: number;
-  image: string;
-  name: string;
-  price: string;
-  lastPrice: string;
-  category: string;
-}
-
-// 2. Component props
-interface DashboardProps {
-  filterEnabled: boolean;
-  searchQuery?: string;
-  handleItemClick?: () => void;
-}
+import { useProductContext } from "@/context/ProductContext";
+import { Gadget } from "@/types/gadgets.types";
+import { Category, DashboardProps } from "@/types/products.types";
 
 // 3. Component
 const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
   const { searchQuery } = useSearch();
+  const { products, productsLoading } = useProductContext();
   // 4. Typed refs and state
   const cardsRef = useRef<Array<HTMLDivElement | null>>([]);
   const [activeCategories, setActiveCategories] = useState<number[]>([]);
 
   // 5. GSAP on mount
   useEffect(() => {
+    if (productsLoading) return;
+
     const elements = cardsRef.current.filter(Boolean);
     gsap.fromTo(
       elements,
@@ -47,9 +31,9 @@ const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
         duration: 0.25,
         ease: "power2.out",
         stagger: 0.125,
-      }
+      },
     );
-  }, []);
+  }, [productsLoading]);
 
   // 6. Your data
   const categories: Category[] = [
@@ -60,59 +44,51 @@ const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
     { img: "/images/watch.png", alt: "watch", text: "Accessories" },
   ];
 
-  const products: ProductItem[] = [
-    {
-      id: 1,
-      image: "/images/iphone.png",
-      name: "Iphone 13 Pro",
-      price: "N1,400,050",
-      lastPrice: "N1,500,000",
-      category: "Phones",
-    },
-    {
-      id: 2,
-      image: "/images/oraimo_pods.png",
-      name: "Oraimo Pods",
-      price: "N18,000",
-      lastPrice: "N25,000",
-      category: "Accessories",
-    },
-    {
-      id: 3,
-      image: "/images/headphone.webp",
-      name: "Sony Headphones",
-      price: "N480,000",
-      lastPrice: "N520,000",
-      category: "Accessories",
-    },
-    {
-      id: 4,
-      image: "/images/ps5_portable.png",
-      name: "PS5 Portable",
-      price: "N480,000",
-      lastPrice: "N520,000",
-      category: "Consoles",
-    },
-    {
-      id: 5,
-      image: "/images/tablet.png",
-      name: "Samsung Tablet",
-      price: "N480,000",
-      lastPrice: "N520,000",
-      category: "Tablets",
-    },
-  ];
-
   // 7. Filter logic
   const selectedCategoryNames = activeCategories
     .map((i) => categories[i]?.text)
     .filter((t): t is string => Boolean(t));
 
-  const filterList = (items: ProductItem[]): ProductItem[] =>
+  const getProductCategory = (item: Gadget): string => {
+    const content = `${item.name} ${item.description}`.toLowerCase();
+
+    if (
+      content.includes("iphone") ||
+      content.includes("phone") ||
+      content.includes("android")
+    ) {
+      return "Phones";
+    }
+
+    if (
+      content.includes("laptop") ||
+      content.includes("macbook") ||
+      content.includes("notebook")
+    ) {
+      return "Laptops";
+    }
+
+    if (content.includes("tablet") || content.includes("ipad")) {
+      return "Tablets";
+    }
+
+    if (
+      content.includes("ps5") ||
+      content.includes("playstation") ||
+      content.includes("xbox") ||
+      content.includes("console")
+    ) {
+      return "Consoles";
+    }
+
+    return "Accessories";
+  };
+
+  const filterList = (items: Gadget[]): Gadget[] =>
     items.filter((item) => {
       const byCategory =
         selectedCategoryNames.length === 0 ||
-        selectedCategoryNames.includes(item.category);
+        selectedCategoryNames.includes(getProductCategory(item));
       const bySearch = item.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
@@ -130,6 +106,17 @@ const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
   const handleClosePopup = () => {
     setIsItemClicked(false);
   };
+
+  const ProductSkeleton = () => (
+    <div className="h-auto min-h-[297px] flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg p-3 animate-pulse">
+      <div className="w-full aspect-square rounded-xl bg-grey" />
+      <div className="mt-4 space-y-3 w-full">
+        <div className="h-4 rounded-full bg-grey w-3/4" />
+        <div className="h-4 rounded-full bg-grey w-1/2" />
+        <div className="h-3 rounded-full bg-grey w-2/3" />
+      </div>
+    </div>
+  );
 
   return (
     <div className="h-full w-auto pb-4 pt-[80px] md:pt-[90px]">
@@ -152,7 +139,7 @@ const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
                   setActiveCategories((prev) =>
                     prev.includes(idx)
                       ? prev.filter((i) => i !== idx)
-                      : [...prev, idx]
+                      : [...prev, idx],
                   )
                 }
               />
@@ -181,7 +168,13 @@ const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
                   </svg>
                 </span>
               </div>
-              {filteredProducts.length === 0 ? (
+              {productsLoading ? (
+                <div className="deal-card w-full sm:w-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {Array.from({ length: 8 }).map((_, idx) => (
+                    <ProductSkeleton key={`hot-skeleton-${idx}`} />
+                  ))}
+                </div>
+              ) : filteredProducts.length === 0 ? (
                 <p className="text-light-black text-center mt-4 text-xl">
                   No products
                 </p>
@@ -236,19 +229,24 @@ const Products: React.FC<DashboardProps> = ({ filterEnabled }) => {
                   </svg>
                 </span>
               </div>
-              {filteredProducts.length === 0 ? (
+              {productsLoading ? (
+                <div className="top-picks grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {Array.from({ length: 8 }).map((_, idx) => (
+                    <ProductSkeleton key={`top-skeleton-${idx}`} />
+                  ))}
+                </div>
+              ) : filteredProducts.length === 0 ? (
                 <p className="text-light-black text-center mt-4 text-xl">
                   No products
                 </p>
               ) : (
                 <div className="top-picks grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-                  {filteredProducts.map((product) => (
+                  {filteredProducts.map((product, idx) => (
                     <div
                       key={product.id}
                       className="h-auto min-h-[297px] duration-300 hover:cursor-pointer hover:border-[#f0f0f0] flex flex-col items-center justify-center overflow-hidden cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
                       ref={(el: HTMLDivElement | null) => {
-                        cardsRef.current[filteredProducts.length + product.id] =
-                          el;
+                        cardsRef.current[filteredProducts.length + idx] = el;
                       }}
                       onClick={handleItemClick}
                     >

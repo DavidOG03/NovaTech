@@ -27,9 +27,5 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   if (!currentUser)
     return <Navigate to="/" replace state={{ from: location }} />;
 
-  // If user is authenticated but no account type selected yet
-  const accountType = localStorage.getItem("selectedAccountType");
-  if (!accountType) return <Navigate to="/" replace />;
-
   return <>{children}</>;
 }

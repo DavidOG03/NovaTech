@@ -3,7 +3,7 @@ import { Moon, Sun } from "lucide-react";
 
 const ThemeToggle: React.FC = () => {
   const [theme, setTheme] = useState<string>(
-    localStorage.getItem("theme") || "light"
+    localStorage.getItem("theme") || "light",
   );
 
   useEffect(() => {
@@ -40,9 +40,9 @@ const ThemeToggle: React.FC = () => {
       title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
       {theme === "light" ? (
-        <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+        <Moon className="w-5 h-5 text-light-black " />
       ) : (
-        <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+        <Sun className="w-5 h-5 text-light-black " />
       )}
     </button>
   );

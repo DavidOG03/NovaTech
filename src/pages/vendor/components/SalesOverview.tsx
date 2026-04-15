@@ -2,9 +2,9 @@ import React from "react";
 
 const SalesOverview: React.FC = () => {
   return (
-    <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div className="lg:col-span-2 bg-grey rounded-xl shadow-sm border border-light-black/25 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-bold text-gray-900">Sales Overview</h2>
+        <h2 className="text-lg font-bold text-light-black">Sales Overview</h2>
         <div className="flex items-center space-x-2">
           <button className="px-3 py-1.5 text-sm bg-blue-50 text-pink rounded-3xl font-medium">
             Week
