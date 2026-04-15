@@ -50,6 +50,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
       // If a file is selected, upload to Cloudinary
       if (imageFile) {
         imageUrl = await uploadImageToCloudinary(imageFile);
+        setGadgetForm((prev) => ({ ...prev, image: imageUrl }));
       }
       const gadgetsCollection = collection(db, "gadgets");
       await addDoc(gadgetsCollection, {
@@ -86,7 +87,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 bg-opacity-50 z-50 grid grid-cols-2 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4  md:min-w-[600px]">
       <div className="bg-grey rounded-xl shadow-lg max-w-md w-full">
         <div className="flex items-center justify-between p-6 border-b border-light-black/25">
           <h2 className="text-xl font-bold text-gray-900">Add Gadget</h2>
@@ -98,7 +99,10 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
           </button>
         </div>
 
-        <form onSubmit={handleAddGadget} className="p-6 space-y-4">
+        <form
+          onSubmit={handleAddGadget}
+          className="p-6 gap-4 md:grid grid-cols-2"
+        >
           {/* Gadget Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -205,12 +209,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
               }
               placeholder="Gadget details..."
               rows={3}
+              cols={5}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-4 col-span-2">
             <button
               type="button"
               onClick={onClose}

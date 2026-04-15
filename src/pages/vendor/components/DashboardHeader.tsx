@@ -1,5 +1,5 @@
-import React from "react";
-import { LayoutDashboard, Bell, Settings, Search } from "lucide-react";
+import React, { useState } from "react";
+import { LayoutDashboard, Bell, Settings, Search, Menu } from "lucide-react";
 import ThemeToggle from "@/components/shared/ThemeToggle";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -17,76 +17,108 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   generateInitialsAvatar,
 }) => {
   const theme = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="bg-grey border-b border-gray-200 sticky top-0 z-50">
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-pink to-background p-2 rounded-3xl">
-                <LayoutDashboard className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-light-black">
-                  Seller Dashboard
-                </h1>
-                <p className="text-sm text-light-black">
-                  Welcome back, <span className="capitalize">{userName}</span>!
-                </p>
-              </div>
+      <div className="px-4 md:px-6 py-4">
+        <div className="flex flex-row justify-between md:items-center md:justify-between gap-4">
+          {/* Left: Logo and Title */}
+          <div className="flex items-center space-x-3">
+            <div className="bg-gradient-to-r from-pink to-background p-2 rounded-3xl">
+              <LayoutDashboard className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl md:text-2xl font-bold text-light-black">
+                Seller Dashboard
+              </h1>
+              <p className="text-xs md:text-sm text-light-black">
+                Welcome back, <span className="capitalize">{userName}</span>!
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
-            {/* Search */}
+          {/* Right: Actions and Profile */}
+          <div className="flex ml-auto md:flex-nowrap items-center gap-2 md:gap-4 md:w-auto">
+            {/* Search (hidden on mobile) */}
             <div className="relative hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-light-black" />
               <input
                 type="text"
                 placeholder="Search products, orders..."
-                className="pl-10 pr-4 py-2 w-64 border border-light-black/25 placeholder:text-light-black rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="pl-10 pr-4 py-2 w-48 md:w-64 border border-light-black/25 placeholder:text-light-black rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
-            {/* Notifications */}
-            <button className="relative p-2 rounded-3xl hover:bg-gray-100 transition-colors">
+            {/* Mobile: Hamburger menu for actions */}
+            <div className="flex md:hidden items-center gap-2 relative">
+              <button
+                className="p-2 rounded-3xl hover:bg-gray-100 transition-colors"
+                onClick={() => setMobileMenuOpen((open) => !open)}
+                aria-label="Open menu"
+              >
+                <Menu className="w-6 h-6 text-light-black" />
+              </button>
+              {mobileMenuOpen && (
+                <div className="absolute right-0 top-10 mt-2 w-44 bg-white border border-gray-200 rounded shadow-lg z-50 flex flex-col p-2 space-y-2 animate-fade-in">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onSwitchToBuyer();
+                    }}
+                    className="w-full text-left px-4 py-2 bg-gray-200 text-gray-900 rounded-3xl hover:bg-gray-300 transition-colors text-xs font-medium"
+                  >
+                    Switch to Buyer
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onLogout();
+                    }}
+                    className="w-full px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors text-xs font-medium text-center"
+                  >
+                    Logout
+                  </button>
+                  <div className="w-full flex justify-center">
+                    <ThemeToggle />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop: Actions */}
+            <button className="relative p-2 rounded-3xl hover:bg-gray-100 transition-colors hidden md:inline-flex">
               <Bell className="w-6 h-6 text-light-black" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
-
-            {/* Settings */}
-            <button className="p-2 rounded-3xl hover:bg-gray-100 transition-colors">
+            <button className="p-2 rounded-3xl hover:bg-gray-100 transition-colors hidden md:inline-flex">
               <Settings className="w-6 h-6 text-light-black" />
             </button>
-
-            {/* Theme Toggle */}
-            <ThemeToggle />
-
-            {/* Switch to Buyer */}
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             <button
               onClick={onSwitchToBuyer}
-              className="px-4 py-2 bg-gray-200 text-gray-900 rounded-3xl hover:bg-gray-300 transition-colors text-sm font-medium"
+              className="hidden md:inline-flex px-4 py-2 bg-gray-200 text-gray-900 rounded-3xl hover:bg-gray-300 transition-colors text-sm font-medium"
             >
               Switch to Buyer
             </button>
-
             <button
               onClick={onLogout}
-              className="px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors text-sm font-medium"
+              className="hidden md:inline-flex px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors text-sm font-medium"
             >
               Logout
             </button>
 
             {/* Profile */}
-            <div className="flex items-center space-x-3 pl-4 border-l border-gray-200">
+            <div className="flex items-center space-x-2 md:space-x-3 pl-2 md:pl-4 border-l border-gray-200">
               <div className="text-right hidden md:block">
                 <p className="text-sm font-medium text-light-black">
                   {userName}
                 </p>
                 <p className="text-xs text-light-black">Vendor Account</p>
               </div>
-              <div className="w-10 h-10 bg-gradient-to-r from-pink to-background rounded-full flex items-center justify-center text-white font-semibold">
+              <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-r from-pink to-background rounded-full flex items-center justify-center text-white font-semibold">
                 <img
                   src={generateInitialsAvatar(userName)}
                   alt="profile picture"

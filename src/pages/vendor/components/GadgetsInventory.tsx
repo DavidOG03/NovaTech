@@ -1,5 +1,8 @@
-import React from "react";
-import { Plus, MoreVertical, Package } from "lucide-react";
+import React, { useState } from "react";
+import { Plus, MoreVertical, Package, Edit, Trash2 } from "lucide-react";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+import toast from "react-hot-toast";
 
 interface Gadget {
   id: string;
@@ -20,9 +23,14 @@ interface GadgetsInventoryProps {
 }
 
 const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
-  products,
+  products: initialProducts,
   onAddGadget,
 }) => {
+  const [products, setProducts] = useState<Gadget[]>(initialProducts);
+  const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<Partial<Gadget>>({});
+  const [isEditing, setIsEditing] = useState(false);
   const getProductStatusBadge = (status: Gadget["status"]) => {
     switch (status) {
       case "active":
@@ -44,6 +52,40 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
           </span>
         );
     }
+  };
+
+  // Edit handler
+  const handleEdit = async (id: string) => {
+    setIsEditing(true);
+    try {
+      const gadgetRef = doc(db, "gadgets", id);
+      await updateDoc(gadgetRef, {
+        name: editForm.name,
+        price: editForm.price,
+        color: editForm.color,
+        description: editForm.description,
+        // Add more fields as needed
+      });
+      toast.success("Gadget updated!");
+      setEditId(null);
+    } catch (err) {
+      toast.error("Failed to update gadget");
+    } finally {
+      setIsEditing(false);
+    }
+  };
+
+  // Delete handler
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this gadget?")) return;
+    try {
+      await deleteDoc(doc(db, "gadgets", id));
+      setProducts((prev) => prev.filter((g) => g.id !== id));
+      toast.success("Gadget deleted!");
+    } catch (err) {
+      toast.error("Failed to delete gadget");
+    }
+    setMenuOpenId(null);
   };
 
   return (
@@ -103,7 +145,7 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
                 </td>
               </tr>
             ) : (
-              products.map((product) => (
+              products.map((product) => [
                 <tr
                   key={product.id}
                   className="hover:bg-gray-50 transition-colors"
@@ -111,7 +153,11 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-3xl flex items-center justify-center text-2xl">
-                        {product.image}
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
@@ -139,13 +185,113 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
                   <td className="px-6 py-4 whitespace-nowrap">
                     {getProductStatusBadge(product.status)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="p-2 rounded-3xl hover:bg-gray-100 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium relative">
+                    <button
+                      className="p-2 rounded-3xl hover:bg-gray-100 transition-colors"
+                      onClick={() =>
+                        setMenuOpenId(
+                          menuOpenId === product.id ? null : product.id,
+                        )
+                      }
+                    >
                       <MoreVertical className="w-5 h-5 text-gray-600" />
                     </button>
+                    {menuOpenId === product.id && (
+                      <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-lg z-10">
+                        <button
+                          className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100"
+                          onClick={() => {
+                            setEditId(product.id);
+                            setEditForm(product);
+                            setMenuOpenId(null);
+                          }}
+                        >
+                          <Edit className="w-4 h-4 mr-2" /> Edit
+                        </button>
+                        <button
+                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" /> Delete
+                        </button>
+                      </div>
+                    )}
                   </td>
-                </tr>
-              ))
+                </tr>,
+                editId === product.id ? (
+                  <tr key={product.id + "-edit"} className="bg-gray-50">
+                    <td colSpan={6} className="px-6 py-4">
+                      <form
+                        className="flex flex-col md:flex-row gap-2 items-center"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          handleEdit(product.id);
+                        }}
+                      >
+                        <input
+                          type="text"
+                          value={editForm.name || ""}
+                          onChange={(e) =>
+                            setEditForm((f) => ({ ...f, name: e.target.value }))
+                          }
+                          placeholder="Name"
+                          className="border px-2 py-1 rounded"
+                        />
+                        <input
+                          type="text"
+                          value={editForm.price || ""}
+                          onChange={(e) =>
+                            setEditForm((f) => ({
+                              ...f,
+                              price: e.target.value,
+                            }))
+                          }
+                          placeholder="Price"
+                          className="border px-2 py-1 rounded"
+                        />
+                        <input
+                          type="text"
+                          value={editForm.color || ""}
+                          onChange={(e) =>
+                            setEditForm((f) => ({
+                              ...f,
+                              color: e.target.value,
+                            }))
+                          }
+                          placeholder="Color"
+                          className="border px-2 py-1 rounded"
+                        />
+                        <input
+                          type="text"
+                          value={editForm.description || ""}
+                          onChange={(e) =>
+                            setEditForm((f) => ({
+                              ...f,
+                              description: e.target.value,
+                            }))
+                          }
+                          placeholder="Description"
+                          className="border px-2 py-1 rounded"
+                        />
+                        <button
+                          type="submit"
+                          disabled={isEditing}
+                          className="bg-pink text-white px-3 py-1 rounded disabled:opacity-50"
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditId(null)}
+                          className="bg-gray-200 px-3 py-1 rounded"
+                        >
+                          Cancel
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                ) : null,
+              ])
             )}
           </tbody>
         </table>

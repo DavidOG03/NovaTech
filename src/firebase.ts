@@ -37,7 +37,6 @@ const app: FirebaseApp = !getApps().length
 
 export const auth: Auth = getAuth(app);
 export const db: Firestore = getFirestore(app);
-console.log("Firebase initialized with config:", firebaseConfig);
 
 export interface FirebaseAuthError extends Error {
   code:
@@ -59,7 +58,7 @@ export async function fetchGadgets() {
       id: doc.id,
       ...doc.data(),
     }));
-    console.log(gadgetsCollection);
+
     return gadgetList;
   } catch (error) {
     console.error("Error fetching gadgets:", error);

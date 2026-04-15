@@ -37,7 +37,11 @@ const TopProducts: React.FC<TopProductsProps> = ({ products }) => {
           products.slice(0, 5).map((product, index) => (
             <div key={product.id} className="flex items-center space-x-3">
               <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-3xl flex items-center justify-center text-2xl">
-                {product.image}
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-light-black truncate">

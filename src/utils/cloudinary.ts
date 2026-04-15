@@ -2,10 +2,13 @@
 // Usage: await uploadImageToCloudinary(file)
 
 export async function uploadImageToCloudinary(file: File): Promise<string> {
-  const url = "https://api.cloudinary.com/v1_1/<your_cloud_name>/image/upload";
+  const url = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`;
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", "<your_upload_preset>"); // Set your unsigned upload preset
+  formData.append(
+    "upload_preset",
+    import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+  ); // Set your unsigned upload preset
 
   const response = await fetch(url, {
     method: "POST",

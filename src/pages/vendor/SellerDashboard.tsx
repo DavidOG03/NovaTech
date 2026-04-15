@@ -159,7 +159,7 @@ const SellerDashboard: React.FC = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-grey">
+    <div className="min-h-screen bg-grey relative w-full">
       {/* Header */}
       <DashboardHeader
         userName={userName}
