@@ -90,12 +90,12 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4  md:min-w-[600px]">
       <div className="bg-grey rounded-xl shadow-lg max-w-md w-full">
         <div className="flex items-center justify-between p-6 border-b border-light-black/25">
-          <h2 className="text-xl font-bold text-gray-900">Add Gadget</h2>
+          <h2 className="text-xl font-bold text-light-black">Add Gadget</h2>
           <button
             onClick={onClose}
             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <X className="w-6 h-6 text-gray-600" />
+            <X className="w-6 h-6 text-light-black" />
           </button>
         </div>
 
@@ -105,7 +105,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
         >
           {/* Gadget Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-light-black mb-1">
               Gadget Name *
             </label>
             <input
@@ -115,13 +115,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, name: e.target.value })
               }
               placeholder="e.g., iPhone 13 Pro"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
 
           {/* Price */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-light-black mb-1">
               Price (NGN) *
             </label>
             <input
@@ -131,13 +131,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, price: e.target.value })
               }
               placeholder="e.g., 1400000"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
 
           {/* Quantity */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-light-black mb-1">
               Quantity *
             </label>
             <input
@@ -147,13 +147,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, quantity: e.target.value })
               }
               placeholder="e.g., 5"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
 
           {/* Color */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-light-black mb-1">
               Color
             </label>
             <input
@@ -163,13 +163,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, color: e.target.value })
               }
               placeholder="e.g., Black"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
 
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-light-black mb-1">
               Image Upload (or URL)
             </label>
             <input
@@ -181,7 +181,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setImageFile(file || null);
                 // If user clears file, keep text input value
               }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink mb-2"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink mb-2"
             />
             <input
               type="text"
@@ -190,13 +190,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, image: e.target.value })
               }
               placeholder="https://... (optional if uploading)"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-light-black mb-1">
               Description
             </label>
             <textarea
@@ -210,7 +210,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
               placeholder="Gadget details..."
               rows={3}
               cols={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
             />
           </div>
 
@@ -219,7 +219,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+              className="flex-1 px-4 py-2 border border-light-black/25 text-light-black rounded-lg hover:bg-light-black/10 transition-colors font-medium"
             >
               Cancel
             </button>
