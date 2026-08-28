@@ -23,7 +23,9 @@ service cloud.firestore {
 
     match /gadgets/{gadgetId} {
       allow read: if signedIn();
-      allow create, update, delete: if isVendor();
+      allow create: if isVendor() && request.resource.data.vendorId == request.auth.uid;
+      allow update: if isVendor() && resource.data.vendorId == request.auth.uid && request.resource.data.vendorId == request.auth.uid;
+      allow delete: if isVendor() && resource.data.vendorId == request.auth.uid;
     }
   }
 }

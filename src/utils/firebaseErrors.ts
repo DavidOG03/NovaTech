@@ -14,6 +14,9 @@ const errorMap: FirebaseErrorMap = {
     "You do not have permission to access this Firestore data.",
   "firestore/permission-denied":
     "You do not have permission to access this Firestore data.",
+  "auth/api-key-not-valid": "Authentication configuration error (Invalid API Key).",
+  "auth/invalid-credential": "Email or password is incorrect.",
+  "auth/invalid-api-key": "Authentication configuration error (Invalid API Key).",
   default: "An unexpected error occurred. Please try again.",
 };
 

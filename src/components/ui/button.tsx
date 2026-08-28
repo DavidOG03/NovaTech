@@ -17,10 +17,10 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`button flex justify-center items-center border-0 rounded-[3rem] transition-all duration-150 cursor-pointer text-black py-[2px] px-[2.25rem] ${
+      className={`button flex justify-center items-center border-0 rounded-[3rem] transition-all duration-150 cursor-pointer py-0.5 px-9 ${
         isActive
-          ? "bg-gradient-to-br from-pink to-background text-white"
-          : "bg-white text-black hover:bg-grey"
+          ? "bg-accent-secondary text-white"
+          : "bg-linear-to-br from-accent-light to-accent text-white hover:opacity-85"
       }`}
       type="button"
     >

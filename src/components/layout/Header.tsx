@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useProductContext } from "@/context/ProductContext";
 import { useSearch } from "@/context/SearchContext";
 import { Bell } from "lucide-react";
+import { CartIcon, MenuGridIcon } from "@/constants/icons";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import ThemeToggle from "@/components/shared/ThemeToggle";
@@ -57,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
   };
 
   return (
-    <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-[0.75rem] transition duration-50 fixed top-0 left-0 z-5 bg-grey">
+    <header className="w-full flex justify-between items-center gap-4 p-4 md:px-[1.95rem] md:py-3 transition duration-50 fixed top-0 left-0 z-5 bg-color">
       {/* Left: Logo and Mobile Menu */}
       <Link to={"/products"} className="flex items-center gap-4">
         <img
@@ -84,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setSearchQuery(e.target.value)
               }
-              className="w-full max-w-[526px] py-2 pl-8 md:pl-12 rounded-full bg-white text-black border border-light-black/25 focus:border-2 focus:border-pink focus:ring-0 transition duration-200"
+              className="w-full max-w-131.5 py-2 pl-8 md:pl-12 rounded-full bg-card text-accent-secondary border border-accent-light/25 focus:border-2 focus:border-accent-light focus:ring-0 transition duration-200"
             />
             <span className="search absolute top-1/2 left-2 md:left-6 -translate-y-1/2">
               <img
@@ -93,31 +94,17 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
                 className="w-4 h-4"
               />
             </span>
-            <button className="hidden md:block bg-gradient-to-br from-pink to-background transition-all duration-200 hover:bg-gradient-to-br hover:from-light-black hover:to-light-black hover:text-white text-white rounded-[3rem] py-1.5 px-4 cursor-pointer absolute top-1/2 right-1 -translate-y-1/2">
+            <button className="hidden md:block bg-linear-to-br from-accent-light to-accent transition-all duration-200 hover:opacity-85 text-white rounded-[3rem] py-1.5 px-4 cursor-pointer absolute top-1/2 right-1 -translate-y-1/2">
               Search
             </button>
           </div>
         </div>
 
         <Link
-          className="bg-background relative py-2 px-2 rounded-full grid content-center cursor-pointer hover:bg-background/75"
+          className="bg-accent relative py-2 px-2 rounded-full content-hover:opacity-85light transition-colors duration-200 grid md:hidden"
           to="/cart"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24px"
-            height="24px"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="none"
-              stroke="#ffffff"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M16.5 21a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m-8 0a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3M3.71 5.4h15.214c1.378 0 2.373 1.27 1.995 2.548l-1.654 5.6C19.01 14.408 18.196 15 17.27 15H8.112c-.927 0-1.742-.593-1.996-1.452zm0 0L3 3m7.5 7h4"
-            ></path>
-          </svg>
+          <CartIcon className="text-white w-6 h-6" />
           {cartCount > 0 && (
             <span className="bg-red-500 w-2 h-2 rounded-full absolute top-0 right-0"></span>
           )}
@@ -129,7 +116,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
         {showBecomeSellerButton && (
           <Link
             to="/vendor/signup"
-            className="bg-background text-white rounded-[3rem] py-2 px-4 transition-all duration-200 hover:bg-background/85"
+            className="bg-linear-to-br from-accent-light to-accent text-white rounded-[3rem] py-2 px-4 transition-all duration-200 hover:opacity-85"
           >
             Become a seller
           </Link>
@@ -139,15 +126,15 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
           <button
             type="button"
             onClick={handleSwitchToVendor}
-            className="bg-background text-white rounded-[3rem] py-2 px-4 transition-all duration-200 hover:bg-background/85 cursor-pointer"
+            className="bg-linear-to-br from-accent-light to-accent text-white rounded-[3rem] py-2 px-4 transition-all duration-200 hover:opacity-85 cursor-pointer"
           >
             Switch to vendor
           </button>
         )}
 
         <ThemeToggle />
-        <button className="notification-bell bg-white p-2 rounded-full grid content-center cursor-pointer hover:bg-grey">
-          <Bell className="w-6 h-6 text-light-black" />
+        <button className="notification-bell bg-linear-to-br from-accent-light to-accent p-2 rounded-full grid content-center cursor-pointer hover:opacity-85 transition-colors duration-200">
+          <Bell className="w-6 h-6 text-white" />
         </button>
         <div className="profile grid grid-cols-[auto_1fr] gap-1 ">
           <img
@@ -156,10 +143,10 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
             className="w-10 h-10 rounded-full"
           />
           {/* <div className="flex flex-col justify-center items-start gap-1">
-            <span className="user text-base text-light-black capitalize">
+            <span className="user text-base text-dim capitalize">
               {userName}
             </span>
-            <span className="greeting text-[10px] text-light-black">
+            <span className="greeting text-[10px] text-dim">
               Welcome
             </span>
           </div> */}
@@ -168,21 +155,10 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, handleFilterToggle }) => {
 
       {/* Mobile Menu */}
       <button
-        className="block md:hidden cursor-pointer text-background"
+        className="block md:hidden cursor-pointer text-accent"
         onClick={onMenuClick}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fill="currentColor"
-            d="M5.9199,11.4697 C7.3299,11.4697 8.4599,12.6107 8.4599,14.0307 L8.4599,14.0307 L8.4599,17.4397 C8.4599,18.8497 7.3299,19.9997 5.9199,19.9997 L5.9199,19.9997 L2.5399,19.9997 C1.1399,19.9997 -0.0001,18.8497 -0.0001,17.4397 L-0.0001,17.4397 L-0.0001,14.0307 C-0.0001,12.6107 1.1399,11.4697 2.5399,11.4697 L2.5399,11.4697 Z M17.46,11.4697 C18.86,11.4697 20,12.6107 20,14.0307 L20,14.0307 L20,17.4397 C20,18.8497 18.86,19.9997 17.46,19.9997 L17.46,19.9997 L14.08,19.9997 C12.67,19.9997 11.54,18.8497 11.54,17.4397 L11.54,17.4397 L11.54,14.0307 C11.54,12.6107 12.67,11.4697 14.08,11.4697 L14.08,11.4697 Z M5.9199,-9.32587341e-14 C7.3299,-9.32587341e-14 8.4599,1.15 8.4599,2.561 L8.4599,2.561 L8.4599,5.97 C8.4599,7.39 7.3299,8.53 5.9199,8.53 L5.9199,8.53 L2.5399,8.53 C1.1399,8.53 -0.0001,7.39 -0.0001,5.97 L-0.0001,5.97 L-0.0001,2.561 C-0.0001,1.15 1.1399,-9.32587341e-14 2.5399,-9.32587341e-14 L2.5399,-9.32587341e-14 Z M17.46,-9.32587341e-14 C18.86,-9.32587341e-14 20,1.15 20,2.561 L20,2.561 L20,5.97 C20,7.39 18.86,8.53 17.46,8.53 L17.46,8.53 L14.08,8.53 C12.67,8.53 11.54,7.39 11.54,5.97 L11.54,5.97 L11.54,2.561 C11.54,1.15 12.67,-9.32587341e-14 14.08,-9.32587341e-14 L14.08,-9.32587341e-14 Z"
-            transform="translate(2 2)"
-          ></path>
-        </svg>
+        <MenuGridIcon className="w-6 h-6" />
       </button>
     </header>
   );

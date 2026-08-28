@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { CheckCircle, Clock, AlertCircle, XCircle } from "lucide-react";
 
 interface Order {
@@ -44,50 +44,50 @@ const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
   };
 
   return (
-    <div className="bg-grey rounded-xl shadow-sm border border-light-black/25">
-      <div className="p-6 border-b border-light-black/25">
+    <div className="bg-card rounded-xl shadow-sm border border-dim/50">
+      <div className="p-6 border-b border-dim/50">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-light-black">Recent Orders</h2>
-          <button className="text-sm text-pink hover:text-background font-medium">
+          <h2 className="text-lg font-bold text-text">Recent Orders</h2>
+          <button className="text-sm text-text hover:text-muted font-medium">
             View All
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-2xl">
         <table className="w-full">
-          <thead className="bg-grey border-b border-light-black/25">
+          <thead className="bg-card border-b border-dim/50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                 Order ID
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                 Customer
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                 Product
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                 Amount
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                 Date
               </th>
             </tr>
           </thead>
-          <tbody className="bg-grey divide-y divide-gray-200">
+          <tbody className="bg-card divide-y divide-gray-200">
             {orders.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-6 py-12 text-center">
                   <div className="text-gray-500">
-                    <Clock className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg font-medium text-light-black">
+                    <Clock className="w-12 h-12 mx-auto mb-4 text-gray-500" />
+                    <p className="text-lg font-medium text-text">
                       No orders found
                     </p>
-                    <p className="text-sm text-light-black">
+                    <p className="text-sm text-text">
                       Orders will appear here once customers start purchasing.
                     </p>
                   </div>
@@ -128,7 +128,7 @@ const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-light-black">{order.date}</div>
+                    <div className="text-sm text-text">{order.date}</div>
                   </td>
                 </tr>
               ))

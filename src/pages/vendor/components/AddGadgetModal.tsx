@@ -1,9 +1,11 @@
-import React, { useState, useRef } from "react";
+﻿import React, { useState, useRef } from "react";
 import { X } from "lucide-react";
 import { db } from "@/firebase";
 import { uploadImageToCloudinary } from "@/utils/cloudinary";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import toast from "react-hot-toast";
+
+import { useAuth } from "@/context/AuthContext";
 
 interface GadgetFormData {
   name: string;
@@ -25,6 +27,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
   onClose,
   onGadgetAdded,
 }) => {
+  const { currentUser } = useAuth();
   const [gadgetForm, setGadgetForm] = useState<GadgetFormData>({
     name: "",
     price: "",
@@ -41,6 +44,11 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
     e.preventDefault();
     if (!gadgetForm.name || !gadgetForm.price || !gadgetForm.quantity) {
       toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!currentUser) {
+      toast.error("You must be logged in to add a gadget");
       return;
     }
 
@@ -61,6 +69,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
         quantity: parseInt(gadgetForm.quantity),
         color: gadgetForm.color,
         createdAt: serverTimestamp(),
+        vendorId: currentUser.uid,
       });
 
       toast.success("Gadget added to NovaTech!");
@@ -87,15 +96,15 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4  md:min-w-[600px]">
-      <div className="bg-grey rounded-xl shadow-lg max-w-md w-full">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-accent-secondary/50 bg-opacity-50 p-4  md:min-w-[600px]">
+      <div className="bg-text rounded-xl shadow-lg max-w-md w-full">
         <div className="flex items-center justify-between p-6 border-b border-light-black/25">
-          <h2 className="text-xl font-bold text-light-black">Add Gadget</h2>
+          <h2 className="text-xl font-bold text-dim">Add Gadget</h2>
           <button
             onClick={onClose}
             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <X className="w-6 h-6 text-light-black" />
+            <X className="w-6 h-6 text-dim" />
           </button>
         </div>
 
@@ -105,7 +114,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
         >
           {/* Gadget Name */}
           <div>
-            <label className="block text-sm font-medium text-light-black mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Gadget Name *
             </label>
             <input
@@ -115,13 +124,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, name: e.target.value })
               }
               placeholder="e.g., iPhone 13 Pro"
-              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
           </div>
 
           {/* Price */}
           <div>
-            <label className="block text-sm font-medium text-light-black mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Price (NGN) *
             </label>
             <input
@@ -131,13 +140,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, price: e.target.value })
               }
               placeholder="e.g., 1400000"
-              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
           </div>
 
           {/* Quantity */}
           <div>
-            <label className="block text-sm font-medium text-light-black mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Quantity *
             </label>
             <input
@@ -147,13 +156,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, quantity: e.target.value })
               }
               placeholder="e.g., 5"
-              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
           </div>
 
           {/* Color */}
           <div>
-            <label className="block text-sm font-medium text-light-black mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Color
             </label>
             <input
@@ -163,13 +172,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, color: e.target.value })
               }
               placeholder="e.g., Black"
-              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
           </div>
 
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-light-black mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Image Upload (or URL)
             </label>
             <input
@@ -181,7 +190,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setImageFile(file || null);
                 // If user clears file, keep text input value
               }}
-              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink mb-2"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-light mb-2"
             />
             <input
               type="text"
@@ -190,13 +199,13 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
                 setGadgetForm({ ...gadgetForm, image: e.target.value })
               }
               placeholder="https://... (optional if uploading)"
-              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-light-black mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Description
             </label>
             <textarea
@@ -210,7 +219,7 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
               placeholder="Gadget details..."
               rows={3}
               cols={5}
-              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink"
+              className="w-full px-4 py-2 border border-light-black/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
           </div>
 
@@ -219,14 +228,14 @@ const AddGadgetModal: React.FC<AddGadgetModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-light-black/25 text-light-black rounded-lg hover:bg-light-black/10 transition-colors font-medium"
+              className="flex-1 px-4 py-2 border border-light-black/25 text-dim rounded-lg hover:bg-dim/10 transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-4 py-2 bg-pink text-white rounded-lg hover:bg-background transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-2 bg-accent-light text-color rounded-lg hover:bg-accent transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Adding..." : "Add Gadget"}
             </button>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import { ShoppingCart, DollarSign, Users, Package } from "lucide-react";
@@ -7,7 +7,7 @@ import { useProductContext } from "@/context/ProductContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { db } from "@/firebase";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
 
 import StatCard from "./components/StatCard";
 import DashboardHeader from "./components/DashboardHeader";
@@ -46,7 +46,7 @@ const SellerDashboard: React.FC = () => {
   const [showAddGadgetModal, setShowAddGadgetModal] = useState(false);
   const [gadgets, setGadgets] = useState<Gadget[]>([]);
   const [loading, setLoading] = useState(true);
-  const { userProfile, switchRole, logout } = useAuth();
+  const { currentUser, userProfile, switchRole, logout } = useAuth();
   const { getCartTotal, orders } = useProductContext();
   const navigate = useNavigate();
   const totalRevenue = getCartTotal();
@@ -63,11 +63,12 @@ const SellerDashboard: React.FC = () => {
 
   // Fetch gadgets from Firestore
   const fetchGadgets = async () => {
+    if (!currentUser) return;
     try {
       setLoading(true);
       const gadgetsQuery = query(
         collection(db, "gadgets"),
-        orderBy("createdAt", "desc"),
+        where("vendorId", "==", currentUser.uid),
       );
       const querySnapshot = await getDocs(gadgetsQuery);
       const gadgetsData: Gadget[] = querySnapshot.docs.map((doc) => ({
@@ -79,6 +80,9 @@ const SellerDashboard: React.FC = () => {
           ? "active"
           : "out-of-stock") as Gadget["status"],
       })) as Gadget[];
+      gadgetsData.sort(
+        (a, b) => b.createdAt?.toMillis() - a.createdAt?.toMillis(),
+      );
       setGadgets(gadgetsData);
     } catch (error) {
       console.error("Error fetching gadgets:", error);
@@ -89,8 +93,10 @@ const SellerDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchGadgets();
-  }, []);
+    if (currentUser) {
+      fetchGadgets();
+    }
+  }, [currentUser]);
 
   // Handle switch to buyer
   const handleSwitchToBuyer = async () => {
@@ -159,7 +165,7 @@ const SellerDashboard: React.FC = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-grey relative w-full">
+    <div className="min-h-screen bg-color relative w-full">
       {/* Header */}
       <DashboardHeader
         userName={userName}
@@ -173,14 +179,16 @@ const SellerDashboard: React.FC = () => {
         {/* Period Selector */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
-            <button className="px-4 py-2 bg-grey border border-light-black rounded-3xl hover:bg-grey/50 transition-colors flex items-center space-x-2">
-              <span className="text-sm font-medium text-light-black">
+            <button className="px-4 py-2 bg-accent-light border border-dim/50 rounded-3xl hover:bg-card/50 transition-colors flex items-center space-x-2">
+              <span className="text-sm font-medium text-white">
                 {selectedPeriod}
               </span>
             </button>
           </div>
-          <button className="px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors flex items-center space-x-2">
-            <span className="text-sm font-medium">Export Report</span>
+          <button className="px-4 py-2 bg-accent-light border border-dim/50 rounded-3xl hover:bg-card/50 transition-colors flex items-center space-x-2">
+            <span className="text-sm font-medium text-white">
+              Export Report
+            </span>
           </button>
         </div>
 

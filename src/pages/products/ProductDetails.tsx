@@ -1,4 +1,4 @@
-import { useProductContext } from "../../context/ProductContext";
+﻿import { useProductContext } from "../../context/ProductContext";
 import React, { useState } from "react";
 import { CloseSquare } from "react-iconly";
 import { Link, useNavigate, useParams } from "react-router";
@@ -24,11 +24,11 @@ const ProductDetails: React.FC = () => {
 
   if (!product) {
     return (
-      <div className="p-6 mt-[90px] text-center">
+      <div className="p-6 mt-22.5 text-center">
         <h2 className="text-2xl font-semibold mb-4">Product not found</h2>
         <button
           onClick={() => navigate("/")}
-          className="bg-background text-white px-6 py-3 rounded-full"
+          className="bg-accent text-color px-6 py-3 rounded-full"
         >
           Go back to home
         </button>
@@ -47,14 +47,14 @@ const ProductDetails: React.FC = () => {
   };
 
   return (
-    <div className="product w-full bg-white rounded-2xl mb-4 mt-[90px] p-6 flex flex-col gap-4">
+    <div className="product w-full bg-color rounded-2xl mb-4 mt-22.5 p-6 py-0 flex flex-col gap-4">
       <div
-        className="close-button cursor-pointer w-8 h-8 grid place-items-center rounded-full bg-grey hover:bg-grey/75 transition-colors"
+        className="inline-flex gap-2 items-center max-w-27.5 cursor-pointer text-text hover:bg-dim/95 p-2 rounded-lg transition-colors"
         onClick={() => navigate(-1)}
       >
-        <CloseSquare set="bold" primaryColor="background" />
+        <span>←</span>Go Back
       </div>
-      <div className="product_box w-full grid md:grid-cols-2 gap-8">
+      <div className=" w-full grid md:grid-cols-2 gap-8">
         <div className="image h-full object-cover">
           <img
             src={product.image}
@@ -64,18 +64,18 @@ const ProductDetails: React.FC = () => {
         </div>
 
         <div className="details flex flex-col">
-          <span className="name pb-3 block text-2xl font-medium text-black/50">
+          <span className="name pb-3 block text-3xl font-medium text-text capitalize">
             {product.name}
           </span>
-          <span className="price pb-6 text-3xl text-black font-semibold block ">
+          <span className="price pb-6 text-2xl text-accent-secondary font-semibold block ">
             {product.price}
           </span>
 
-          <p className="description pb-3 block text-light-black">
+          <p className="description pb-3 block text-dim">
             {product.description}
           </p>
-          <span className="pb-6 block ">
-            <span className="font-semibold text-light-black">Color:</span>{" "}
+          <span className="pb-6 block text-dim">
+            <span className="font-semibold text-dim">Color:</span>{" "}
             {product.color}
           </span>
 
@@ -90,25 +90,25 @@ const ProductDetails: React.FC = () => {
           )}
 
           <div className="flex flex-col justify-between items-start gap-4 mt-auto">
-            <div className="count flex w-full md:max-w-[180px] justify-between items-center gap-2 py-2 px-3 rounded-[0.75rem] bg-grey border border-light-black">
+            <div className="count flex w-full md:max-w-45 justify-between items-center gap-2 py-2 px-3 rounded-xl bg-card border border-dim/25">
               <button
-                className="text-[1.5rem] cursor-pointer px-2 text-black/50 transition-colors"
+                className="text-[1.5rem] cursor-pointer px-2 text-accent-secondary/50 transition-colors"
                 onClick={() => setCount((prev) => Math.max(prev - 1, 1))}
               >
                 -
               </button>
-              <span className="text-[1rem] text-light-black font-semibold min-w-[30px] text-center">
+              <span className="text-[1rem] text-dim font-semibold min-w-7.5 text-center">
                 {count}
               </span>
               <button
-                className="text-[1.5rem] cursor-pointer px-2 text-black/50 transition-colors"
+                className="text-[1.5rem] cursor-pointer px-2 text-accent-secondary/50 transition-colors"
                 onClick={() => setCount((prev) => prev + 1)}
               >
                 +
               </button>
             </div>
             <button
-              className="add-to-cart bg-background w-full md:max-w-[300px] md:flex-1 py-3 px-6 rounded-[50px] text-base text-white cursor-pointer hover:opacity-90 transition-opacity font-semibold"
+              className="add-to-cart bg-accent w-full md:max-w-75 md:flex-1 py-3 px-6 rounded-[50px] text-base text-white cursor-pointer hover:opacity-90 transition-opacity font-semibold"
               onClick={handleAddToCart}
             >
               Add to cart
@@ -117,7 +117,7 @@ const ProductDetails: React.FC = () => {
 
           <button
             onClick={() => navigate("/products")}
-            className="text-background mt-6 text-left hover:underline"
+            className="text-accent-light mt-6 text-left hover:underline"
           >
             ← Continue Shopping
           </button>
@@ -126,7 +126,9 @@ const ProductDetails: React.FC = () => {
 
       {/* Similar Products Section */}
       <div className="similar-products mt-8">
-        <h3 className="text-xl font-semibold mb-4">You might also like</h3>
+        <h3 className="text-xl text-text font-semibold mb-4">
+          You might also like
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {products
             .filter((p) => p.id !== product.id)
@@ -135,19 +137,14 @@ const ProductDetails: React.FC = () => {
               <div
                 key={item.id}
                 onClick={() => navigate(`/product/${item.id}`)}
-                className="cursor-pointer bg-white border border-gray-200 rounded-lg p-3 hover:shadow-lg transition-shadow"
+                className="cursor-pointer bg-card border border-dim/25 hover:border-dim/75 transition-colors rounded-lg"
               >
-                <Link
-                  to={`/product/${item.id}`}
-                  className="w-full h-full flex flex-col items-center justify-center"
-                >
-                  <Card
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
-                    lastPrice={item.lastPrice}
-                  />
-                </Link>
+                <Card
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                  lastPrice={item.lastPrice}
+                />
               </div>
             ))}
         </div>

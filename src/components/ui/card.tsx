@@ -5,35 +5,50 @@ interface CardProps {
   name?: string;
   price?: string;
   lastPrice?: string;
+  onClick?: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ image, name, price, lastPrice }) => {
+const Card: React.FC<CardProps> = ({
+  image,
+  name,
+  price,
+  lastPrice,
+  onClick,
+}) => {
   const handleAddToWishList = () => {
     setWishlisted(true);
   };
   const [wishlisted, setWishlisted] = useState<boolean>(false);
   return (
-    <div className="card h-auto min-h-[297px] flex flex-col items-center justify-center p-2 bg-white rounded-[0.75rem] relative">
+    <div
+      className="h-auto w-full min-h-74.25 flex flex-col items-center justify-center p-2 bg-card rounded-xl relative cursor-pointer"
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if ((e.key === "Enter" || e.key === " ") && onClick) onClick();
+      }}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+    >
       <Heart
-        className={`absolute top-2 right-2 text-black z-10 ${
-          wishlisted ? "bg-background" : "bg-transparent"
+        className={`absolute top-2 right-1.5 text-accent-secondary z-10 ${
+          wishlisted ? "bg-accent" : "bg-transparent"
         } `}
         onClick={handleAddToWishList}
       />
       <img
         src={image}
         alt="hot deal image"
-        className="w-[150px] h-[150px] block object-contain"
+        className="w-full h-37.5  object-contain"
       />
       <div className="info flex flex-col justify-center items-center">
-        <p className="text-light-black text-base md:text-[1.125rem]">{name}</p>
-        <div className="price mx-[2rem] flex flex-col justify-center items-center">
+        <p className="text-dim text-base md:text-[1.125rem]">{name}</p>
+        <div className="price mx-8 flex flex-col justify-center items-center">
           {price !== undefined && (
-            <p className="text-base md:text-[20px] text-black font-semibold">
+            <p className="text-base md:text-[20px] text-accent-secondary font-semibold">
               {price}
             </p>
           )}
-          <p className="last-price line-through text-light-black text-[0.7rem] md:text-[0.75rem]">
+          <p className="last-price line-through text-dim text-[0.7rem] md:text-[0.75rem]">
             {lastPrice}
           </p>
         </div>

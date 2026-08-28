@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Plus, MoreVertical, Package, Edit, Trash2 } from "lucide-react";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/firebase";
@@ -89,56 +89,54 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
   };
 
   return (
-    <div className="bg-grey rounded-xl shadow-sm border border-light-black/25 mb-8">
-      <div className="p-6 border-b border-light-black/25">
+    <div className="bg-card rounded-xl shadow-sm border border-dim/50 mb-8">
+      <div className="p-6 border-b border-dim/50">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-light-black">
-            Gadgets Inventory
-          </h2>
+          <h2 className="text-lg font-bold text-text">Gadgets Inventory</h2>
           <button
             onClick={onAddGadget}
-            className="px-4 py-2 bg-pink text-white rounded-3xl hover:bg-background transition-colors flex items-center space-x-2"
+            className="px-4 py-2 bg-accent-light text-color rounded-3xl hover:bg-accent transition-colors flex items-center space-x-2"
           >
-            <Plus className="w-4 h-4" />
-            <span className="text-sm font-medium">Add Gadget</span>
+            <Plus className="w-4 h-4 text-white" />
+            <span className="text-sm font-medium text-white">Add Gadget</span>
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-2xl">
         <table className="w-full">
-          <thead className="bg-grey border-b border-light-black/25">
+          <thead className="bg-card border-b border-dim/50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text/80 textse tracking-wider">
                 Product
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text/80 textse tracking-wider">
                 Price
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text/80 textse tracking-wider">
                 Stock
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text/80 textse tracking-wider">
                 Sales
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text/80 textse tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-light-black uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-text/80 textse tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-grey divide-y divide-gray-200">
+          <tbody className="bg-card divide-y divide-gray-200">
             {products.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-6 py-12 text-center">
                   <div className="text-gray-500">
-                    <Package className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg font-medium text-light-black">
+                    <Package className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                    <p className="text-lg font-medium text-text">
                       No gadgets found
                     </p>
-                    <p className="text-sm text-light-black">
+                    <p className="text-sm text-text">
                       Start by adding your first gadget to the inventory.
                     </p>
                   </div>
@@ -163,7 +161,7 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
                         <div className="text-sm font-medium text-gray-900">
                           {product.name}
                         </div>
-                        <div className="text-sm text-light-black">
+                        <div className="text-sm text-text">
                           ID: {product.id}
                         </div>
                       </div>
@@ -197,7 +195,7 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
                       <MoreVertical className="w-5 h-5 text-gray-600" />
                     </button>
                     {menuOpenId === product.id && (
-                      <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-lg z-10">
+                      <div className="absolute right-0 mt-2 w-32 bg-color border border-gray-200 rounded shadow-lg z-10">
                         <button
                           className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100"
                           onClick={() => {
@@ -276,7 +274,7 @@ const GadgetsInventory: React.FC<GadgetsInventoryProps> = ({
                         <button
                           type="submit"
                           disabled={isEditing}
-                          className="bg-pink text-white px-3 py-1 rounded disabled:opacity-50"
+                          className="bg-accent-light text-color px-3 py-1 rounded disabled:opacity-50"
                         >
                           Save
                         </button>

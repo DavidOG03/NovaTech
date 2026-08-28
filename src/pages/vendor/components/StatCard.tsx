@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 interface StatCardProps {
@@ -24,14 +24,14 @@ const StatCard: React.FC<StatCardProps> = ({
   };
 
   return (
-    <div className="bg-grey rounded-xl shadow-sm border border-light-black/25 p-6 hover:shadow-md transition-shadow">
+    <div className="bg-card rounded-xl shadow-sm border border-dim/50 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between mb-4">
-        <div className={`${colorClasses[color]} p-3 rounded-3xl text-white`}>
+        <div className={`${colorClasses[color]} p-3 rounded-3xl text-color`}>
           {icon}
         </div>
       </div>
-      <h3 className="text-light-black text-sm font-medium mb-1">{title}</h3>
-      <p className="text-3xl font-bold text-light-black">{value}</p>
+      <h3 className="text-text/50 text-sm font-medium mb-1">{title}</h3>
+      <p className="text-3xl font-bold text-muted">{value}</p>
     </div>
   );
 };

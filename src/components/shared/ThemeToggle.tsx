@@ -35,14 +35,14 @@ const ThemeToggle: React.FC = () => {
 
   return (
     <button
-      className="border-0 cursor-pointer rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      className="border-0 cursor-pointer rounded-lg p-2 bg-linear-to-br from-accent-light to-accent hover:opacity-85 transition-colors duration-200"
       onClick={toggleTheme}
       title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
       {theme === "light" ? (
-        <Moon className="w-5 h-5 text-light-black " />
+        <Moon className="w-5 h-5 text-white" />
       ) : (
-        <Sun className="w-5 h-5 text-light-black " />
+        <Sun className="w-5 h-5 text-white" />
       )}
     </button>
   );

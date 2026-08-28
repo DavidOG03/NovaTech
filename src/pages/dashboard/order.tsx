@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { useProductContext } from "@/context/ProductContext";
 import { Package, ShoppingBag, AlertCircle } from "lucide-react";
 import { Link } from "react-router";
@@ -26,8 +26,8 @@ const Orders: React.FC = () => {
   };
 
   return (
-    <div className="mt-22 px-6 bg-white rounded-3xl py-10">
-      <h2 className="text-2xl text-black font-semibold mb-6 flex items-center gap-2">
+    <div className="mt-22 px-6 bg-color rounded-3xl py-10">
+      <h2 className="text-2xl text-accent-secondary font-semibold mb-6 flex items-center gap-2">
         <Package className="text-primary" />
         Your Orders
       </h2>
@@ -40,7 +40,7 @@ const Orders: React.FC = () => {
           </p>
           <p className="text-sm">
             Go back to the{" "}
-            <Link to="/products" className="text-background hover:underline">
+            <Link to="/products" className="text-accent-light hover:underline">
               store
             </Link>{" "}
             and add items to your cart.
@@ -51,25 +51,25 @@ const Orders: React.FC = () => {
           {localOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white text-light-black p-5 rounded-2xl shadow-md border border-gray-800"
+              className="text-dim p-5 rounded-2xl shadow-md border border-dim/25 bg-card"
             >
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-pink">
+                  <h3 className="text-lg font-semibold text-text">
                     Order ID: <span className="text-primary">{order.id}</span>
                   </h3>
-                  <p className="text-sm text-light-black">Date: {order.date}</p>
+                  <p className="text-sm text-dim">Date: {order.date}</p>
                 </div>
                 <span
                   className={`text-sm px-3 py-1 rounded-full ${
                     order.status === "Pending"
-                      ? "bg-yellow-500/20 text-yellow-400"
+                      ? "bg-yellow-500/20 text-yellow-600"
                       : order.status === "Shipped"
-                      ? "bg-blue-500/20 text-blue-400"
-                      : order.status === "Delivered"
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-red-500/20 text-red-400"
+                        ? "bg-blue-500/20 text-blue-600"
+                        : order.status === "Delivered"
+                          ? "bg-green-500/20 text-green-600"
+                          : "bg-red-500/20 text-red-600"
                   }`}
                 >
                   {order.status}
@@ -81,7 +81,7 @@ const Orders: React.FC = () => {
                 {order.items.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-grey rounded-xl p-4 flex items-center gap-4"
+                    className="bg-card border border-dim/25 rounded-xl p-4 flex items-center gap-4"
                   >
                     <img
                       src={item.image}
@@ -89,13 +89,13 @@ const Orders: React.FC = () => {
                       className="w-16 h-16 object-contain rounded-lg"
                     />
                     <div>
-                      <h4 className="text-sm font-semibold text-black">
+                      <h4 className="text-sm font-semibold text-accent-secondary">
                         {item.name}
                       </h4>
-                      <p className="text-xs text-light-black">
+                      <p className="text-xs text-muted">
                         Quantity: {item.quantity}
                       </p>
-                      <p className="text-sm font-bold text-black">
+                      <p className="text-sm font-bold text-accent-secondary">
                         ₦{item.price.toLocaleString()}
                       </p>
                     </div>
@@ -104,14 +104,16 @@ const Orders: React.FC = () => {
               </div>
 
               {/* Footer */}
-              <div className="flex justify-between items-center border-t border-gray-700 pt-3">
-                <div className="flex items-center gap-2 text-sm text-light-black">
+              <div className="flex justify-between items-center border-t border-dim/50 pt-3">
+                <div className="flex items-center gap-2 text-sm text-dim">
                   <ShoppingBag size={16} />
-                  <span>{order.items.length} items</span>
+                  <span>
+                    {order.items.length} item{"(s)"}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <p className="font-semibold text-pink">
+                  <p className="font-semibold text-text">
                     Total: ₦{order.total.toLocaleString()}
                   </p>
 
@@ -119,7 +121,7 @@ const Orders: React.FC = () => {
                   {order.status === "Pending" && (
                     <button
                       onClick={() => handleCancelOrder(order.id)}
-                      className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                      className="bg-important hover:bg-important/80 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors cursor-pointer"
                     >
                       Cancel Order
                     </button>

@@ -45,7 +45,13 @@ const HomeRouter: React.FC = () => {
     }
   }
 
-  // If not authenticated, show account type selection
+  // If not authenticated, check if user has onboarded
+  const hasOnboarded = localStorage.getItem("hasOnboarded") === "true";
+
+  if (hasOnboarded) {
+    return <Navigate to="/signin" replace />;
+  }
+
   return <AccountType />;
 };
 

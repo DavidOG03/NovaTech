@@ -9,8 +9,15 @@ export const useTheme = () => {
   const [theme, setTheme] = useState<string>(getStoredTheme);
 
   useEffect(() => {
+    // Apply theme to DOM on mount
+    const currentTheme = getStoredTheme();
+    document.documentElement.classList.toggle("dark", currentTheme === "dark");
+    setTheme(currentTheme);
+
     const handleThemeChange = () => {
-      setTheme(getStoredTheme());
+      const newTheme = getStoredTheme();
+      document.documentElement.classList.toggle("dark", newTheme === "dark");
+      setTheme(newTheme);
     };
 
     window.addEventListener("storage", handleThemeChange);
@@ -18,12 +25,13 @@ export const useTheme = () => {
     const observer = new MutationObserver(() => {
       const isDark = document.documentElement.classList.contains("dark");
       const nextTheme = isDark ? "dark" : "light";
-      localStorage.setItem("theme", nextTheme);
-      setTheme(nextTheme);
+      if (localStorage.getItem("theme") !== nextTheme) {
+        localStorage.setItem("theme", nextTheme);
+        setTheme(nextTheme);
+      }
     });
 
-    observer.observe(document.documentElement, { attributes: true });
-    handleThemeChange();
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     return () => {
       window.removeEventListener("storage", handleThemeChange);

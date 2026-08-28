@@ -22,6 +22,7 @@ import { Toaster } from "react-hot-toast";
 import VendorSignUp from "./auth/pages/VendorSignUp";
 import VendorSignIn from "./auth/pages/VendorSignIn";
 import SellerDashboard from "./pages/vendor/SellerDashboard";
+import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
@@ -123,7 +124,7 @@ const App: React.FC = () => {
 
             <Route path="/seller-dashboard" element={<SellerDashboard />} />
 
-            {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </ProductProvider>

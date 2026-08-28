@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { useProductContext } from "../../context/ProductContext";
+import { TrashIcon } from "@/constants/icons";
 
 interface ItemProps {
   image: string;
@@ -48,37 +49,39 @@ const ProductItem: React.FC<ItemProps> = ({
 
   return (
     <div className="cart flex flex-col md:flex-row justify-start md:justify-between lg:justify-between lg:items-center gap-4 w-full">
-      <div className="left flex justify-start items-center gap-[1.25rem]">
-        <div className="image grid place-items-center object-cover w-[100px] h-[100px] bg-grey rounded-[0.75rem]">
+      <div className="left flex justify-start items-center gap-5">
+        <div className="image grid place-items-center object-cover w-25 h-[100px] bg-text rounded-[0.75rem]">
           <img src={image} alt={name} className="object-cover w-full" />
         </div>
         <div className="info flex flex-col justify-center items-start gap-2 md:gap-2">
-          <span className="text-black text-[18px] md:text-[1.25rem]">
+          <span className="text-accent-secondary text-[18px] md:text-[1.25rem]">
             {name}
           </span>
-          <span className="text-[1.25rem] text-light-black">{price}</span>
+          <span className="text-[1.25rem] text-dim">{price}</span>
         </div>
       </div>
       <div className="right flex flex-col justify-center items-center md:items-end gap-2">
-        <div className="count flex w-full max-w-[500px] mx-auto flex-auto justify-between items-center gap-2 py-3 px-4 rounded-[0.75rem] bg-grey">
+        <div className="count flex w-full max-w-125 mx-auto flex-auto justify-between items-center gap-2 py-3 px-4 rounded-xl bg-card">
           <button
-            className="text-[1.5rem] text-black cursor-pointer"
+            className="text-[1.5rem] text-accent-secondary cursor-pointer"
             onClick={handleDecrease}
           >
             -
           </button>
-          <span className="text-base text-black px-1">{itemCount}</span>
+          <span className="text-base text-accent-secondary px-1">
+            {itemCount}
+          </span>
           <button
-            className="text-[1.5rem] text-black cursor-pointer"
+            className="text-[1.5rem] text-accent-secondary cursor-pointer"
             onClick={handleIncrease}
           >
             +
           </button>
         </div>
-        <div className="remove-item flex justify-end items-center gap-[6px] cursor-pointer rounded-[0.75rem] p-2 bg-grey">
-          <img src="/images/delete_disabled.svg" alt="Delete Icon" />
+        <div className="remove-item flex justify-end items-center gap-1.5 cursor-pointer rounded-xl p-2 bg-accent-light">
+          <TrashIcon color="#fff" />
           <button
-            className="text-light-black text-base bg-transparent"
+            className="text-white text-base bg-transparent"
             onClick={onRemove}
           >
             Remove

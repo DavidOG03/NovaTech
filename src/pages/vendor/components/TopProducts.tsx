@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Star } from "lucide-react";
 
 interface Gadget {
@@ -20,23 +20,21 @@ interface TopProductsProps {
 
 const TopProducts: React.FC<TopProductsProps> = ({ products }) => {
   return (
-    <div className="bg-grey rounded-xl shadow-sm border border-light-black/25 p-6">
-      <h2 className="text-lg font-bold text-light-black mb-6">Top Products</h2>
+    <div className="bg-card rounded-xl shadow-sm border border-dim/50 p-6">
+      <h2 className="text-lg font-bold text-dim mb-6">Top Products</h2>
       <div className="space-y-4">
         {products.length === 0 ? (
           <div className="text-center py-8">
-            <Star className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p className="text-lg font-medium text-light-black">
-              No products found
-            </p>
-            <p className="text-sm text-light-black">
+            <Star className="w-12 h-12 mx-auto mb-4 text-gray-500" />
+            <p className="text-lg font-medium text-dim">No products found</p>
+            <p className="text-sm text-dim">
               Top products will appear here once you have sales data.
             </p>
           </div>
         ) : (
           products.slice(0, 5).map((product, index) => (
             <div key={product.id} className="flex items-center space-x-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-3xl flex items-center justify-center text-2xl">
+              <div className="shrink-0 w-10 h-10 bg-gray-100 rounded-3xl flex items-center justify-center text-2xl">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -44,12 +42,10 @@ const TopProducts: React.FC<TopProductsProps> = ({ products }) => {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-light-black truncate">
+                <p className="text-sm font-medium text-dim truncate">
                   {product.name}
                 </p>
-                <p className="text-xs text-light-black">
-                  {product.sales} sales
-                </p>
+                <p className="text-xs text-dim">{product.sales} sales</p>
               </div>
               <div className="flex items-center space-x-1 text-yellow-500">
                 <Star className="w-4 h-4 fill-current" />
